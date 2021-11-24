@@ -1,7 +1,7 @@
-package com.lampa.financulator.retrofit.mapper
+package com.lampa.financulator.api.mapper
 
 import com.lampa.financulator.model.Coin
-import com.lampa.financulator.retrofit.entity.CoinEntity
+import com.lampa.financulator.api.entity.CoinEntity
 import com.lampa.financulator.util.BaseMapper
 import javax.inject.Inject
 

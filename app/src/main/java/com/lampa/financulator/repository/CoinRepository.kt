@@ -2,9 +2,9 @@ package com.lampa.financulator.repository
 
 import com.lampa.financulator.manager.NetworkConnectionManager
 import com.lampa.financulator.model.Coin
-import com.lampa.financulator.retrofit.ApiService
-import com.lampa.financulator.retrofit.entity.CoinEntity
-import com.lampa.financulator.retrofit.mapper.CoinMapper
+import com.lampa.financulator.api.ApiService
+import com.lampa.financulator.api.entity.CoinEntity
+import com.lampa.financulator.api.mapper.CoinMapper
 import com.lampa.financulator.util.RequestErrorHandler
 import com.lampa.financulator.util.RequestState
 import javax.inject.Inject

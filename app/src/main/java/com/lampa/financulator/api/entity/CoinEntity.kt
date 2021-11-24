@@ -1,4 +1,4 @@
-package com.lampa.financulator.retrofit.entity
+package com.lampa.financulator.api.entity
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
