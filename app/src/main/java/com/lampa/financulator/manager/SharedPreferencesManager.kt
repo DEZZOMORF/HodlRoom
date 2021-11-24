@@ -12,7 +12,7 @@ class SharedPreferencesManager @Inject constructor(@ApplicationContext context: 
 
     companion object {
         private const val SHARED_PREFERENCES_FILE_NAME = "financulator_pref"
-        private val ACCESS_TOKEN = "access_token"
+        private const val ACCESS_TOKEN = "access_token"
     }
 
     private val sharedPreferences: SharedPreferences? =

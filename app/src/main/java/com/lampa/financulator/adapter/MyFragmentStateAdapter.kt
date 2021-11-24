@@ -3,7 +3,6 @@ package com.lampa.financulator.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.lampa.financulator.ui.fragment.CoinListFragment
 import com.lampa.financulator.ui.fragment.PortfolioGraphFragment
 
 class MyFragmentStateAdapter(fragmentActivity: FragmentActivity) :

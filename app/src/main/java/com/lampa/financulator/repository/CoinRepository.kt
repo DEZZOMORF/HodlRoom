@@ -25,7 +25,7 @@ class CoinRepository @Inject constructor(
                         RequestErrorHandler().handleError(response)
                     }
                 }
-                else -> throw Exception(networkConnectionManager.MESSAGE)
+                else -> throw Exception(NetworkConnectionManager.MESSAGE)
             }
         } catch (e: Exception) {
             RequestState.GeneralError(e)

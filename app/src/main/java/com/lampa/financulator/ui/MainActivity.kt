@@ -1,9 +1,8 @@
 package com.lampa.financulator.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
-import com.lampa.financulator.R
 import com.lampa.financulator.adapter.MyFragmentStateAdapter
 import com.lampa.financulator.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint

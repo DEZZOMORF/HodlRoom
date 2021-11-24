@@ -1,5 +1,6 @@
 package com.lampa.financulator.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
@@ -9,7 +10,6 @@ import com.lampa.financulator.databinding.CoinItemBinding
 import com.lampa.financulator.model.Coin
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
 
 class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapter.ViewHolder>(), Filterable {
 
@@ -44,8 +44,8 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-                    coinFilterList = coinList
+                coinFilterList = if (charSearch.isEmpty()) {
+                    coinList
                 } else {
                     val resultList: MutableList<Coin> = mutableListOf()
                     for (coin in coinList) {
@@ -53,13 +53,14 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
                             resultList.add(coin)
                         }
                     }
-                    coinFilterList = resultList
+                    resultList
                 }
                 val filterResults = FilterResults()
                 filterResults.values = coinFilterList
                 return filterResults
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
                 coinFilterList = results?.values as List<Coin>

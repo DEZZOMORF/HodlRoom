@@ -15,12 +15,14 @@ import javax.inject.Singleton
 @Singleton
 class NetworkConnectionManager @Inject constructor(@ApplicationContext context: Context) {
 
-    val MESSAGE = "No internet connection"
+    companion object {
+        const val MESSAGE = "No internet connection"
+    }
 
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager?
 
-    var isConnected = MutableLiveData<Boolean>(isAvailableConnection())  // with initial value
+    var isConnected = MutableLiveData(isAvailableConnection())
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
