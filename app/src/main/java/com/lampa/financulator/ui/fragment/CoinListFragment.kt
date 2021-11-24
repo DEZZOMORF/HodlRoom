@@ -1,11 +1,15 @@
 package com.lampa.financulator.ui.fragment
 
+import android.animation.LayoutTransition
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,6 +41,7 @@ class CoinListFragment : Fragment() {
         viewModel.getCoinList()
         setCoinListObserver()
         initRecyclerView()
+        initViews()
     }
 
     override fun onDestroy() {
@@ -91,5 +96,15 @@ class CoinListFragment : Fragment() {
                 return false
             }
         })
+    }
+
+    private fun initViews() {
+        (binding.parentLayout as? ViewGroup)?.layoutTransition?.enableTransitionType(LayoutTransition.CHANGING)
+        with (binding) {
+            toolbar.btnBack.setOnClickListener {  }
+            toolbar.btnSearch.setOnClickListener {
+                coinSearch.isGone = !coinSearch.isGone
+            }
+        }
     }
 }
