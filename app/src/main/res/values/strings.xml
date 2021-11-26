@@ -2,5 +2,7 @@
     <string name="app_name">Financulator</string>
     <string name="default_error_message">Unknown error</string>
     <string name="choose_a_coin">Choose a coin</string>
-    <string name="purchase">Purchase</string>
+    <string name="purchases">Purchases</string>
+    <string name="contentDescription">+</string>
+    <string name="currentPrice">One %1$s costs %2$s USD or %3$s BTC</string>
 </resources>

@@ -15,4 +15,12 @@ data class CoinEntity(
     @SerializedName("name")
     @Expose
     val name: String?,
+
+    @SerializedName("image")
+    @Expose
+    val image: CoinLogoEntity?,
+
+    @SerializedName("market_data")
+    @Expose
+    val marketData: CurrentPriceEntity?,
 )

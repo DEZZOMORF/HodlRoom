@@ -8,6 +8,7 @@ import com.lampa.financulator.R
 import com.lampa.financulator.databinding.FragmentPurchaseBinding
 import com.lampa.financulator.ui.fragment.base.BaseFragment
 import com.lampa.financulator.util.ConstVal.ID
+import com.lampa.financulator.util.Logger
 import com.lampa.financulator.util.UiState
 import com.lampa.financulator.viewmodel.PurchaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +31,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>() {
                 }
                 is UiState.Success -> {
                     displayProgressBar(false)
-                    state.data //TODO
+                    binding.coin = state.data
                 }
                 is UiState.Error -> {
                     displayProgressBar(false)

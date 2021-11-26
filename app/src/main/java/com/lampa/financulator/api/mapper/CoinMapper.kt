@@ -10,8 +10,10 @@ class CoinMapper @Inject constructor(): BaseMapper<CoinEntity, Coin>() {
     override fun mapEntityToModel(entity: CoinEntity): Coin = with(entity) {
         Coin(
             id = id,
-            symbol = symbol,
-            name = name
+            symbol = symbol?.uppercase(),
+            name = name,
+            image = image?.large,
+            currentPrice = marketData?.currentPrice
         )
     }
 }

@@ -35,7 +35,7 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
         fun bindView() {
             binding.data = coinFilterList[adapterPosition]
             binding.item.setOnClickListener {
-                coinList[adapterPosition].id?.let { id -> onItemClickListener?.invoke(id) }
+                coinFilterList[adapterPosition].id?.let { id -> onItemClickListener?.invoke(id) }
             }
         }
     }
