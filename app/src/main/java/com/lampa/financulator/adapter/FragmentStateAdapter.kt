@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.lampa.financulator.ui.fragment.PortfolioGraphFragment
 
-class MyFragmentStateAdapter(fragmentActivity: FragmentActivity) :
+class FragmentStateAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {

@@ -12,32 +12,28 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CoinListViewModel @Inject constructor(
+class PurchaseViewModel @Inject constructor(
     private val coinRepository: CoinRepository
 ) : ViewModel() {
 
-    var coinListState: MutableLiveData<UiState<List<Coin>>> = MutableLiveData()
+    var coinState: MutableLiveData<UiState<Coin>> = MutableLiveData()
 
-    init {
-        getCoinList()
-    }
-
-    private fun getCoinList() {
-        coinListState.postValue(UiState.Loading)
+    fun getCoinById(id: String) {
+        coinState.postValue(UiState.Loading)
         viewModelScope.launch {
-            when (val requestState = coinRepository.getCoinList()) {
+            when (val requestState = coinRepository.getCoinById(id)) {
                 is RequestState.Success -> {
-                    requestState.data?.let { coinListState.postValue(UiState.Success(it)) }
+                    requestState.data?.let { coinState.postValue(UiState.Success(it)) }
                 }
                 is RequestState.RequestError -> {
-                    coinListState.postValue(
+                    coinState.postValue(
                         UiState.Error(
                             Exception(requestState.requestErrorModel.message)
                         )
                     )
                 }
                 is RequestState.GeneralError -> {
-                    coinListState.postValue(
+                    coinState.postValue(
                         UiState.Error(
                             Exception(requestState.exception.message)
                         )

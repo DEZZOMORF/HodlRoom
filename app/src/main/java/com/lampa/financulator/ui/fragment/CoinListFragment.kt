@@ -1,5 +1,6 @@
 package com.lampa.financulator.ui.fragment
 
+import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -11,6 +12,7 @@ import com.lampa.financulator.R
 import com.lampa.financulator.adapter.CoinListAdapter
 import com.lampa.financulator.databinding.FragmentCoinListBinding
 import com.lampa.financulator.ui.fragment.base.BaseFragment
+import com.lampa.financulator.util.ConstVal.ID
 import com.lampa.financulator.util.UiState
 import com.lampa.financulator.viewmodel.CoinListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,18 +27,15 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
     private val viewModel: CoinListViewModel by viewModels()
 
     override fun observeViewModel() {
-        viewModel.getCoinList()
-        viewModel.getCoinListState.observe(viewLifecycleOwner) { state ->
+        viewModel.coinListState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     displayProgressBar(true)
                 }
                 is UiState.Success -> {
                     displayProgressBar(false)
-                    state.data?.let { data ->
-                        coinListAdapter.coinList = (data)
-                        coinListAdapter.notifyItemRangeInserted(0, data.size)
-                    }
+                        coinListAdapter.coinList = (state.data)
+                        coinListAdapter.notifyItemRangeInserted(0, state.data.size)
                 }
                 is UiState.Error -> {
                     displayProgressBar(false)
@@ -62,6 +61,12 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
         with(binding.coinListRv) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = coinListAdapter
+        }
+
+        coinListAdapter.onItemClickListener = {
+            val bundle = Bundle()
+            bundle.putString(ID, it)
+            findNavController().navigate(R.id.action_coinListFragment_to_purchaseFragment, bundle)
         }
 
         binding.coinSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

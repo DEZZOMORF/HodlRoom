@@ -6,7 +6,9 @@ import com.lampa.financulator.R
 import com.lampa.financulator.databinding.FragmentMainBinding
 import com.lampa.financulator.ui.fragment.base.BaseFragment
 import com.lampa.financulator.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>() {
     override val layoutResId: Int = R.layout.fragment_main
 

@@ -10,14 +10,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar_main" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/purchase_list_rv"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+            layout="@layout/toolbar_purchase" />
 
         <ProgressBar
             android:id="@+id/progress_bar"

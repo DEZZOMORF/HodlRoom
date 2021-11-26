@@ -19,7 +19,7 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
             coinFilterList = value
         }
     var coinFilterList: List<Coin> = listOf()
-    var onItemClickListener: ((Int) -> Unit)? = null
+    var onItemClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(CoinItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false))
@@ -35,7 +35,7 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
         fun bindView() {
             binding.data = coinFilterList[adapterPosition]
             binding.item.setOnClickListener {
-                onItemClickListener?.invoke(adapterPosition)
+                coinList[adapterPosition].id?.let { id -> onItemClickListener?.invoke(id) }
             }
         }
     }
