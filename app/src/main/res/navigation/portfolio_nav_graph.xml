@@ -2,10 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/portfolio_nav_graph.xml"
-    app:startDestination="@id/coinListFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/coinListFragment"
         android:name="com.lampa.financulator.ui.fragment.CoinListFragment"
         android:label="CoinListFragment" />
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.lampa.financulator.ui.fragment.MainFragment"
+        android:label="MainFragment" >
+        <action
+            android:id="@+id/action_mainFragment_to_coinListFragment"
+            app:destination="@id/coinListFragment" />
+    </fragment>
 </navigation>

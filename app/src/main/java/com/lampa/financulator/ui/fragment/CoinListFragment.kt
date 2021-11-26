@@ -1,56 +1,36 @@
 package com.lampa.financulator.ui.fragment
 
-import android.animation.LayoutTransition
-import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lampa.financulator.R
 import com.lampa.financulator.adapter.CoinListAdapter
-import com.lampa.financulator.databinding.CoinListFragmentBinding
+import com.lampa.financulator.databinding.FragmentCoinListBinding
+import com.lampa.financulator.ui.fragment.base.BaseFragment
 import com.lampa.financulator.util.UiState
 import com.lampa.financulator.viewmodel.CoinListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CoinListFragment : Fragment() {
+class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
+    override val layoutResId: Int = R.layout.fragment_coin_list
 
     @Inject
     lateinit var coinListAdapter: CoinListAdapter
     private val viewModel: CoinListViewModel by viewModels()
-    private var _binding: CoinListFragmentBinding? = null
-    private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = CoinListFragmentBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun observeViewModel() {
         viewModel.getCoinList()
-        setCoinListObserver()
-        initRecyclerView()
-        initViews()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    private fun setCoinListObserver() {
         viewModel.getCoinListState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is UiState.Loading -> displayProgressBar(true)
+                is UiState.Loading -> {
+                    displayProgressBar(true)
+                }
                 is UiState.Success -> {
                     displayProgressBar(false)
                     state.data?.let { data ->
@@ -78,17 +58,14 @@ class CoinListFragment : Fragment() {
         }
     }
 
-    private fun initRecyclerView() {
+    override fun setupAdapters() {
         with(binding.coinListRv) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = coinListAdapter
         }
 
         binding.coinSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
+            override fun onQueryTextSubmit(query: String?): Boolean = false
             override fun onQueryTextChange(newText: String?): Boolean {
                 coinListAdapter.filter.filter(newText)
                 return false
@@ -96,10 +73,11 @@ class CoinListFragment : Fragment() {
         })
     }
 
-    private fun initViews() {
-        (binding.parentLayout as? ViewGroup)?.layoutTransition?.enableTransitionType(LayoutTransition.CHANGING)
-        with (binding) {
-            toolbar.btnBack.setOnClickListener {  }
+    override fun observeClicks() {
+        with(binding) {
+            toolbar.btnBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
             toolbar.btnSearch.setOnClickListener {
                 coinSearch.isGone = !coinSearch.isGone
             }
