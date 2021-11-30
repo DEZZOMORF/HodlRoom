@@ -13,12 +13,12 @@ import javax.inject.Inject
 
 class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapter.ViewHolder>(), Filterable {
 
+    var coinFilterList: List<Coin> = listOf()
     var coinList: List<Coin> = listOf()
         set(value) {
             field = value
             coinFilterList = value
         }
-    var coinFilterList: List<Coin> = listOf()
     var onItemClickListener: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
