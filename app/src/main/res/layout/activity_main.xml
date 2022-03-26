@@ -6,7 +6,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.MainActivity"
+        android:background="@drawable/background_color">
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/pager"
@@ -32,7 +33,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:tabTextColor="@color/black" />
+                app:tabTextColor="@color/purple_200" />
         </com.google.android.material.appbar.AppBarLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

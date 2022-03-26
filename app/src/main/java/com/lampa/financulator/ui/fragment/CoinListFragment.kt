@@ -35,7 +35,6 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
                 is UiState.Success -> {
                     displayProgressBar(false)
                         coinListAdapter.coinList = (state.data)
-                        coinListAdapter.notifyItemRangeInserted(0, state.data.size)
                 }
                 is UiState.Error -> {
                     displayProgressBar(false)
@@ -58,15 +57,15 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
     }
 
     override fun setupAdapters() {
-        with(binding.coinListRv) {
-            layoutManager = LinearLayoutManager(requireContext())
-            adapter = coinListAdapter
-        }
-
         coinListAdapter.onItemClickListener = {
             val bundle = Bundle()
             bundle.putString(ID, it)
             findNavController().navigate(R.id.action_coinListFragment_to_purchaseFragment, bundle)
+        }
+
+        with(binding.coinListRv) {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = coinListAdapter
         }
 
         binding.coinSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

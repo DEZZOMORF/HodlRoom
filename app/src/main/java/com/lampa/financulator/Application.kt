@@ -1,7 +1,7 @@
-package com.lampa.financulator.ui
+package com.lampa.financulator
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
-class MainApplication : Application()
+class Application : Application()

@@ -13,11 +13,11 @@ import javax.inject.Inject
 
 class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapter.ViewHolder>(), Filterable {
 
-    var coinFilterList: List<Coin> = listOf()
+    var filteredCoinList: List<Coin> = listOf()
     var coinList: List<Coin> = listOf()
         set(value) {
             field = value
-            coinFilterList = value
+            filteredCoinList = value
         }
     var onItemClickListener: ((String) -> Unit)? = null
 
@@ -29,13 +29,13 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
         viewHolder.bindView()
     }
 
-    override fun getItemCount() = coinFilterList.size
+    override fun getItemCount() = filteredCoinList.size
 
     inner class ViewHolder(private val binding: CoinItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bindView() {
-            binding.data = coinFilterList[adapterPosition]
+            binding.data = filteredCoinList[adapterPosition]
             binding.item.setOnClickListener {
-                coinFilterList[adapterPosition].id?.let { id -> onItemClickListener?.invoke(id) }
+                filteredCoinList[adapterPosition].id?.let { id -> onItemClickListener?.invoke(id) }
             }
         }
     }
@@ -44,28 +44,32 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                coinFilterList = if (charSearch.isEmpty()) {
+                filteredCoinList = if (charSearch.isEmpty()) {
                     coinList
                 } else {
                     val resultList: MutableList<Coin> = mutableListOf()
                     for (coin in coinList) {
-                        if (coin.name?.lowercase(Locale.ROOT)?.contains(charSearch.lowercase(Locale.ROOT)) == true) {
+                        if (coin.name?.isContained(charSearch) == true || coin.symbol?.isContained(charSearch) == true) {
                             resultList.add(coin)
                         }
                     }
                     resultList
                 }
                 val filterResults = FilterResults()
-                filterResults.values = coinFilterList
+                filterResults.values = filteredCoinList
                 return filterResults
             }
 
             @SuppressLint("NotifyDataSetChanged")
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                coinFilterList = results?.values as List<Coin>
+                filteredCoinList = results?.values as List<Coin>
                 notifyDataSetChanged()
             }
         }
+    }
+
+    fun String.isContained(charSearch: String): Boolean {
+        return this.lowercase(Locale.ROOT).contains(charSearch.lowercase(Locale.ROOT))
     }
 }
