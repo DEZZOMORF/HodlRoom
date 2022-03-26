@@ -4,7 +4,6 @@ import android.content.Context
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.lampa.financulator.api.ApiService
-import com.lampa.financulator.api.AuthInterceptor
 import com.lampa.financulator.util.NetworkUrls
 import com.readystatesoftware.chuck.ChuckInterceptor
 import dagger.Module
@@ -31,9 +30,8 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideClient(@ApplicationContext context: Context, authInterceptor: AuthInterceptor): OkHttpClient {
+    fun provideClient(@ApplicationContext context: Context): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor ( authInterceptor )
             .addInterceptor(ChuckInterceptor(context))
             .build()
     }

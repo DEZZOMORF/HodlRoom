@@ -26,7 +26,7 @@ class CoinListAdapter @Inject constructor() : RecyclerView.Adapter<CoinListAdapt
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        viewHolder.bindView()
+            viewHolder.bindView()
     }
 
     override fun getItemCount() = filteredCoinList.size
