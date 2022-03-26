@@ -27,19 +27,25 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
     private val viewModel: CoinListViewModel by viewModels()
 
     override fun observeViewModel() {
-        viewModel.coinListState.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is UiState.Loading -> {
-                    displayProgressBar(true)
+        with(viewModel){
+            coinListLoadState.observe(viewLifecycleOwner) { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        displayProgressBar(true)
+                    }
+                    is UiState.Success -> {
+                        displayProgressBar(false)
+                        coinListAdapter.coinList = state.data
+                    }
+                    is UiState.Error -> {
+                        displayProgressBar(false)
+                        displayError(state.error.message)
+                    }
                 }
-                is UiState.Success -> {
-                    displayProgressBar(false)
-                        coinListAdapter.coinList = (state.data)
-                }
-                is UiState.Error -> {
-                    displayProgressBar(false)
-                    displayError(state.error.message)
-                }
+            }
+            filteredCoinList.observe(viewLifecycleOwner) {
+                coinListAdapter.coinList = it
+                coinListAdapter.notifyDataSetChanged()
             }
         }
     }
@@ -67,14 +73,6 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = coinListAdapter
         }
-
-        binding.coinSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean = false
-            override fun onQueryTextChange(newText: String?): Boolean {
-                coinListAdapter.filter.filter(newText)
-                return false
-            }
-        })
     }
 
     override fun observeClicks() {
@@ -82,9 +80,18 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
             toolbar.btnBack.setOnClickListener {
                 findNavController().popBackStack()
             }
+
             toolbar.btnSearch.setOnClickListener {
                 coinSearch.isGone = !coinSearch.isGone
             }
+
+            coinSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String): Boolean = false
+                override fun onQueryTextChange(newText: String): Boolean {
+                    viewModel.filter(newText)
+                    return false
+                }
+            })
         }
     }
 }
