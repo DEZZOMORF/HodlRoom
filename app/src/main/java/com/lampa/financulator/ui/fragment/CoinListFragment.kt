@@ -27,7 +27,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
     private val viewModel: CoinListViewModel by viewModels()
 
     override fun observeViewModel() {
-        with(viewModel){
+        with(viewModel) {
             coinListLoadState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is UiState.Loading -> {

@@ -18,7 +18,7 @@ class CoinListViewModel @Inject constructor(
 ) : ViewModel() {
 
     var coinListLoadState: MutableLiveData<UiState<List<Coin>>> = MutableLiveData()
-    private lateinit var coinList: List<Coin>
+    private var coinList: List<Coin>? = null
 
     var filteredCoinList: MutableLiveData<List<Coin>> = MutableLiveData()
 
@@ -55,19 +55,21 @@ class CoinListViewModel @Inject constructor(
     }
 
     fun filter(charSearch: String) {
-        filteredCoinList.postValue(
-            if (charSearch.isEmpty()) {
-                coinList
-            } else {
-                mutableListOf<Coin>().apply {
-                    for (coin in coinList) {
-                        if (coin.name?.isContained(charSearch) == true || coin.symbol?.isContained(charSearch) == true) {
-                            add(coin)
+        coinList?.let {
+            filteredCoinList.postValue(
+                if (charSearch.isEmpty()) {
+                    it
+                } else {
+                    mutableListOf<Coin>().apply {
+                        for (coin in it) {
+                            if (coin.name?.isContained(charSearch) == true || coin.symbol?.isContained(charSearch) == true) {
+                                add(coin)
+                            }
                         }
                     }
                 }
-            }
-        )
+            )
+        }
     }
 
     private fun String.isContained(charSearch: String): Boolean {
