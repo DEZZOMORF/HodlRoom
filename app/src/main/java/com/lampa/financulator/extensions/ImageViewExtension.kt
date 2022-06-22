@@ -1,12 +1,10 @@
-package com.lampa.financulator.util
+package com.lampa.financulator.extensions
 
 import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 
-@BindingAdapter("setImageUrl")
-fun ImageView.setImageUrl(url: String?) {
+fun ImageView.loadAndSetImage(url: String?) {
     if (url != null) {
         Glide
             .with(this.context)

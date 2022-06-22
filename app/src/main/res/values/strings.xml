@@ -10,4 +10,8 @@
     <string name="price">Price</string>
     <string name="total_cost">Total cost: %1$s</string>
     <string name="save">Save</string>
+    <string name="coin_info">%1$s (%2$s)</string>
+    <string name="dialog_text_error">dialog_text_error</string>
+    <string name="dialog_text_success">dialog_text_success</string>
+    <string name="btn_back">btn_back</string>
 </resources>

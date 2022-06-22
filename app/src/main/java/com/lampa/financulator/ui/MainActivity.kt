@@ -2,7 +2,10 @@ package com.lampa.financulator.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import com.lampa.financulator.R
 import com.lampa.financulator.databinding.ActivityMainBinding
+import com.lampa.financulator.extensions.resourcesCompat
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -14,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityMainBinding.inflate(layoutInflater)
+        window.statusBarColor = resourcesCompat.getColor(R.color.purple_700)
         setContentView(binding.root)
     }
 

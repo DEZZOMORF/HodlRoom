@@ -39,7 +39,7 @@ class CoinRepository @Inject constructor(
                 true -> {
                     val response = apiService.getCoinById(id)
                     if (response.isSuccessful) {
-                        RequestState.Success(response.body()?.let { coinMapper.mapEntityToModel(it)})
+                        RequestState.Success(response.body()?.let { coinMapper.mapEntityToModel(it) })
                     } else {
                         RequestErrorHandler().handleError(response)
                     }

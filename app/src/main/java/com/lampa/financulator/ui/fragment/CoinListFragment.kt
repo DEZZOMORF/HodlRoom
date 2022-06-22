@@ -19,8 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class CoinListFragment : BaseFragment<FragmentCoinListBinding>() {
-    override val layoutResId: Int = R.layout.fragment_coin_list
+class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListBinding::inflate) {
 
     @Inject
     lateinit var coinListAdapter: CoinListAdapter

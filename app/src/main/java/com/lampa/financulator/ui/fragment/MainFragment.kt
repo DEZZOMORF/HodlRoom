@@ -9,8 +9,7 @@ import com.lampa.financulator.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : BaseFragment<FragmentMainBinding>() {
-    override val layoutResId: Int = R.layout.fragment_main
+class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
     private val viewModel: MainViewModel by viewModels()
 

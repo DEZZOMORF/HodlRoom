@@ -60,9 +60,10 @@ class CoinListViewModel @Inject constructor(
                 if (charSearch.isEmpty()) {
                     it
                 } else {
+                    val trimmedString = charSearch.trim()
                     mutableListOf<Coin>().apply {
                         for (coin in it) {
-                            if (coin.name?.isContained(charSearch) == true || coin.symbol?.isContained(charSearch) == true) {
+                            if (coin.name?.isContained(trimmedString) == true || coin.symbol?.isContained(trimmedString) == true) {
                                 add(coin)
                             }
                         }

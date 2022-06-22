@@ -37,4 +37,38 @@
         <item name="cardBackgroundColor">@color/purple_200</item>
     </style>
 
+    <style name="Financulator.RecyclerView">
+        <item name="android:scrollbarSize">4dp</item>
+        <item name="android:fadeScrollbars">true</item>
+        <item name="android:scrollbars">vertical</item>
+    </style>
+
+    <style name="Financulator.DefaultVerticalFlow">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="flow_wrapMode">chain</item>
+        <item name="flow_horizontalBias">0</item>
+        <item name="flow_verticalStyle">spread</item>
+        <item name="flow_maxElementsWrap">1</item>
+    </style>
+
+    <style name="Financulator.CoinListItemInfoVerticalFlow" parent="Financulator.DefaultVerticalFlow">
+        <item name="flow_verticalGap">2dp</item>
+    </style>
+
+    <style name="Financulator.DefaultTextWithBorder">
+        <item name="android:background">@drawable/transparent_bg_with_round_borders</item>
+
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:paddingEnd">4dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="Financulator.PurpleTextWithBorder" parent="Financulator.DefaultTextWithBorder">
+        <item name="android:backgroundTint">@color/purple_200</item>
+        <item name="android:textColor">@color/purple_200</item>
+    </style>
+
 </resources>
