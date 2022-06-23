@@ -33,7 +33,12 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
                         binding.toolbar.coinInfoTextViewToolbar.text = getString(R.string.coin_info, name, symbol)
                         binding.coinLogoLeftImageViewPurchase.loadAndSetImage(image)
                         binding.coinLogoRightImageViewPurchase.loadAndSetImage(image)
-                        binding.currentPriceTextViewPurchase.text = getString(R.string.currentPrice, symbol, currentPrice?.USD, currentPrice?.BTC)
+                        binding.currentPriceTextViewPurchase.text = getString(
+                            R.string.currentPrice,
+                            symbol,
+                            viewModel.formatPrice(currentPrice?.USD),
+                            viewModel.formatPrice(currentPrice?.BTC)
+                        )
                     }
                 }
                 is UiState.Error -> {

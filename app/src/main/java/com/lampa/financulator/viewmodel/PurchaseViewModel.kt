@@ -7,6 +7,7 @@ import com.lampa.financulator.model.Coin
 import com.lampa.financulator.repository.CoinRepository
 import com.lampa.financulator.util.RequestState
 import com.lampa.financulator.util.UiState
+import com.lampa.financulator.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PurchaseViewModel @Inject constructor(
     private val coinRepository: CoinRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     var coinState: MutableLiveData<UiState<Coin>> = MutableLiveData()
 

@@ -1,12 +1,12 @@
 package com.lampa.financulator.viewmodel
 
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lampa.financulator.model.Coin
 import com.lampa.financulator.repository.CoinRepository
 import com.lampa.financulator.util.RequestState
 import com.lampa.financulator.util.UiState
+import com.lampa.financulator.viewmodel.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.*
@@ -15,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CoinListViewModel @Inject constructor(
     private val coinRepository: CoinRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
     var coinListLoadState: MutableLiveData<UiState<List<Coin>>> = MutableLiveData()
     private var coinList: List<Coin>? = null
