@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import com.lampa.financulator.R
+import com.lampa.financulator.ui.MainActivity
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
-abstract class BaseFragment<VB: ViewBinding>(
+abstract class BaseFragment<VB : ViewBinding>(
     private val inflate: Inflate<VB>
 ) : Fragment() {
 
@@ -41,4 +44,16 @@ abstract class BaseFragment<VB: ViewBinding>(
     protected open fun observeAdapters() {}
     protected open fun observeViewModel() {}
     protected open fun observeClicks() {}
+
+    fun displayProgressBar(isDisplayed: Boolean) {
+        (activity as MainActivity).displayProgressBar(isDisplayed)
+    }
+
+    fun displayError(message: String?) {
+        if (message != null) {
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(context, resources.getString(R.string.default_error_message), Toast.LENGTH_LONG).show()
+        }
+    }
 }

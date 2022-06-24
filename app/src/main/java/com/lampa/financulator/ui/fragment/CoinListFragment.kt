@@ -1,8 +1,6 @@
 package com.lampa.financulator.ui.fragment
 
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
 import androidx.fragment.app.viewModels
@@ -35,6 +33,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                     is UiState.Success -> {
                         displayProgressBar(false)
                         coinListAdapter.coinList = state.data
+                        coinListAdapter.notifyDataSetChanged()
                     }
                     is UiState.Error -> {
                         displayProgressBar(false)
@@ -46,18 +45,6 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                 coinListAdapter.coinList = it
                 coinListAdapter.notifyDataSetChanged()
             }
-        }
-    }
-
-    private fun displayProgressBar(isDisplayed: Boolean) {
-        binding.progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
-    }
-
-    private fun displayError(message: String?) {
-        if (message != null) {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(context, resources.getString(R.string.default_error_message), Toast.LENGTH_LONG).show()
         }
     }
 

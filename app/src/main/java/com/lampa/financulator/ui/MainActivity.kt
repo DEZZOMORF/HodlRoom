@@ -2,7 +2,7 @@ package com.lampa.financulator.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.isVisible
 import com.lampa.financulator.R
 import com.lampa.financulator.databinding.ActivityMainBinding
 import com.lampa.financulator.extensions.resourcesCompat
@@ -24,5 +24,9 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    fun displayProgressBar(isDisplayed:Boolean) {
+        binding.progressBar.isVisible = isDisplayed
     }
 }

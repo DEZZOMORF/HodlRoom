@@ -1,7 +1,5 @@
 package com.lampa.financulator.ui.fragment
 
-import android.view.View
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lampa.financulator.R
@@ -46,18 +44,6 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
                     displayError(state.error.message)
                 }
             }
-        }
-    }
-
-    private fun displayProgressBar(isDisplayed: Boolean) {
-        binding.progressBar.visibility = if (isDisplayed) View.VISIBLE else View.GONE
-    }
-
-    private fun displayError(message: String?) {
-        if (message != null) {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(context, resources.getString(R.string.default_error_message), Toast.LENGTH_LONG).show()
         }
     }
 
