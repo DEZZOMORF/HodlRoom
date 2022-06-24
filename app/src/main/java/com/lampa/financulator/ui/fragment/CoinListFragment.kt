@@ -41,6 +41,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                     }
                 }
             }
+
             filteredCoinList.observe(viewLifecycleOwner) {
                 coinListAdapter.coinList = it
                 coinListAdapter.notifyDataSetChanged()
@@ -48,7 +49,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
         }
     }
 
-    override fun setupAdapters() {
+    override fun setUpAdapters() {
         coinListAdapter.onItemClickListener = {
             val bundle = Bundle()
             bundle.putString(ID, it)

@@ -21,16 +21,18 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = inflate.invoke(inflater, container, false)
+        configureDataBinding()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpUi()
         observeClicks()
-        setupAdapters()
+        setUpAdapters()
         observeAdapters()
         observeViewModel()
-        setupSwipeToRefresh()
+        setUpSwipeToRefresh()
     }
 
     override fun onDestroyView() {
@@ -38,9 +40,10 @@ abstract class BaseFragment<VB : ViewBinding>(
         _binding = null
     }
 
-    protected open fun setupSwipeToRefresh() {}
     protected open fun configureDataBinding() {}
-    protected open fun setupAdapters() {}
+    protected open fun setUpUi() {}
+    protected open fun setUpSwipeToRefresh() {}
+    protected open fun setUpAdapters() {}
     protected open fun observeAdapters() {}
     protected open fun observeViewModel() {}
     protected open fun observeClicks() {}
