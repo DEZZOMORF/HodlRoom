@@ -2,4 +2,5 @@
 <resources>
     <dimen name="default_padding">16dp</dimen>
     <dimen name="margin_horizontal_coin_list">16dp</dimen>
+    <dimen name="default_corner_radius">16dp</dimen>
 </resources>

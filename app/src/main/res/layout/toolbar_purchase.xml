@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:padding="16dp">
 
     <ImageView
@@ -10,7 +10,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:clickable="true"
         android:contentDescription="@string/btn_back"
+        android:focusable="true"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_baseline_arrow_back_24" />
 
     <TextView

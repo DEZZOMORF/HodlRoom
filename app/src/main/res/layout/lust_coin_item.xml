@@ -6,7 +6,10 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_horizontal_coin_list"
     android:layout_marginBottom="12dp"
-    android:background="@drawable/bg_bottom_round_border">
+    android:background="@drawable/bg_bottom_round_border"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/ripple_bottom_round_border">
 
     <ImageView
         android:id="@+id/coin_logo_image_view_coin_item"
@@ -43,8 +46,8 @@
         tools:text="Bitcoin" />
 
     <TextView
-        style="@style/Financulator.PurpleTextWithBorder"
         android:id="@+id/coin_symbol_text_view_coin_item"
+        style="@style/Financulator.PurpleTextWithBorder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="11sp"
