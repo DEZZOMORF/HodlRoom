@@ -2,22 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/parent_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
 
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_purchase"
         layout="@layout/toolbar_purchase" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/info_linearLayout_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_purchase">
 
         <ImageView
             android:id="@+id/coin_logo_left_image_view_purchase"
@@ -44,29 +43,45 @@
     </LinearLayout>
 
     <View
-        android:id="@+id/view"
+        android:id="@+id/separate_line_view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/gradient_center"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/info_linearLayout_purchase"
         tools:visibility="visible" />
 
     <EditText
-        android:id="@+id/description"
+        android:id="@+id/description_edit_text_purchase"
         style="@style/Financulator.EditText"
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
         android:autofillHints=""
-        android:hint="@string/description"
+        android:hint="@null"
         android:inputType="text"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/separate_line_view"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/description_hint_edit_text_purchase"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_marginEnd="12dp"
+        android:alpha="0.5"
+        android:clickable="false"
+        android:text="@string/description"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/description_edit_text_purchase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/description_edit_text_purchase"
         tools:visibility="visible" />
 
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinner_unit_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -74,35 +89,67 @@
         android:minHeight="36dp"
         android:spinnerMode="dialog"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:layout_constraintTop_toBottomOf="@+id/description_edit_text_purchase"
         tools:visibility="visible" />
 
     <EditText
-        android:id="@+id/amount"
+        android:id="@+id/quantity_edit_text_purchase"
         style="@style/Financulator.EditText"
         android:layout_width="match_parent"
         android:layout_marginTop="16dp"
         android:autofillHints=""
-        android:hint="@string/quantity"
+        android:hint="@null"
         android:inputType="numberDecimal"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/spinner"
-        tools:visibility="visible" />
-
-    <EditText
-        android:id="@+id/price"
-        style="@style/Financulator.EditText"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:autofillHints=""
-        android:hint="@string/price"
-        android:inputType="numberDecimal"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/amount"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_unit_purchase"
         tools:visibility="visible" />
 
     <TextView
-        android:id="@+id/sum"
+        android:id="@+id/quantity_hint_edit_text_purchase"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_marginEnd="12dp"
+        android:alpha="0.5"
+        android:clickable="false"
+        android:text="@string/quantity"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/quantity_edit_text_purchase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/quantity_edit_text_purchase"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/price_edit_text_purchase"
+        style="@style/Financulator.EditText"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:autofillHints=""
+        android:hint="@null"
+        android:inputType="numberDecimal"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/quantity_edit_text_purchase"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/price_hint_edit_text_purchase"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:layout_marginEnd="12dp"
+        android:alpha="0.5"
+        android:clickable="false"
+        android:text="@string/price_per_unit"
+        android:textColor="@color/black"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/price_edit_text_purchase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/price_edit_text_purchase"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/sum_text_view_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
@@ -110,17 +157,17 @@
         android:text="@string/total_cost"
         android:textStyle="bold"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/price"
+        app:layout_constraintTop_toBottomOf="@+id/price_edit_text_purchase"
         tools:visibility="visible" />
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/btn_save"
+        android:id="@+id/btn_save_purchase"
         style="@style/Financulator.Button"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/sum"
+        app:layout_constraintTop_toBottomOf="@+id/sum_text_view_purchase"
         tools:visibility="visible">
 
         <TextView

@@ -56,7 +56,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
             findNavController().navigate(R.id.action_coinListFragment_to_purchaseFragment, bundle)
         }
 
-        with(binding.coinListRv) {
+        with(binding.coinListRecyclerViewCoinList) {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = coinListAdapter
         }
@@ -64,15 +64,15 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
 
     override fun observeClicks() {
         with(binding) {
-            toolbar.btnBack.setOnClickListener {
+            toolbarCoinList.btnBack.setOnClickListener {
                 findNavController().popBackStack()
             }
 
-            toolbar.btnSearch.setOnClickListener {
-                coinSearch.isGone = !coinSearch.isGone
+            toolbarCoinList.btnSearch.setOnClickListener {
+                coinSearchViewCoinList.isGone = !coinSearchViewCoinList.isGone
             }
 
-            coinSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            coinSearchViewCoinList.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String): Boolean = false
                 override fun onQueryTextChange(newText: String): Boolean {
                     viewModel.filter(newText)

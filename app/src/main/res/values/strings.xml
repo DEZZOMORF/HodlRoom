@@ -7,8 +7,8 @@
     <string name="currentPrice">One %1$s costs %2$s USD or %3$s BTC</string>
     <string name="description">Description</string>
     <string name="quantity">Quantity</string>
-    <string name="price">Price</string>
-    <string name="total_cost">Total cost: %1$s</string>
+    <string name="price_per_unit">Price per unit</string>
+    <string name="total_cost">Total cost: %1$s %2$s</string>
     <string name="save">Save</string>
     <string name="coin_info">%1$s (%2$s)</string>
     <string name="dialog_text_error">dialog_text_error</string>

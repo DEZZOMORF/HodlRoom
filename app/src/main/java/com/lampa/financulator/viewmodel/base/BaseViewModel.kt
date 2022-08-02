@@ -7,13 +7,4 @@ import javax.inject.Inject
 @HiltViewModel
 open class BaseViewModel @Inject constructor() : ViewModel() {
 
-    fun formatPrice(coinPrice: Float?): String {
-        return if (coinPrice != null) {
-            if (coinPrice < 1) {
-                String.format("%.12f", coinPrice).trimEnd('0').replace(",", ".")
-            } else {
-                String.format("%.2f", coinPrice).replace(",", ".")
-            }
-        } else ""
-    }
 }

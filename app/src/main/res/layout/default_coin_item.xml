@@ -24,7 +24,7 @@
         app:tint="@color/purple_200" />
 
     <androidx.constraintlayout.helper.widget.Flow
-        android:id="@+id/exercise_info_buttons_flow_exercise_list_item"
+        android:id="@+id/coin_info_flow_coin_item"
         style="@style/Financulator.CoinListItemInfoVerticalFlow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
