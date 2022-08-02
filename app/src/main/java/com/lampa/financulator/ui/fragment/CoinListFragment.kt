@@ -10,7 +10,7 @@ import com.lampa.financulator.R
 import com.lampa.financulator.adapter.CoinListAdapter
 import com.lampa.financulator.databinding.FragmentCoinListBinding
 import com.lampa.financulator.ui.fragment.base.BaseFragment
-import com.lampa.financulator.util.ConstVal.ID
+import com.lampa.financulator.util.ConstVal
 import com.lampa.financulator.util.UiState
 import com.lampa.financulator.viewmodel.CoinListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +52,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
     override fun setUpAdapters() {
         coinListAdapter.onItemClickListener = {
             val bundle = Bundle()
-            bundle.putString(ID, it)
+            bundle.putString(ConstVal.ID, it)
             findNavController().navigate(R.id.action_coinListFragment_to_purchaseFragment, bundle)
         }
 

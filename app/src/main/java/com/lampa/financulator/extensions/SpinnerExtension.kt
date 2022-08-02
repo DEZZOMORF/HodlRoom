@@ -14,3 +14,12 @@ fun <T> Spinner.setList(list: List<T>) {
     adapter.setDropDownViewResource(R.layout.layout_spinner_item)
     this.adapter = adapter
 }
+
+fun Spinner.selectSpinnerValue(str: String) {
+    for (i in 0 until count) {
+        if (getItemAtPosition(i).toString() == str) {
+            setSelection(i)
+            break
+        }
+    }
+}
