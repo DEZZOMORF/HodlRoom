@@ -1,8 +1,6 @@
 package com.lampa.financulator.ui.fragment
 
-import android.util.Log
 import androidx.core.view.isVisible
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.lampa.financulator.R
@@ -60,7 +58,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
 
         binding.spinnerUnitPurchase.setUpSpinner(CurrencyEntity::class.memberProperties.map { it.name }) { position ->
             binding.priceEditTextPurchase.setText(
-                    coin.currentPrice?.getPriceByPosition(position).formatPrice()
+                coin.currentPrice?.getPriceByPosition(position).formatPrice()
             )
             updateTotalCost()
         }
@@ -85,9 +83,6 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             sumTextViewPurchase.isVisible = true
             btnSavePurchase.isVisible = true
             separateLineView.isVisible = true
-            descriptionHintEditTextPurchase.isVisible = true
-            quantityHintEditTextPurchase.isVisible = true
-            priceHintEditTextPurchase.isVisible = true
         }
     }
 
