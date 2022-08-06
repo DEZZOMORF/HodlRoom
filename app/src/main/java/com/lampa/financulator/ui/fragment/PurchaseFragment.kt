@@ -43,7 +43,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     }
 
     override fun observeClicks() {
-        binding.toolbarPurchase.btnBack.setOnClickListener {
+        binding.toolbarPurchase.buttonBackImageViewToolbarPurchase.setOnClickListener {
             findNavController().popBackStack()
         }
     }

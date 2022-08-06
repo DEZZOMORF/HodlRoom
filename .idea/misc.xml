@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/drawable/background_color.xml" value="0.1" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/drawable/bg_bottom_round_border.xml" value="0.29" />
+        <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/drawable/bg_round_border.xml" value="0.2325" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/drawable/bg_spinner_selected_item__color.xml" value="0.196" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/drawable/bg_top_round_border.xml" value="0.2945" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/drawable/gradient.xml" value="0.3925925925925926" />
@@ -28,6 +29,7 @@
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/layout_spinner_item.xml" value="0.3671875" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/lust_coin_item.xml" value="0.3671875" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/portfolio_graph_fragment.xml" value="0.2458233890214797" />
+        <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/single_coin_item.xml" value="0.3671875" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/spinner_item.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/toolbar.xml" value="0.2453125" />
         <entry key="..\:/Users/Latitude/AndroidStudioProjects/Financulator/app/src/main/res/layout/toolbarCoinList.xml" value="0.2453125" />

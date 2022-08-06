@@ -3,12 +3,14 @@ package com.lampa.financulator.ui.fragment
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lampa.financulator.R
-import com.lampa.financulator.adapter.CoinListAdapter
+import com.lampa.financulator.adapter.CoinListRecyclerViewAdapter
 import com.lampa.financulator.databinding.FragmentCoinListBinding
+import com.lampa.financulator.extensions.scaleInAnimation
 import com.lampa.financulator.ui.fragment.base.BaseFragment
 import com.lampa.financulator.util.ConstVal
 import com.lampa.financulator.util.UiState
@@ -20,7 +22,7 @@ import javax.inject.Inject
 class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListBinding::inflate) {
 
     @Inject
-    lateinit var coinListAdapter: CoinListAdapter
+    lateinit var coinListAdapter: CoinListRecyclerViewAdapter
     private val viewModel: CoinListViewModel by viewModels()
 
     override fun observeViewModel() {
@@ -32,8 +34,8 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                     }
                     is UiState.Success -> {
                         displayProgressBar(false)
-                        coinListAdapter.coinList = state.data
-                        coinListAdapter.notifyDataSetChanged()
+                        binding.toolbarCoinList.buttonSearchImageViewToolbarCoinList.scaleInAnimation()
+                        coinListAdapter.setList(state.data)
                     }
                     is UiState.Error -> {
                         displayProgressBar(false)
@@ -42,17 +44,17 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                 }
             }
 
-            filteredCoinList.observe(viewLifecycleOwner) {
-                coinListAdapter.coinList = it
-                coinListAdapter.notifyDataSetChanged()
+            filteredCoinList.observe(viewLifecycleOwner) { newList ->
+                binding.nothingFoundTextViewCoinList.isVisible = newList.isEmpty()
+                coinListAdapter.setListWithAnimation(newList)
             }
         }
     }
 
     override fun setUpAdapters() {
-        coinListAdapter.onItemClickListener = {
+        coinListAdapter.onItemClick = {
             val bundle = Bundle()
-            bundle.putString(ConstVal.ID, it)
+            bundle.putString(ConstVal.ID, it.id)
             findNavController().navigate(R.id.action_coinListFragment_to_purchaseFragment, bundle)
         }
 
@@ -64,11 +66,11 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
 
     override fun observeClicks() {
         with(binding) {
-            toolbarCoinList.btnBack.setOnClickListener {
+            toolbarCoinList.buttonBackImageViewToolbarCoinList.setOnClickListener {
                 findNavController().popBackStack()
             }
 
-            toolbarCoinList.btnSearch.setOnClickListener {
+            toolbarCoinList.buttonSearchImageViewToolbarCoinList.setOnClickListener {
                 coinSearchViewCoinList.isGone = !coinSearchViewCoinList.isGone
             }
 

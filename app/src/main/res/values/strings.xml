@@ -15,4 +15,5 @@
     <string name="dialog_text_success">dialog_text_success</string>
     <string name="btn_back">btn_back</string>
     <string name="arrow_down">arrow down</string>
+    <string name="nothing_found">Nothing found</string>
 </resources>

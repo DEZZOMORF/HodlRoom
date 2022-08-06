@@ -1,5 +1,6 @@
 package com.lampa.financulator.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.lampa.financulator.model.Coin
@@ -55,18 +56,14 @@ class CoinListViewModel @Inject constructor(
     }
 
     fun filter(charSearch: String) {
-        coinList?.let {
+        coinList?.let { coinList ->
             filteredCoinList.postValue(
                 if (charSearch.isEmpty()) {
-                    it
+                    coinList
                 } else {
                     val trimmedString = charSearch.trim()
-                    mutableListOf<Coin>().apply {
-                        for (coin in it) {
-                            if (coin.name?.isContained(trimmedString) == true || coin.symbol?.isContained(trimmedString) == true) {
-                                add(coin)
-                            }
-                        }
+                    coinList.filter { coin ->
+                        coin.name?.isContained(trimmedString) == true || coin.symbol?.isContained(trimmedString) == true
                     }
                 }
             )
