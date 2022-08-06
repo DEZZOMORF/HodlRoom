@@ -1,5 +1,7 @@
 package com.lampa.financulator.repository
 
+import android.content.Context
+import com.lampa.financulator.R
 import com.lampa.financulator.api.ApiService
 import com.lampa.financulator.api.entity.CoinEntity
 import com.lampa.financulator.api.mapper.CoinMapper
@@ -8,12 +10,15 @@ import com.lampa.financulator.model.Coin
 import com.lampa.financulator.util.ConstVal.filterStrings
 import com.lampa.financulator.util.RequestErrorHandler
 import com.lampa.financulator.util.RequestState
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class CoinRepository @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val apiService: ApiService,
     private val networkConnectionManager: NetworkConnectionManager,
-    private val coinMapper: CoinMapper
+    private val coinMapper: CoinMapper,
+    private val requestErrorHandler: RequestErrorHandler,
 ) {
     suspend fun getCoinList(): RequestState<List<Coin>?> {
         return try {
@@ -23,10 +28,10 @@ class CoinRepository @Inject constructor(
                     if (response.isSuccessful) {
                         RequestState.Success(response.body()?.let { filterCoinList(it) })
                     } else {
-                        RequestErrorHandler().handleError(response)
+                        requestErrorHandler.handleError(response)
                     }
                 }
-                else -> throw Exception(NetworkConnectionManager.MESSAGE)
+                else -> throw Exception(context.getString(R.string.network_error_no_internet_connection))
             }
         } catch (e: Exception) {
             RequestState.GeneralError(e)
@@ -41,10 +46,10 @@ class CoinRepository @Inject constructor(
                     if (response.isSuccessful) {
                         RequestState.Success(response.body()?.let { coinMapper.mapEntityToModel(it) })
                     } else {
-                        RequestErrorHandler().handleError(response)
+                        requestErrorHandler.handleError(response)
                     }
                 }
-                else -> throw Exception(NetworkConnectionManager.MESSAGE)
+                else -> throw Exception(context.getString(R.string.network_error_no_internet_connection))
             }
         } catch (e: Exception) {
             RequestState.GeneralError(e)

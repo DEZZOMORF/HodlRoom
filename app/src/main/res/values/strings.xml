@@ -16,4 +16,8 @@
     <string name="btn_back">btn_back</string>
     <string name="arrow_down">arrow down</string>
     <string name="nothing_found">Nothing found</string>
+
+    <string name="network_error_429">Too many requests. Try again later</string>
+    <string name="network_error_default">Something went wrong</string>
+    <string name="network_error_no_internet_connection">No internet connection</string>
 </resources>

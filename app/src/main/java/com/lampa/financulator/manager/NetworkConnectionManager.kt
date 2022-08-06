@@ -15,10 +15,6 @@ import javax.inject.Singleton
 @Singleton
 class NetworkConnectionManager @Inject constructor(@ApplicationContext context: Context) {
 
-    companion object {
-        const val MESSAGE = "No internet connection"
-    }
-
     private val connectivityManager =
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager?
 
