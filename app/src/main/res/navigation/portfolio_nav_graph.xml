@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/coinListFragment"
-        android:name="com.lampa.financulator.ui.fragment.CoinListFragment"
+        android:name="com.dezzomorf.financulator.ui.fragment.CoinListFragment"
         android:label="CoinListFragment" >
         <action
             android:id="@+id/action_coinListFragment_to_purchaseFragment"
@@ -14,7 +14,7 @@
     </fragment>
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.lampa.financulator.ui.fragment.MainFragment"
+        android:name="com.dezzomorf.financulator.ui.fragment.MainFragment"
         android:label="MainFragment" >
         <action
             android:id="@+id/action_mainFragment_to_coinListFragment"
@@ -22,6 +22,6 @@
     </fragment>
     <fragment
         android:id="@+id/purchaseFragment"
-        android:name="com.lampa.financulator.ui.fragment.PurchaseFragment"
+        android:name="com.dezzomorf.financulator.ui.fragment.PurchaseFragment"
         android:label="PurchaseFragment" />
 </navigation>

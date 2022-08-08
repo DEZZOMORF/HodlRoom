@@ -52,7 +52,7 @@
         app:layout_constraintTop_toBottomOf="@+id/info_linearLayout_purchase"
         tools:visibility="visible" />
 
-    <com.lampa.financulator.ui.view.FinanculatorEditText
+    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
         android:id="@+id/description_edit_text_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/description_edit_text_purchase"
         tools:visibility="visible" />
 
-    <com.lampa.financulator.ui.view.FinanculatorEditText
+    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
         android:id="@+id/quantity_edit_text_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
         app:layout_constraintTop_toBottomOf="@+id/spinner_unit_purchase"
         tools:visibility="visible" />
 
-    <com.lampa.financulator.ui.view.FinanculatorEditText
+    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
         android:id="@+id/price_edit_text_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
