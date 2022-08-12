@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_color"
-    tools:context=".ui.activity.MainActivity">
+    tools:context=".ui.activity.AuthorizationActivity">
 
     <fragment
         android:id="@+id/nav_host_fragment"
@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/main_nav_graph" />
+        app:navGraph="@navigation/authorization_nav_graph" />
 
     <ProgressBar
         android:id="@+id/progressBar"

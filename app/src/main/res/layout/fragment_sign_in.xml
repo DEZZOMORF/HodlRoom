@@ -1,33 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
-    android:animateLayoutChanges="true">
+    android:background="@color/black">
 
-    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingHorizontal="20dp"
-        app:hint="@string/email" />
-
-    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingHorizontal="20dp"
-        app:hint="@string/password" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_login_sign_in"
-        style="@style/Financulator.MaterialButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:enabled="false"
-        android:text="@string/save" />
-</LinearLayout>
+        app:cardCornerRadius="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="12dp"
+            android:orientation="vertical">
+
+            <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:background="@color/white"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="20dp"
+                app:hint="@string/email" />
+
+            <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:inputType="textPassword"
+                android:paddingHorizontal="20dp"
+                app:hint="@string/password" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_login_sign_in"
+                style="@style/Financulator.MaterialButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:enabled="true"
+                android:text="@string/save" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</FrameLayout>
