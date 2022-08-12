@@ -21,4 +21,6 @@
     <string name="network_error_default">Something went wrong</string>
     <string name="network_error_no_internet_connection">No internet connection</string>
     <string name="delete">delete</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
 </resources>

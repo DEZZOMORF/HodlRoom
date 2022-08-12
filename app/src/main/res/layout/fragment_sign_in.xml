@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:animateLayoutChanges="true">
+
+    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="20dp"
+        app:hint="@string/email" />
+
+    <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingHorizontal="20dp"
+        app:hint="@string/password" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login_sign_in"
+        style="@style/Financulator.MaterialButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:enabled="false"
+        android:text="@string/save" />
+</LinearLayout>

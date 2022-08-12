@@ -13,16 +13,13 @@
         <item name="textAllCaps">true</item>
     </style>
 
-    <style name="Financulator.Button" parent="Widget.MaterialComponents.CardView">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="contentPadding">12dp</item>
+    <style name="Financulator.MaterialButton">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
-        <item name="android:foreground">?android:attr/selectableItemBackground</item>
-        <item name="cardCornerRadius">8dp</item>
-        <item name="cardElevation">2dp</item>
-        <item name="cardBackgroundColor">@color/purple_200</item>
+        <item name="android:padding">12dp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="backgroundTint">@color/button_background_color</item>
+        <item name="android:textColor">@color/button_text_color</item>
     </style>
 
     <style name="Financulator.RecyclerView">

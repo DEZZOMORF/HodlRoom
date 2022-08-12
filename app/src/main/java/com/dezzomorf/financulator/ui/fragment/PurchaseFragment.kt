@@ -53,14 +53,14 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         binding.coinLogoLeftImageViewPurchase.loadAndSetImage(coin.image)
         binding.coinLogoRightImageViewPurchase.loadAndSetImage(coin.image)
 
-        binding.quantityEditTextPurchase.addTextChangedListener { updateTotalCost() }
-        binding.priceEditTextPurchase.addTextChangedListener { updateTotalCost() }
+        binding.quantityEditTextPurchase.addTextChangedListener { updateUI() }
+        binding.priceEditTextPurchase.addTextChangedListener { updateUI() }
 
         binding.spinnerUnitPurchase.setUpSpinner(CurrencyEntity::class.memberProperties.map { it.name }) { position ->
             binding.priceEditTextPurchase.setText(
                 coin.currentPrice?.getPriceByPosition(position).formatPrice()
             )
-            updateTotalCost()
+            updateUI()
         }
         binding.spinnerUnitPurchase.selectSpinnerValue(ConstVal.defaultCurrency)
 
@@ -98,5 +98,16 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         val unit = binding.spinnerUnitPurchase.selectedItem as String
         val sum = quantity * price
         binding.sumTextViewPurchase.text = getString(R.string.total_cost, sum.formatPrice(), unit)
+    }
+
+    private fun updateButton() {
+        val quantity = binding.quantityEditTextPurchase.text.stringToFloatOrZero()
+        val price = binding.priceEditTextPurchase.text.stringToFloatOrZero()
+        binding.btnSavePurchase.isEnabled = !(quantity == 0f || price == 0f)
+    }
+
+    private fun updateUI() {
+        updateTotalCost()
+        updateButton()
     }
 }

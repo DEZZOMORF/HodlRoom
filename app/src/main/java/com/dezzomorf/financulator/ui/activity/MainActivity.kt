@@ -1,4 +1,4 @@
-package com.dezzomorf.financulator.ui
+package com.dezzomorf.financulator.ui.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
