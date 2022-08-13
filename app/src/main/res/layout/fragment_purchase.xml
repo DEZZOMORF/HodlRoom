@@ -11,7 +11,7 @@
         layout="@layout/toolbar_purchase" />
 
     <LinearLayout
-        android:id="@+id/info_linearLayout_purchase"
+        android:id="@+id/info_linear_layout_purchase"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -49,7 +49,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/gradient_center"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/info_linearLayout_purchase"
+        app:layout_constraintTop_toBottomOf="@+id/info_linear_layout_purchase"
         tools:visibility="visible" />
 
     <com.dezzomorf.financulator.ui.view.FinanculatorEditText
@@ -116,7 +116,7 @@
         tools:visibility="visible" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_save_purchase"
+        android:id="@+id/save_button_purchase"
         style="@style/Financulator.MaterialButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -3,5 +3,6 @@
     <declare-styleable name="FinanculatorEditText">
         <attr name="hint" format="string" />
         <attr name="textColor" format="color" />
+        <attr name="alphaLength" format="integer" />
     </declare-styleable>
 </resources>

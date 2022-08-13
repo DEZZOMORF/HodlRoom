@@ -24,6 +24,8 @@ class AuthorizationActivity : BaseActivity() {
         setUpNavController()
     }
 
+    override fun onBackPressed() {}
+
     fun displayProgressBar(isDisplayed: Boolean) {
         binding.progressBar.isVisible = isDisplayed
     }

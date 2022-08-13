@@ -16,6 +16,8 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
     private val viewModel: SignInViewModel by viewModels()
 
     override fun observeClicks() {
-
+        binding.signUpTextViewSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
+        }
     }
 }

@@ -81,7 +81,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             quantityEditTextPurchase.isVisible = true
             priceEditTextPurchase.isVisible = true
             sumTextViewPurchase.isVisible = true
-            btnSavePurchase.isVisible = true
+            saveButtonPurchase.isVisible = true
             separateLineView.isVisible = true
         }
     }
@@ -103,7 +103,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     private fun updateButton() {
         val quantity = binding.quantityEditTextPurchase.text.stringToFloatOrZero()
         val price = binding.priceEditTextPurchase.text.stringToFloatOrZero()
-        binding.btnSavePurchase.isEnabled = !(quantity == 0f || price == 0f)
+        binding.saveButtonPurchase.isEnabled = !(quantity == 0f || price == 0f)
     }
 
     private fun updateUI() {

@@ -17,6 +17,7 @@ class FinanculatorEditText(context: Context, attrs: AttributeSet) : FrameLayout(
     private var backgroundValue: Drawable? = null
     private var inputType: Int
     private var textColorValue: Int
+    private var alphaLength: Int
     private val set = intArrayOf(
         android.R.attr.background,  // idx 0
         android.R.attr.inputType,  // idx 1
@@ -40,6 +41,7 @@ class FinanculatorEditText(context: Context, attrs: AttributeSet) : FrameLayout(
         val customAttributes = context.obtainStyledAttributes(attrs, R.styleable.FinanculatorEditText)
         hintValue = customAttributes.getString(R.styleable.FinanculatorEditText_hint)
         textColorValue = customAttributes.getColor(R.styleable.FinanculatorEditText_textColor, context.getColor(android.R.color.black))
+        alphaLength = customAttributes.getInt(R.styleable.FinanculatorEditText_alphaLength, 12)
         customAttributes.recycle()
 
         val nativeAttributes = context.obtainStyledAttributes(attrs, set)
@@ -63,12 +65,11 @@ class FinanculatorEditText(context: Context, attrs: AttributeSet) : FrameLayout(
 
     fun addTextChangedListener(action: () -> Unit) {
         val defaultAlpha = 0.5f
-        val maxLength = 14
         val alphaCoefficient = 20f
         inputEditText.addTextChangedListener {
             action.invoke()
-            when (inputEditText.text.length > maxLength) {
-                true -> hintTextView.alpha = defaultAlpha - (inputEditText.text.length - maxLength) / alphaCoefficient
+            when (inputEditText.text.length > alphaLength) {
+                true -> hintTextView.alpha = defaultAlpha - (inputEditText.text.length - alphaLength) / alphaCoefficient
                 false -> hintTextView.alpha = defaultAlpha
             }
         }
