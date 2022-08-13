@@ -63,11 +63,11 @@ class FinanculatorEditText(context: Context, attrs: AttributeSet) : FrameLayout(
         inputEditText.setText(str)
     }
 
-    fun addTextChangedListener(action: () -> Unit) {
+    fun addTextChangedListener(action: (Editable) -> Unit) {
         val defaultAlpha = 0.5f
         val alphaCoefficient = 20f
         inputEditText.addTextChangedListener {
-            action.invoke()
+            it?.let {  action.invoke(it) }
             when (inputEditText.text.length > alphaLength) {
                 true -> hintTextView.alpha = defaultAlpha - (inputEditText.text.length - alphaLength) / alphaCoefficient
                 false -> hintTextView.alpha = defaultAlpha

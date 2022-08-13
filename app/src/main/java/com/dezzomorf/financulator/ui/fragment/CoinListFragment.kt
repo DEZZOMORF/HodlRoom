@@ -30,16 +30,16 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
             coinListLoadState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is UiState.Loading -> {
-                        displayProgressBar(true)
+                        displayMainActivityProgressBar(true)
                     }
                     is UiState.Success -> {
-                        displayProgressBar(false)
+                        displayMainActivityProgressBar(false)
                         binding.toolbarCoinList.buttonSearchImageViewToolbarCoinList.scaleInAnimation()
                         coinListAdapter.setList(state.data)
                     }
                     is UiState.Error -> {
-                        displayProgressBar(false)
-                        displayError(state.error.message)
+                        displayMainActivityProgressBar(false)
+                        displayToast(state.error.message)
                     }
                 }
             }

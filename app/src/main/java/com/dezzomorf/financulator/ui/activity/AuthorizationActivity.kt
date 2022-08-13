@@ -10,6 +10,7 @@ import com.dezzomorf.financulator.databinding.ActivityMainBinding
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.ui.activity.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class AuthorizationActivity : BaseActivity() {
@@ -24,7 +25,9 @@ class AuthorizationActivity : BaseActivity() {
         setUpNavController()
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() {
+        finish()
+    }
 
     fun displayProgressBar(isDisplayed: Boolean) {
         binding.progressBar.isVisible = isDisplayed

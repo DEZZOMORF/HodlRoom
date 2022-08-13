@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
 import com.dezzomorf.financulator.R
+import com.dezzomorf.financulator.ui.activity.AuthorizationActivity
 import com.dezzomorf.financulator.ui.activity.MainActivity
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
@@ -48,11 +49,15 @@ abstract class BaseFragment<VB : ViewBinding>(
     protected open fun observeViewModel() {}
     protected open fun observeClicks() {}
 
-    fun displayProgressBar(isDisplayed: Boolean) {
+    fun displayMainActivityProgressBar(isDisplayed: Boolean) {
         (activity as MainActivity).displayProgressBar(isDisplayed)
     }
 
-    fun displayError(message: String?) {
+    fun displayAuthorizationActivityProgressBar(isDisplayed: Boolean) {
+        (activity as AuthorizationActivity).displayProgressBar(isDisplayed)
+    }
+
+    fun displayToast(message: String?) {
         if (message != null) {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         } else {

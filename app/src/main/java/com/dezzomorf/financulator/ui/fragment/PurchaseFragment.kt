@@ -28,15 +28,15 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         viewModel.coinState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayProgressBar(true)
+                    displayMainActivityProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayProgressBar(false)
+                    displayMainActivityProgressBar(false)
                     setDataToUi(state.data)
                 }
                 is UiState.Error -> {
-                    displayProgressBar(false)
-                    displayError(state.error.message)
+                    displayMainActivityProgressBar(false)
+                    displayToast(state.error.message)
                 }
             }
         }
