@@ -19,9 +19,16 @@
         <action
             android:id="@+id/action_mainFragment_to_coinListFragment"
             app:destination="@id/coinListFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/purchaseFragment"
         android:name="com.dezzomorf.financulator.ui.fragment.PurchaseFragment"
         android:label="PurchaseFragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.dezzomorf.financulator.ui.fragment.SettingsFragment"
+        android:label="SettingsFragment" />
 </navigation>

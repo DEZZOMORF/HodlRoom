@@ -1,9 +1,7 @@
 package com.dezzomorf.financulator.ui.fragment
 
 import android.content.Intent
-import android.util.Log
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
@@ -13,13 +11,13 @@ import com.dezzomorf.financulator.extensions.isValidEmail
 import com.dezzomorf.financulator.extensions.isValidPassword
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
-import com.dezzomorf.financulator.viewmodel.SignUpViewModel
+import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::inflate) {
 
-    private val viewModel: SignUpViewModel by viewModels()
+    private val viewModel: BaseViewModel by viewModels()
 
     override fun setUpUi() {
         setUpEditTextListeners()

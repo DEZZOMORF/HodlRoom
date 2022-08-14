@@ -43,13 +43,13 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     }
 
     override fun observeClicks() {
-        binding.toolbarPurchase.buttonBackImageViewToolbarPurchase.setOnClickListener {
+        binding.toolbarPurchase.buttonBackImageViewToolbar.setOnClickListener {
             findNavController().popBackStack()
         }
     }
 
     private fun setDataToUi(coin: Coin) {
-        binding.toolbarPurchase.coinInfoTextViewToolbar.text = getString(R.string.coin_info, coin.name, coin.symbol)
+        binding.toolbarPurchase.titleTextViewToolbar.text = getString(R.string.coin_info, coin.name, coin.symbol)
         binding.coinLogoLeftImageViewPurchase.loadAndSetImage(coin.image)
         binding.coinLogoRightImageViewPurchase.loadAndSetImage(coin.image)
 

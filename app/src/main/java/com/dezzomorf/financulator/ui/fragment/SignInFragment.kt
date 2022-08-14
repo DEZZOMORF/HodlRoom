@@ -5,21 +5,19 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
-import com.dezzomorf.financulator.databinding.FragmentMainBinding
 import com.dezzomorf.financulator.databinding.FragmentSignInBinding
 import com.dezzomorf.financulator.extensions.hideKeyboard
 import com.dezzomorf.financulator.extensions.isValidEmail
 import com.dezzomorf.financulator.extensions.isValidPassword
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
-import com.dezzomorf.financulator.viewmodel.MainViewModel
-import com.dezzomorf.financulator.viewmodel.SignInViewModel
+import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding::inflate) {
 
-    private val viewModel: SignInViewModel by viewModels()
+    private val viewModel: BaseViewModel by viewModels()
 
     override fun setUpUi() {
         setUpEditTextListeners()

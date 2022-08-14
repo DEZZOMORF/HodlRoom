@@ -14,8 +14,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private val viewModel: MainViewModel by viewModels()
 
     override fun observeClicks() {
-        binding.toolbarMain.btnAdd.setOnClickListener {
+        binding.toolbarMain.buttonAddImageViewMainToolbar.setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_coinListFragment)
+        }
+        binding.toolbarMain.buttonSettingsImageViewMainToolbar.setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
         }
     }
 }

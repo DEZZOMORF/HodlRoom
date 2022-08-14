@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbar_purchase"
-        layout="@layout/toolbar_purchase" />
+        layout="@layout/toolbar_title" />
 
     <LinearLayout
         android:id="@+id/info_linear_layout_purchase"
