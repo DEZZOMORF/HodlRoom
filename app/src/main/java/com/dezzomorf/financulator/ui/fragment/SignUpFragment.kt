@@ -2,6 +2,8 @@ package com.dezzomorf.financulator.ui.fragment
 
 import android.content.Intent
 import android.util.Log
+import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
@@ -10,7 +12,6 @@ import com.dezzomorf.financulator.extensions.hideKeyboard
 import com.dezzomorf.financulator.extensions.isValidEmail
 import com.dezzomorf.financulator.extensions.isValidPassword
 import com.dezzomorf.financulator.ui.activity.SplashActivity
-import com.dezzomorf.financulator.ui.activity.intent.MainActivityIntent
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,10 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     private val viewModel: SignUpViewModel by viewModels()
 
+    override fun setUpUi() {
+        setUpEditTextListeners()
+    }
+
     override fun observeClicks() {
         binding.signInTextViewSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -27,17 +32,13 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         binding.signUpButtonSignUp.setOnClickListener {
             val email = binding.emailEditTextSignUp.text.toString()
             val password = binding.passwordEditTextSignUp.text.toString()
-            if (isDataValid()) {
-                displayAuthorizationActivityProgressBar(true)
-                createUserWithEmailAndPassword(email, password)
-            } else {
-                displayToast(getString(R.string.invalid_data))
-            }
+            if (isDataValid()) createUserWithEmailAndPassword(email, password)
             requireContext().hideKeyboard(it)
         }
     }
 
     private fun createUserWithEmailAndPassword(email: String, password: String) {
+        displayAuthorizationActivityProgressBar(true)
         viewModel.auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
@@ -46,16 +47,57 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
-                    displayToast(getString(R.string.authentication_failed))
+                    displayToast(task.exception?.message)
                 }
                 displayAuthorizationActivityProgressBar(false)
             }
     }
 
     private fun isDataValid(): Boolean {
+        val isEmailValid = checkIsValidEmail()
+        val isPasswordValid = checkIsValidPassword()
+        val isPasswordMatch = checkIsPasswordMatch()
+        return isEmailValid && isPasswordValid && isPasswordMatch
+    }
+
+    private fun checkIsValidEmail(): Boolean {
         val email = binding.emailEditTextSignUp.text
+        val result = email.isValidEmail()
+        binding.invalidEmailTextViewSignUp.visibility = getVisibilityByValidation(!result)
+        return result
+    }
+
+    private fun checkIsValidPassword(): Boolean {
         val password = binding.passwordEditTextSignUp.text
-        val confirmPassword = binding.confirmPasswordEditTextSignUp.text
-        return email.isValidEmail() && password.isValidPassword() && password.toString() == confirmPassword.toString()
+        val result = password.isValidPassword()
+        binding.invalidPasswordTextViewSignUp.visibility = getVisibilityByValidation(!result)
+        return result
+    }
+
+    private fun checkIsPasswordMatch(): Boolean {
+        val password = binding.passwordEditTextSignUp.text.toString()
+        val confirmPassword = binding.confirmPasswordEditTextSignUp.text.toString()
+        val result = password == confirmPassword
+        binding.invalidConfirmPasswordTextViewSignUp.visibility = getVisibilityByValidation(!result)
+        return result
+    }
+
+    private fun getVisibilityByValidation(isValidate: Boolean): Int {
+        return when (isValidate) {
+            true -> View.VISIBLE
+            false -> View.INVISIBLE
+        }
+    }
+
+    private fun setUpEditTextListeners() {
+        binding.emailEditTextSignUp.addTextChangedListener {
+            binding.invalidEmailTextViewSignUp.visibility = View.INVISIBLE
+        }
+        binding.passwordEditTextSignUp.addTextChangedListener {
+            binding.invalidPasswordTextViewSignUp.visibility = View.INVISIBLE
+        }
+        binding.confirmPasswordEditTextSignUp.addTextChangedListener {
+            binding.invalidConfirmPasswordTextViewSignUp.visibility = View.INVISIBLE
+        }
     }
 }

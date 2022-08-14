@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -22,21 +24,41 @@
                 android:id="@+id/email_edit_text_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:background="@color/white"
                 android:inputType="textEmailAddress"
                 android:paddingHorizontal="20dp"
                 app:hint="@string/email" />
 
+            <TextView
+                android:id="@+id/invalid_email_text_view_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/invalid_email"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/purple_200"/>
+
             <com.dezzomorf.financulator.ui.view.FinanculatorEditText
                 android:id="@+id/password_edit_text_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:background="@color/white"
                 android:inputType="textPassword"
                 android:paddingHorizontal="20dp"
                 app:hint="@string/password" />
+
+            <TextView
+                android:id="@+id/invalid_password_text_view_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/invalid_password"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/purple_200"/>
 
             <com.dezzomorf.financulator.ui.view.FinanculatorEditText
                 android:id="@+id/confirm_password_edit_text_sign_up"
@@ -48,13 +70,23 @@
                 app:alphaLength="8"
                 app:hint="@string/confirm_password" />
 
+            <TextView
+                android:id="@+id/invalid_confirm_password_text_view_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_password_is_not_same_as_password"
+                android:layout_marginHorizontal="8dp"
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:layout_marginBottom="4dp"
+                android:textColor="@color/purple_200"/>
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_up_button_sign_up"
                 style="@style/Financulator.MaterialButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                android:layout_marginTop="8dp"
                 android:enabled="true"
                 android:text="@string/sign_up" />
         </LinearLayout>
