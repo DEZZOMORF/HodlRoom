@@ -19,6 +19,7 @@
             android:orientation="vertical">
 
             <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+                android:id="@+id/email_edit_text_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -28,6 +29,7 @@
                 app:hint="@string/email" />
 
             <com.dezzomorf.financulator.ui.view.FinanculatorEditText
+                android:id="@+id/password_edit_text_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
