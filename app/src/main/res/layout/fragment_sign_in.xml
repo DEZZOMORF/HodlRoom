@@ -23,38 +23,73 @@
                 android:id="@+id/email_edit_text_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                app:alphaLength="14"
+                android:layout_marginBottom="4dp"
                 android:inputType="textEmailAddress"
+                app:alphaLength="14"
                 app:errorText="@string/invalid_email"
-                app:includeErrorText="true"
                 app:errorTextColor="@color/purple_200"
                 app:errorTextVisibility="invisible"
                 app:hint="@string/email"
+                app:includeErrorText="true"
                 app:inputBackground="@color/white" />
 
             <com.dezzomorf.financulator.ui.view.FinanculatorEditText
                 android:id="@+id/password_edit_text_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:includeErrorText="true"
-                android:layout_marginBottom="4dp"
                 android:inputType="textPassword"
+                app:alphaLength="10"
                 app:errorText="@string/invalid_password"
                 app:errorTextColor="@color/purple_200"
+                android:layout_marginBottom="4dp"
                 app:errorTextVisibility="invisible"
-                app:alphaLength="10"
                 app:hint="@string/password"
+                app:includeErrorText="true"
                 app:inputBackground="@color/white" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/login_button_sign_in"
-                style="@style/Financulator.MaterialButton"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:enabled="true"
-                android:text="@string/login" />
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/login_button_sign_in"
+                    style="@style/Financulator.MaterialButton"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1"
+                    android:enabled="true"
+                    android:text="@string/login" />
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="16dp"
+                    android:layout_weight="0.2"
+                    android:layout_marginStart="4dp">
+
+                    <ImageView
+                        android:id="@+id/show_password_image_button_sign_in"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp"
+                        android:layout_gravity="center"
+                        android:clickable="false"
+                        android:contentDescription="@string/show_password"
+                        android:elevation="100dp"
+                        android:focusable="false"
+                        android:src="@drawable/ic_baseline_visibility_24" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/show_password_button_sign_in"
+                        style="@style/Financulator.MaterialButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:iconGravity="textStart" />
+                </FrameLayout>
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -2,6 +2,7 @@ package com.dezzomorf.financulator.api.entity
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import kotlin.reflect.full.memberProperties
 
 data class CurrencyEntity(
 
@@ -248,4 +249,11 @@ data class CurrencyEntity(
     @SerializedName("sats")
     @Expose
     val SATS: Float?,
-)
+) {
+
+    fun getPriceByPosition(position: Int): Float {
+        return CurrencyEntity::class.memberProperties.map { member ->
+            member.get(this)
+        }[position] as Float //TODO FIX. Crush on certain coins. Float can be null. For check find ECM coin.
+    }
+}

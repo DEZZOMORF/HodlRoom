@@ -1,11 +1,12 @@
 package com.dezzomorf.financulator.ui.fragment
 
 import android.content.Intent
-import android.view.View
+import android.text.method.PasswordTransformationMethod
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSignInBinding
+import com.dezzomorf.financulator.extensions.horizontalSqueezeAnimation
 import com.dezzomorf.financulator.extensions.hideKeyboard
 import com.dezzomorf.financulator.extensions.isValidEmail
 import com.dezzomorf.financulator.extensions.isValidPassword
@@ -18,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding::inflate) {
 
     private val viewModel: BaseViewModel by viewModels()
+    private var isPasswordShow = false
 
     override fun observeClicks() {
         binding.signUpTextViewSignIn.setOnClickListener {
@@ -28,6 +30,10 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
             val password = binding.passwordEditTextSignIn.text.toString()
             if (isDataValid()) signInWithEmailAndPassword(email, password)
             requireContext().hideKeyboard(it)
+        }
+        binding.showPasswordButtonSignIn.setOnClickListener {
+            isPasswordShow = !isPasswordShow
+            updateViewsByPasswordShowState()
         }
     }
 
@@ -65,5 +71,22 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
         val result = password.isValidPassword()
         binding.passwordEditTextSignIn.setErrorTextVisibility(!result)
         return result
+    }
+
+    private fun updateViewsByPasswordShowState() {
+        when (isPasswordShow) {
+            true -> {
+                binding.passwordEditTextSignIn.setTransformationMethod(null)
+                binding.showPasswordImageButtonSignIn.horizontalSqueezeAnimation {
+                    binding.showPasswordImageButtonSignIn.setImageResource(R.drawable.ic_baseline_visibility_off_24)
+                }
+            }
+            false -> {
+                binding.passwordEditTextSignIn.setTransformationMethod(PasswordTransformationMethod())
+                binding.showPasswordImageButtonSignIn.horizontalSqueezeAnimation {
+                    binding.showPasswordImageButtonSignIn.setImageResource(R.drawable.ic_baseline_visibility_24)
+                }
+            }
+        }
     }
 }
