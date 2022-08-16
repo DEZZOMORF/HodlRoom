@@ -19,10 +19,6 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
 
     private val viewModel: BaseViewModel by viewModels()
 
-    override fun setUpUi() {
-        setUpEditTextListeners()
-    }
-
     override fun observeClicks() {
         binding.signUpTextViewSignIn.setOnClickListener {
             findNavController().navigate(R.id.action_signInFragment_to_signUpFragment)
@@ -60,30 +56,14 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
     private fun checkIsValidEmail(): Boolean {
         val email = binding.emailEditTextSignIn.text
         val result = email.isValidEmail()
-        binding.invalidEmailTextViewSignIn.visibility = getVisibilityByValidation(!result)
+        binding.emailEditTextSignIn.setErrorTextVisibility(!result)
         return result
     }
 
     private fun checkIsValidPassword(): Boolean {
         val password = binding.passwordEditTextSignIn.text
         val result = password.isValidPassword()
-        binding.invalidPasswordTextViewSignIn.visibility = getVisibilityByValidation(!result)
+        binding.passwordEditTextSignIn.setErrorTextVisibility(!result)
         return result
-    }
-
-    private fun getVisibilityByValidation(isValidate: Boolean): Int {
-        return when (isValidate) {
-            true -> View.VISIBLE
-            false -> View.INVISIBLE
-        }
-    }
-
-    private fun setUpEditTextListeners() {
-        binding.emailEditTextSignIn.addTextChangedListener {
-            binding.invalidEmailTextViewSignIn.visibility = View.INVISIBLE
-        }
-        binding.passwordEditTextSignIn.addTextChangedListener {
-            binding.invalidPasswordTextViewSignIn.visibility = View.INVISIBLE
-        }
     }
 }

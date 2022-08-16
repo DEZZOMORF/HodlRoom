@@ -19,10 +19,6 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     private val viewModel: BaseViewModel by viewModels()
 
-    override fun setUpUi() {
-        setUpEditTextListeners()
-    }
-
     override fun observeClicks() {
         binding.signInTextViewSignUp.setOnClickListener {
             findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
@@ -61,14 +57,14 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
     private fun checkIsValidEmail(): Boolean {
         val email = binding.emailEditTextSignUp.text
         val result = email.isValidEmail()
-        binding.invalidEmailTextViewSignUp.visibility = getVisibilityByValidation(!result)
+        binding.emailEditTextSignUp.setErrorTextVisibility(!result)
         return result
     }
 
     private fun checkIsValidPassword(): Boolean {
         val password = binding.passwordEditTextSignUp.text
         val result = password.isValidPassword()
-        binding.invalidPasswordTextViewSignUp.visibility = getVisibilityByValidation(!result)
+        binding.passwordEditTextSignUp.setErrorTextVisibility(!result)
         return result
     }
 
@@ -76,26 +72,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         val password = binding.passwordEditTextSignUp.text.toString()
         val confirmPassword = binding.confirmPasswordEditTextSignUp.text.toString()
         val result = password == confirmPassword
-        binding.invalidConfirmPasswordTextViewSignUp.visibility = getVisibilityByValidation(!result)
+        binding.confirmPasswordEditTextSignUp.setErrorTextVisibility(!result)
         return result
-    }
-
-    private fun getVisibilityByValidation(isValidate: Boolean): Int {
-        return when (isValidate) {
-            true -> View.VISIBLE
-            false -> View.INVISIBLE
-        }
-    }
-
-    private fun setUpEditTextListeners() {
-        binding.emailEditTextSignUp.addTextChangedListener {
-            binding.invalidEmailTextViewSignUp.visibility = View.INVISIBLE
-        }
-        binding.passwordEditTextSignUp.addTextChangedListener {
-            binding.invalidPasswordTextViewSignUp.visibility = View.INVISIBLE
-        }
-        binding.confirmPasswordEditTextSignUp.addTextChangedListener {
-            binding.invalidConfirmPasswordTextViewSignUp.visibility = View.INVISIBLE
-        }
     }
 }

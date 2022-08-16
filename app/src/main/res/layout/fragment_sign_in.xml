@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:animateLayoutChanges="true">
 
     <androidx.cardview.widget.CardView
@@ -24,41 +23,29 @@
                 android:id="@+id/email_edit_text_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:inputType="textEmailAddress"
-                android:paddingHorizontal="20dp"
-                app:hint="@string/email" />
-
-            <TextView
-                android:id="@+id/invalid_email_text_view_sign_in"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/invalid_email"
-                android:layout_marginHorizontal="8dp"
-                android:visibility="invisible"
-                tools:visibility="visible"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/purple_200"/>
+                app:alphaLength="14"
+                android:inputType="textEmailAddress"
+                app:errorText="@string/invalid_email"
+                app:includeErrorText="true"
+                app:errorTextColor="@color/purple_200"
+                app:errorTextVisibility="invisible"
+                app:hint="@string/email"
+                app:inputBackground="@color/white" />
 
             <com.dezzomorf.financulator.ui.view.FinanculatorEditText
                 android:id="@+id/password_edit_text_sign_in"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:inputType="textPassword"
-                android:paddingHorizontal="20dp"
-                app:hint="@string/password" />
-
-            <TextView
-                android:id="@+id/invalid_password_text_view_sign_in"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/invalid_password"
-                android:layout_marginHorizontal="8dp"
-                android:visibility="invisible"
-                tools:visibility="visible"
+                app:includeErrorText="true"
                 android:layout_marginBottom="4dp"
-                android:textColor="@color/purple_200"/>
+                android:inputType="textPassword"
+                app:errorText="@string/invalid_password"
+                app:errorTextColor="@color/purple_200"
+                app:errorTextVisibility="invisible"
+                app:alphaLength="10"
+                app:hint="@string/password"
+                app:inputBackground="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/login_button_sign_in"

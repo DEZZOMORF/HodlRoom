@@ -1,29 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_frame_layout"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/input_edit_text"
+    <FrameLayout
+        android:id="@+id/input_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="44dp"
-        android:autofillHints=""
-        android:hint="@null"
-        android:inputType="text"
-        tools:text="@string/app_name" />
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/input_edit_text_financulator_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:hint="@null"
+            android:inputType="text"
+            android:minHeight="44dp"
+            android:paddingHorizontal="20dp"
+            tools:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/hint_text_view_financulator_edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:alpha="0.5"
+            android:clickable="false"
+            android:paddingHorizontal="20dp"
+            android:gravity="center"
+            tools:text="hint" />
+    </FrameLayout>
 
     <TextView
-        android:id="@+id/hint_text_view"
-        android:layout_width="wrap_content"
+        android:id="@+id/error_text_view_financulator_edit_text"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_gravity="center_vertical|end"
-        android:alpha="0.5"
-        android:clickable="false"
-        tools:text="hint" />
-
-</FrameLayout>
+        android:visibility="gone"
+        android:paddingHorizontal="12dp"
+        tools:text="@string/app_name"
+        tools:visibility="visible" />
+</LinearLayout>

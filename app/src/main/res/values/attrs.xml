@@ -3,6 +3,15 @@
     <declare-styleable name="FinanculatorEditText">
         <attr name="hint" format="string" />
         <attr name="textColor" format="color" />
+        <attr name="inputBackground" format="reference|color" />
         <attr name="alphaLength" format="integer" />
+        <attr name="errorText" format="string" />
+        <attr name="errorTextColor" format="color" />
+        <attr name="includeErrorText" format="boolean" />
+        <attr name="errorTextVisibility" format="enum">
+            <enum name="gone" value="8" />
+            <enum name="invisible" value="4" />
+            <enum name="visible" value="0" />
+        </attr>
     </declare-styleable>
 </resources>
