@@ -30,7 +30,7 @@ class SplashActivity : BaseActivity() {
         val mainActivityIntent = Intent(this, MainActivity::class.java)
         val authorizationActivityIntent = Intent(this, AuthorizationActivity::class.java)
         startActivity(
-            when (auth.currentUser != null) {
+            when (auth.currentUser != null && auth.currentUser?.isEmailVerified == true) {
                 true -> mainActivityIntent
                 false -> authorizationActivityIntent
             }

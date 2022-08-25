@@ -35,4 +35,9 @@
     <string name="sign_out">Sign out</string>
     <string name="settings">Settings</string>
     <string name="show_password">Show password</string>
+    <string name="verification_email_sent">Verification email sent to %1$s</string>
+    <string name="verification_email_err">Failed to send verification email. Try again later.</string>
+    <string name="verification_email_info_text">Please verify your email. If you haven’t received the verification email check spam or click here and we will send it again.</string>
+    <string name="done">Done</string>
+    <string name="please_verify_your_email">Please verify your email</string>
 </resources>

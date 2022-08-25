@@ -28,6 +28,7 @@ abstract class BaseFragment<VB : ViewBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onViewCreatedActions()
         setUpUi()
         observeClicks()
         setUpAdapters()
@@ -41,6 +42,7 @@ abstract class BaseFragment<VB : ViewBinding>(
         _binding = null
     }
 
+    protected open fun onViewCreatedActions() {}
     protected open fun configureDataBinding() {}
     protected open fun setUpUi() {}
     protected open fun setUpSwipeToRefresh() {}

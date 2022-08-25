@@ -43,9 +43,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
                     displayToast(getString(R.string.success))
-                    val intent = Intent(requireContext(), SplashActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
+                    findNavController().navigate(R.id.emailVerificationFragment)
                 } else {
                     displayToast(task.exception?.message)
                 }
