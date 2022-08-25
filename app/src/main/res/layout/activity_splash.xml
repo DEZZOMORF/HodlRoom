@@ -6,9 +6,11 @@
     android:background="@drawable/background_color"
     tools:context=".ui.activity.SplashActivity">
 
-    <View
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center"
-        android:background="@color/black" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="120dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:contentDescription="@string/app_name"
+        android:layout_gravity="center"/>
 </FrameLayout>
