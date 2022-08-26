@@ -51,6 +51,18 @@
                 android:enabled="true"
                 android:gravity="center"
                 android:text="@string/done" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/back_button_email_verification"
+                style="@style/Financulator.MaterialButton"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:enabled="true"
+                android:gravity="center"
+                android:text="@string/back" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </FrameLayout>

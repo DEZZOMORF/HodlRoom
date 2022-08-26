@@ -2,8 +2,13 @@ package com.dezzomorf.financulator.ui.fragment
 
 import android.content.Intent
 import android.os.CountDownTimer
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentEmailVerificationBinding
 import com.dezzomorf.financulator.extensions.resourcesCompat
@@ -11,6 +16,11 @@ import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>(FragmentEmailVerificationBinding::inflate) {
@@ -25,6 +35,9 @@ class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>
         binding.doneButtonEmailVerification.setOnClickListener {
             checkIsEmailVerified()
         }
+        binding.backButtonEmailVerification.setOnClickListener {
+            findNavController().navigate(R.id.signInFragment)
+        }
     }
 
     override fun onViewCreatedActions() {
@@ -33,18 +46,26 @@ class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>
 
     private fun verifyEmail() {
         displayAuthorizationActivityProgressBar(true)
-        val user = viewModel.auth.currentUser
-        user?.let {
+        viewModel.auth.currentUser?.let {
             it.sendEmailVerification().addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    binding.verificationMessageStateTextViewEmailVerification.text = getString(R.string.verification_email_sent, user.email)
+                    val title: Spannable = SpannableString(getString(R.string.verification_email_sent, it.email))
+                    title.setSpan(
+                        ForegroundColorSpan(requireContext().resourcesCompat.getColor(R.color.purple_200)),
+                        getString(R.string.verification_email_sent, "").length,
+                        getString(R.string.verification_email_sent, it.email).length,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                    binding.verificationMessageStateTextViewEmailVerification.text = title
                     startSendAgainTimer()
                     binding.doneButtonEmailVerification.visibility = View.VISIBLE
                     binding.verificationInfoTextViewEmailVerification.visibility = View.VISIBLE
+                    binding.backButtonEmailVerification.visibility = View.GONE
                 } else {
                     binding.verificationMessageStateTextViewEmailVerification.text = getString(R.string.verification_email_err)
                     binding.doneButtonEmailVerification.visibility = View.GONE
                     binding.verificationInfoTextViewEmailVerification.visibility = View.GONE
+                    binding.backButtonEmailVerification.visibility = View.VISIBLE
                 }
                 displayAuthorizationActivityProgressBar(false)
             }
@@ -55,7 +76,8 @@ class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>
         if (timer == null) {
             binding.verificationInfoTextViewEmailVerification.text = resources.getString(R.string.verification_email_info_text)
         } else {
-            binding.verificationInfoTextViewEmailVerification.text = resources.getString(R.string.verification_email_info_text) + " ($timer)"
+            binding.verificationInfoTextViewEmailVerification.text =
+                resources.getString(R.string.verification_email_info_text) + " ($timer)"
         }
     }
 
@@ -66,6 +88,7 @@ class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>
                 binding.verificationInfoTextViewEmailVerification.isEnabled = false
                 binding.verificationInfoTextViewEmailVerification.setTextColor(requireContext().resourcesCompat.getColor(R.color.teal_700))
             }
+
             override fun onFinish() {
                 setUpVerifyInfoText()
                 binding.verificationInfoTextViewEmailVerification.isEnabled = true
@@ -75,16 +98,19 @@ class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>
         timer.start()
     }
 
-    private fun checkIsEmailVerified(){
+    private fun checkIsEmailVerified() {
         viewModel.auth.currentUser?.let { user ->
-            user.reload()
-            if (user.isEmailVerified) {
-                timer.cancel()
-                val intent = Intent(requireActivity(), SplashActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            } else {
-                displayToast(getString(R.string.please_verify_your_email))
+            displayAuthorizationActivityProgressBar(true)
+            user.reload().addOnCompleteListener(requireActivity()) {
+                displayAuthorizationActivityProgressBar(false)
+                if (user.isEmailVerified) {
+                    timer.cancel()
+                    val intent = Intent(requireActivity(), SplashActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                } else {
+                    displayToast(getString(R.string.please_verify_your_email))
+                }
             }
         }
     }

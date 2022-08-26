@@ -40,4 +40,5 @@
     <string name="verification_email_info_text">Please verify your email. If you haven’t received the verification email check spam or click here and we will send it again.</string>
     <string name="done">Done</string>
     <string name="please_verify_your_email">Please verify your email</string>
+    <string name="back">Back</string>
 </resources>
