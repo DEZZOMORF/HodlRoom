@@ -90,6 +90,15 @@
                         app:iconGravity="textStart" />
                 </FrameLayout>
             </LinearLayout>
+            <TextView
+                android:id="@+id/forgot_password_text_view_sign_in"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/forgot_password"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingVertical="8dp"
+                android:gravity="center"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

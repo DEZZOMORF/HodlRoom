@@ -35,6 +35,9 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
             isPasswordShow = !isPasswordShow
             updateViewsByPasswordShowState()
         }
+        binding.forgotPasswordTextViewSignIn.setOnClickListener {
+            findNavController().navigate(R.id.action_signInFragment_to_forgotPasswordFragment)
+        }
     }
 
     private fun signInWithEmailAndPassword(email: String, password: String) {

@@ -41,4 +41,8 @@
     <string name="done">Done</string>
     <string name="please_verify_your_email">Please verify your email</string>
     <string name="back">Back</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="please_enter_your_email_address_so_we_can_send_you_an_email_to_reset_your_password">Please enter your email address so we can send you an email to reset your password.</string>
+    <string name="send">Send</string>
+    <string name="email_sent">Email sent</string>
 </resources>
