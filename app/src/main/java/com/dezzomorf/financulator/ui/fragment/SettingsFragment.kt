@@ -18,7 +18,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     private val viewModel: SettingsViewModel by viewModels()
 
-    override fun setUpUi() {
+    override fun setUpUI() {
         binding.toolbarSettings.titleTextViewToolbar.text = getString(R.string.settings)
     }
 

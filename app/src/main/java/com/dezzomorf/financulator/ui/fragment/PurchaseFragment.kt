@@ -20,8 +20,8 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
 
     private val viewModel: PurchaseViewModel by viewModels()
 
-    override fun setUpUi() {
-        loadCoinList()
+    override fun setUpUI() {
+        loadCurrentCoinData()
     }
 
     override fun observeViewModel() {
@@ -71,22 +71,22 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             coin.currentPrice?.BTC.formatPrice()
         )
 
-        makeViewsVisible()
+        viewsVisibility(true)
     }
 
-    private fun makeViewsVisible() {
+    private fun viewsVisibility(isVisible: Boolean) {
         with(binding) {
-            descriptionEditTextPurchase.isVisible = true
-            spinnerUnitPurchase.isVisible = true
-            quantityEditTextPurchase.isVisible = true
-            priceEditTextPurchase.isVisible = true
-            sumTextViewPurchase.isVisible = true
-            saveButtonPurchase.isVisible = true
-            separateLineView.isVisible = true
+            descriptionEditTextPurchase.isVisible = isVisible
+            spinnerUnitPurchase.isVisible = isVisible
+            quantityEditTextPurchase.isVisible = isVisible
+            priceEditTextPurchase.isVisible = isVisible
+            sumTextViewPurchase.isVisible = isVisible
+            saveButtonPurchase.isVisible = isVisible
+            separateLineView.isVisible = isVisible
         }
     }
 
-    private fun loadCoinList() {
+    private fun loadCurrentCoinData() {
         requireArguments().getString(ConstVal.ID)?.let {
             viewModel.getCoinById(it)
         }
