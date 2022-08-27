@@ -6,10 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSignInBinding
-import com.dezzomorf.financulator.extensions.horizontalSqueezeAnimation
-import com.dezzomorf.financulator.extensions.hideKeyboard
-import com.dezzomorf.financulator.extensions.isValidEmail
-import com.dezzomorf.financulator.extensions.isValidPassword
+import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
@@ -45,7 +42,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
         viewModel.auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    displayToast(getString(R.string.success))
+                    requireContext().showToast(getString(R.string.success))
                     if (viewModel.auth.currentUser?.isEmailVerified == true) {
                         val intent = Intent(requireContext(), SplashActivity::class.java)
                         startActivity(intent)
@@ -54,7 +51,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
                         findNavController().navigate(R.id.emailVerificationFragment)
                     }
                 } else {
-                    displayToast(task.exception?.message)
+                    requireContext().showToast(task.exception?.message?: getString(R.string.network_error_default))
                 }
                 displayAuthorizationActivityProgressBar(false)
             }

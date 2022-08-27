@@ -148,14 +148,14 @@ fun Context.showKeyboard(view: View) {
     inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }
 
-fun Context.showToast(text: String, duration: Int = Toast.LENGTH_SHORT) {
+fun Context.showToast(text: String, duration: Int = Toast.LENGTH_LONG) {
     if (!isActivityValid()) {
         return
     }
     Toast.makeText(this, text, duration).show()
 }
 
-fun Context.showToast(@StringRes textResourceId: Int, duration: Int = Toast.LENGTH_SHORT) {
+fun Context.showToast(@StringRes textResourceId: Int, duration: Int = Toast.LENGTH_LONG) {
     if (!isActivityValid()) {
         return
     }

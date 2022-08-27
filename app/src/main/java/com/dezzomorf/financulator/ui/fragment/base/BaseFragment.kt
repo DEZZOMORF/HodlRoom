@@ -58,12 +58,4 @@ abstract class BaseFragment<VB : ViewBinding>(
     fun displayAuthorizationActivityProgressBar(isDisplayed: Boolean) {
         (activity as AuthorizationActivity).displayProgressBar(isDisplayed)
     }
-
-    fun displayToast(message: String?) {
-        if (message != null) {
-            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        } else {
-            Toast.makeText(context, resources.getString(R.string.default_error_message), Toast.LENGTH_LONG).show()
-        }
-    }
 }

@@ -36,7 +36,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
-                    displayToast(state.error.message)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
         }

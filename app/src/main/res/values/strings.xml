@@ -13,8 +13,8 @@
     <string name="coin_info">%1$s (%2$s)</string>
     <string name="dialog_text_error">dialog_text_error</string>
     <string name="dialog_text_success">dialog_text_success</string>
-    <string name="btn_back">btn_back</string>
-    <string name="arrow_down">arrow down</string>
+    <string name="btn_back" translatable="false">btn_back</string>
+    <string name="arrow_down" translatable="false">arrow down</string>
     <string name="nothing_found">Nothing found</string>
 
     <string name="network_error_429">Too many requests. Try again later</string>
@@ -45,4 +45,6 @@
     <string name="please_enter_your_email_address_so_we_can_send_you_an_email_to_reset_your_password">Please enter your email address so we can send you an email to reset your password.</string>
     <string name="send">Send</string>
     <string name="email_sent">Email sent</string>
+    <string name="delete_account_title">Are you sure you want to delete your account?</string>
+    <string name="delete_account_message">Your account will be permanently deleted. You can\'t undo this action.</string>
 </resources>

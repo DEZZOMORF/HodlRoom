@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentForgotPasswordBinding
 import com.dezzomorf.financulator.extensions.isValidEmail
+import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,8 +30,10 @@ class ForgotPasswordFragment : BaseFragment<FragmentForgotPasswordBinding>(Fragm
         viewModel.auth.sendPasswordResetEmail(email)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    displayToast(getString(R.string.email_sent))
+                    requireContext().showToast(getString(R.string.email_sent))
                     findNavController().navigate(R.id.action_forgotPasswordFragment_to_signInFragment)
+                } else {
+                    requireContext().showToast(getString(R.string.network_error_default))
                 }
                 displayAuthorizationActivityProgressBar(false)
             }

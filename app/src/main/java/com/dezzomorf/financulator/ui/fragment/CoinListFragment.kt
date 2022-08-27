@@ -11,6 +11,7 @@ import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.adapter.CoinListRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentCoinListBinding
 import com.dezzomorf.financulator.extensions.scaleInAnimation
+import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
@@ -39,7 +40,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                     }
                     is UiState.Error -> {
                         displayMainActivityProgressBar(false)
-                        displayToast(state.error.message)
+                        requireContext().showToast(state.error.message.toString())
                     }
                 }
             }

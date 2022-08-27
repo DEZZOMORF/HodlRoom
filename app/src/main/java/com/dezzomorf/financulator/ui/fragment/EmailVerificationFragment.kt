@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentEmailVerificationBinding
 import com.dezzomorf.financulator.extensions.resourcesCompat
+import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
@@ -109,7 +110,7 @@ class EmailVerificationFragment : BaseFragment<FragmentEmailVerificationBinding>
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
-                    displayToast(getString(R.string.please_verify_your_email))
+                    requireContext().showToast(getString(R.string.please_verify_your_email))
                 }
             }
         }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:animateLayoutChanges="true">
 
     <include
@@ -15,8 +16,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="20dp"
         android:text="@string/sign_out"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete_button_settings"
+        style="@style/Financulator.MaterialButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:backgroundTint="@android:color/holo_red_light"
+        android:text="@string/delete"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
+
+</LinearLayout>
