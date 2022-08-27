@@ -254,6 +254,6 @@ data class CurrencyEntity(
     fun getPriceByPosition(position: Int): Float {
         return CurrencyEntity::class.memberProperties.map { member ->
             member.get(this)
-        }[position] as Float //TODO FIX. Crush on certain coins. Float can be null. For check find ECM coin.
+        }[position] as Float? ?: 0f
     }
 }

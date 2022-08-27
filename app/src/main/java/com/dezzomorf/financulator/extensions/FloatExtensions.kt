@@ -7,5 +7,5 @@ fun Float?.formatPrice(): String {
         } else {
             String.format("%.2f", this).replace(",", ".")
         }
-    } else "-"
+    } else ""
 }
