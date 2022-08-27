@@ -8,6 +8,7 @@ import com.dezzomorf.financulator.api.entity.CurrencyEntity
 import com.dezzomorf.financulator.databinding.FragmentPurchaseBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.Coin
+import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
@@ -19,6 +20,7 @@ import kotlin.reflect.full.memberProperties
 class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseBinding::inflate) {
 
     private val viewModel: PurchaseViewModel by viewModels()
+    lateinit var coinId: String
 
     override fun setUpUI() {
         loadCurrentCoinData()
@@ -40,11 +42,34 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
                 }
             }
         }
+
+        viewModel.addPurchaseState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(getString(R.string.success))
+                    findNavController().popBackStack()
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
     }
 
     override fun observeClicks() {
         binding.toolbarPurchase.buttonBackImageViewToolbar.setOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.saveButtonPurchase.setOnClickListener {
+            if (binding.saveButtonPurchase.isEnabled) {
+                val purchase = getPurchaseData()
+                viewModel.addPurchase(purchase)
+            }
         }
     }
 
@@ -87,8 +112,12 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     }
 
     private fun loadCurrentCoinData() {
-        requireArguments().getString(ConstVal.ID)?.let {
-            viewModel.getCoinById(it)
+        val argument = requireArguments().getString(ConstVal.ID)
+        if (argument != null) {
+            coinId = argument
+            viewModel.getCoinById(argument)
+        } else {
+            requireActivity().onBackPressed()
         }
     }
 
@@ -109,5 +138,15 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     private fun updateUI() {
         updateTotalCost()
         updateButton()
+    }
+
+    private fun getPurchaseData(): Purchase{
+        return Purchase(
+            coinId = coinId,
+            currency = binding.spinnerUnitPurchase.selectedItem as String,
+            description = binding.descriptionEditTextPurchase.text.toString(),
+            price = binding.priceEditTextPurchase.text.stringToFloatOrZero(),
+            quantity = binding.quantityEditTextPurchase.text.stringToFloatOrZero()
+        )
     }
 }

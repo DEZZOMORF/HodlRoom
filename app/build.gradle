@@ -111,10 +111,11 @@ dependencies {
     implementation "androidx.viewpager2:viewpager2:1.0.0"
 
     //Reflect (to convert data class parameters to string list)
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.10"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.7.10"
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
 }

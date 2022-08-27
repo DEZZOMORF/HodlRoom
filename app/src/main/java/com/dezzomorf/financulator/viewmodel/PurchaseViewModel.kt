@@ -7,6 +7,8 @@ import com.dezzomorf.financulator.repository.CoinRepository
 import com.dezzomorf.financulator.util.RequestState
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PurchaseViewModel @Inject constructor(
     private val coinRepository: CoinRepository
-) : BaseViewModel() {
+) : DataBaseViewModel() {
 
     var coinState: MutableLiveData<UiState<Coin>> = MutableLiveData()
 
