@@ -16,13 +16,17 @@ open class DataBaseViewModel @Inject constructor() : BaseViewModel() {
 
     var addPurchaseState: MutableLiveData<UiState<Nothing?>> = MutableLiveData()
 
+    private fun generateId(): String{
+        return java.util.UUID.randomUUID().toString()
+    }
+
     fun addPurchase(purchase: Purchase) {
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
             dataBase.collection("users")
                 .document(user.uid)
                 .collection("purchases")
-                .document(purchase.id)
+                .document(generateId())
                 .set(purchase)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
