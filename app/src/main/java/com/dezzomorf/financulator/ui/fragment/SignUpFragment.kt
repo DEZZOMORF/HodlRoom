@@ -1,21 +1,20 @@
 package com.dezzomorf.financulator.ui.fragment
 
-import android.content.Intent
 import android.text.method.PasswordTransformationMethod
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSignUpBinding
 import com.dezzomorf.financulator.extensions.*
-import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
-import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
+import com.dezzomorf.financulator.util.UiState
+import com.dezzomorf.financulator.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding::inflate) {
 
-    private val viewModel: BaseViewModel by viewModels()
+    private val viewModel: SignUpViewModel by viewModels()
     private var isPasswordShow = false
 
     override fun observeClicks() {
@@ -25,7 +24,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         binding.signUpButtonSignUp.setOnClickListener {
             val email = binding.emailEditTextSignUp.text.toString()
             val password = binding.passwordEditTextSignUp.text.toString()
-            if (isDataValid()) createUserWithEmailAndPassword(email, password)
+            if (isDataValid()) viewModel.createUserWithEmailAndPassword(email, password)
             requireContext().hideKeyboard(it)
         }
         binding.showPasswordButtonSignUp.setOnClickListener {
@@ -34,18 +33,27 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
         }
     }
 
-    private fun createUserWithEmailAndPassword(email: String, password: String) {
-        displayAuthorizationActivityProgressBar(true)
-        viewModel.auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    requireContext().showToast(getString(R.string.success))
-                    findNavController().navigate(R.id.emailVerificationFragment)
-                } else {
-                    requireContext().showToast(task.exception?.message ?: getString(R.string.network_error_default))
+    override fun observeViewModel() {
+        viewModel.signUpState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayAuthorizationActivityProgressBar(true)
                 }
-                displayAuthorizationActivityProgressBar(false)
+                is UiState.Success -> {
+                    displayAuthorizationActivityProgressBar(false)
+                    successSignUp()
+                }
+                is UiState.Error -> {
+                    displayAuthorizationActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
             }
+        }
+    }
+
+    private fun successSignUp() {
+        requireContext().showToast(getString(R.string.success))
+        findNavController().navigate(R.id.emailVerificationFragment)
     }
 
     private fun isDataValid(): Boolean {

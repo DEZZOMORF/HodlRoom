@@ -9,13 +9,14 @@ import com.dezzomorf.financulator.databinding.FragmentSignInBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
-import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
+import com.dezzomorf.financulator.util.UiState
+import com.dezzomorf.financulator.viewmodel.SignInViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding::inflate) {
 
-    private val viewModel: BaseViewModel by viewModels()
+    private val viewModel: SignInViewModel by viewModels()
     private var isPasswordShow = false
 
     override fun observeClicks() {
@@ -25,7 +26,7 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
         binding.loginButtonSignIn.setOnClickListener {
             val email = binding.emailEditTextSignIn.text.toString()
             val password = binding.passwordEditTextSignIn.text.toString()
-            if (isDataValid()) signInWithEmailAndPassword(email, password)
+            if (isDataValid()) viewModel.signInWithEmailAndPassword(email, password)
             requireContext().hideKeyboard(it)
         }
         binding.showPasswordButtonSignIn.setOnClickListener {
@@ -37,24 +38,33 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
         }
     }
 
-    private fun signInWithEmailAndPassword(email: String, password: String) {
-        displayAuthorizationActivityProgressBar(true)
-        viewModel.auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    requireContext().showToast(getString(R.string.success))
-                    if (viewModel.auth.currentUser?.isEmailVerified == true) {
-                        val intent = Intent(requireContext(), SplashActivity::class.java)
-                        startActivity(intent)
-                        requireActivity().finish()
-                    } else {
-                        findNavController().navigate(R.id.emailVerificationFragment)
-                    }
-                } else {
-                    requireContext().showToast(task.exception?.message?: getString(R.string.network_error_default))
+    override fun observeViewModel() {
+        viewModel.signInState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayAuthorizationActivityProgressBar(true)
                 }
-                displayAuthorizationActivityProgressBar(false)
+                is UiState.Success -> {
+                    displayAuthorizationActivityProgressBar(false)
+                    successSignIn()
+                }
+                is UiState.Error -> {
+                    displayAuthorizationActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
             }
+        }
+    }
+
+    private fun successSignIn() {
+        requireContext().showToast(getString(R.string.success))
+        if (viewModel.auth.currentUser?.isEmailVerified == true) {
+            val intent = Intent(requireContext(), SplashActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        } else {
+            findNavController().navigate(R.id.emailVerificationFragment)
+        }
     }
 
     private fun isDataValid(): Boolean {
