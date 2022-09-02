@@ -5,10 +5,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.api.entity.CurrencyEntity
+import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.databinding.FragmentPurchaseBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.Coin
-import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
@@ -140,8 +140,8 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         updateButton()
     }
 
-    private fun getPurchaseData(): Purchase{
-        return Purchase(
+    private fun getPurchaseData(): PurchaseEntity {
+        return PurchaseEntity(
             coinId = coinId,
             currency = binding.spinnerUnitPurchase.selectedItem as String,
             description = binding.descriptionEditTextPurchase.text.toString(),

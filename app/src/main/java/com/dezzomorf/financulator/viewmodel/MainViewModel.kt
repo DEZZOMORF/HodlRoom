@@ -8,4 +8,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val coinRepository: CoinRepository
-) : BaseViewModel()
+) : DataBaseViewModel() {
+
+}

@@ -1,7 +1,6 @@
-package com.dezzomorf.financulator.model
+package com.dezzomorf.financulator.api.entity
 
-data class Purchase(
-    val purchaseId: String,
+data class PurchaseEntity(
     val coinId: String,
     val currency: String,
     val description: String?,
