@@ -9,7 +9,7 @@
     android:background="@drawable/bg_round_border"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="@drawable/ripple_bottom_round_border">
+    android:foreground="@drawable/ripple_round_border">
 
     <ImageView
         android:id="@+id/coin_logo_image_view_coin_item"
