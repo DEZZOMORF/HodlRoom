@@ -27,6 +27,7 @@ class MainViewModel @Inject constructor(
     fun summaryChangesByCoins(purchases: List<Purchase>) {
         changesByCoinState.postValue(UiState.Loading)
         viewModelScope.launch {
+            //TODO It's wrong logic. Need to get coin data from cache. (Coin data will be constantly updated by the service)
             val coinIdList = purchases.map { it.coinId }.distinct()
             val requestStateList = coinIdList.parallelMap { id -> coinRepository.getCoinById(id) }.toList()
             var errorMessage: String? = null

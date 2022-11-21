@@ -6,9 +6,6 @@ import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.repository.CoinRepository
 import com.dezzomorf.financulator.util.RequestState
 import com.dezzomorf.financulator.util.UiState
-import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,26 +17,37 @@ class PurchaseViewModel @Inject constructor(
 
     var coinState: MutableLiveData<UiState<Coin>> = MutableLiveData()
 
-    fun getCoinById(id: String) {
-        coinState.postValue(UiState.Loading)
-        viewModelScope.launch {
-            when (val requestState = coinRepository.getCoinById(id)) {
-                is RequestState.Success -> {
-                    requestState.data?.let { coinState.postValue(UiState.Success(it)) }
+    fun getCoinById(coinId: String) {
+        auth.currentUser?.let { user ->
+            coinState.postValue(UiState.Loading)
+            viewModelScope.launch {
+
+                val cachedCoin = coinRepository.getCachedCoin(user.uid, coinId)
+                if (cachedCoin != null) {
+                    coinState.postValue(UiState.Success(cachedCoin))
                 }
-                is RequestState.RequestError -> {
-                    coinState.postValue(
-                        UiState.Error(
-                            Exception(requestState.requestErrorModel.message)
+
+                when (val requestState = coinRepository.getCoinById(coinId)) {
+                    is RequestState.Success -> {
+                        requestState.data?.let {
+                            coinRepository.setCoinToCache(user.uid, it)
+                            coinState.postValue(UiState.Success(it))
+                        }
+                    }
+                    is RequestState.RequestError -> {
+                        coinState.postValue(
+                            UiState.Error(
+                                Exception(requestState.requestErrorModel.message)
+                            )
                         )
-                    )
-                }
-                is RequestState.GeneralError -> {
-                    coinState.postValue(
-                        UiState.Error(
-                            Exception(requestState.exception.message)
+                    }
+                    is RequestState.GeneralError -> {
+                        coinState.postValue(
+                            UiState.Error(
+                                Exception(requestState.exception.message)
+                            )
                         )
-                    )
+                    }
                 }
             }
         }

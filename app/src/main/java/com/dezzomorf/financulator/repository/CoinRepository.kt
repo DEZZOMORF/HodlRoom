@@ -72,4 +72,7 @@ class CoinRepository @Inject constructor(
     // Cache methods
     fun getCachedCoinList(userId: String): List<Coin>? = sharedPreferencesManager.getCoinList(userId)
     fun setCoinListToCache(userId: String, coinList: List<Coin>?) = sharedPreferencesManager.setCoinList(userId, coinList)
+
+    fun getCachedCoin(userId: String, coinId: String): Coin? = sharedPreferencesManager.getCoin(userId, coinId)
+    fun setCoinToCache(userId: String, coin: Coin) = sharedPreferencesManager.setCoin(userId, coin)
 }
