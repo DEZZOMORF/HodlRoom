@@ -27,28 +27,37 @@ class CoinListViewModel @Inject constructor(
     }
 
     private fun getCoinList() {
-        coinListLoadState.postValue(UiState.Loading)
-        viewModelScope.launch {
-            when (val requestState = coinRepository.getCoinList()) {
-                is RequestState.Success -> {
-                    requestState.data?.let {
-                        coinList = it
-                        coinListLoadState.postValue(UiState.Success(it))
+        auth.currentUser?.let { user ->
+            coinListLoadState.postValue(UiState.Loading)
+            viewModelScope.launch {
+                val cachedCoinList = coinRepository.getCachedCoinList(user.uid)
+                if (cachedCoinList != null && cachedCoinList.isNotEmpty()) {
+                    coinList = cachedCoinList
+                    coinListLoadState.postValue(UiState.Success(cachedCoinList))
+                } else {
+                    when (val requestState = coinRepository.getCoinList()) {
+                        is RequestState.Success -> {
+                            requestState.data?.let {
+                                coinList = it
+                                coinRepository.setCoinListToCache(user.uid, it)
+                                coinListLoadState.postValue(UiState.Success(it))
+                            }
+                        }
+                        is RequestState.RequestError -> {
+                            coinListLoadState.postValue(
+                                UiState.Error(
+                                    Exception(requestState.requestErrorModel.message)
+                                )
+                            )
+                        }
+                        is RequestState.GeneralError -> {
+                            coinListLoadState.postValue(
+                                UiState.Error(
+                                    Exception(requestState.exception.message)
+                                )
+                            )
+                        }
                     }
-                }
-                is RequestState.RequestError -> {
-                    coinListLoadState.postValue(
-                        UiState.Error(
-                            Exception(requestState.requestErrorModel.message)
-                        )
-                    )
-                }
-                is RequestState.GeneralError -> {
-                    coinListLoadState.postValue(
-                        UiState.Error(
-                            Exception(requestState.exception.message)
-                        )
-                    )
                 }
             }
         }

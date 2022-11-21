@@ -6,6 +6,7 @@ import com.dezzomorf.financulator.api.ApiService
 import com.dezzomorf.financulator.api.entity.CoinEntity
 import com.dezzomorf.financulator.api.mapper.CoinMapper
 import com.dezzomorf.financulator.manager.NetworkConnectionManager
+import com.dezzomorf.financulator.manager.SharedPreferencesManager
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.util.ConstVal.filterStrings
 import com.dezzomorf.financulator.util.RequestErrorHandler
@@ -19,6 +20,7 @@ class CoinRepository @Inject constructor(
     private val networkConnectionManager: NetworkConnectionManager,
     private val coinMapper: CoinMapper,
     private val requestErrorHandler: RequestErrorHandler,
+    private val sharedPreferencesManager: SharedPreferencesManager
 ) {
     suspend fun getCoinList(): RequestState<List<Coin>?> {
         return try {
@@ -56,6 +58,7 @@ class CoinRepository @Inject constructor(
         }
     }
 
+    // Remove trash from list
     private fun filterCoinList(body: List<CoinEntity>): List<Coin> {
         return coinMapper
             .mapEntityToModel(body)
@@ -65,4 +68,8 @@ class CoinRepository @Inject constructor(
                 }
             }
     }
+
+    // Cache methods
+    fun getCachedCoinList(userId: String): List<Coin>? = sharedPreferencesManager.getCoinList(userId)
+    fun setCoinListToCache(userId: String, coinList: List<Coin>?) = sharedPreferencesManager.setCoinList(userId, coinList)
 }

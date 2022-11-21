@@ -8,9 +8,9 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.util.ResourcesCompat
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 inline val Context.resourcesCompat: ResourcesCompat
     get() = ResourcesCompat(this)
