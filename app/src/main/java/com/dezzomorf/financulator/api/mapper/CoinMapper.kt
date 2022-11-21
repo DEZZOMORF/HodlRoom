@@ -12,7 +12,7 @@ class CoinMapper @Inject constructor(): BaseMapper<CoinEntity, Coin>() {
             id = id,
             symbol = symbol?.uppercase(),
             name = name,
-            image = image?.large,
+            logo = image?.large,
             currentPrice = marketData?.currentPrice
         )
     }

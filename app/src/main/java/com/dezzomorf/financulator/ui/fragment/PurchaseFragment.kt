@@ -75,8 +75,8 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
 
     private fun setDataToUi(coin: Coin) {
         binding.toolbarPurchase.titleTextViewToolbar.text = getString(R.string.coin_info, coin.name, coin.symbol)
-        binding.coinLogoLeftImageViewPurchase.loadAndSetImage(coin.image)
-        binding.coinLogoRightImageViewPurchase.loadAndSetImage(coin.image)
+        binding.coinLogoLeftImageViewPurchase.loadAndSetImage(coin.logo)
+        binding.coinLogoRightImageViewPurchase.loadAndSetImage(coin.logo)
 
         binding.quantityEditTextPurchase.addTextChangedListener { updateUI() }
         binding.priceEditTextPurchase.addTextChangedListener { updateUI() }

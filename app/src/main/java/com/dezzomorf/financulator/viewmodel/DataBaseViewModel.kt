@@ -4,7 +4,6 @@ import androidx.lifecycle.MutableLiveData
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.api.mapper.PurchaseMapper
 import com.dezzomorf.financulator.model.Purchase
-import com.dezzomorf.financulator.repository.CoinRepository
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
 import com.google.firebase.firestore.ktx.firestore
@@ -16,12 +15,14 @@ import javax.inject.Inject
 open class DataBaseViewModel @Inject constructor() : BaseViewModel() {
 
     private val dataBase = Firebase.firestore
-    @Inject lateinit var purchaseMapper: PurchaseMapper
+
+    @Inject
+    lateinit var purchaseMapper: PurchaseMapper
 
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
-    var getPurchasesState: MutableLiveData<UiState<List<Purchase?>>> = MutableLiveData()
+    var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
 
-    private fun generateId(): String{
+    private fun generateId(): String {
         return java.util.UUID.randomUUID().toString()
     }
 
@@ -47,7 +48,7 @@ open class DataBaseViewModel @Inject constructor() : BaseViewModel() {
         }
     }
 
-    fun getPurchases(){
+    fun getPurchases() {
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
             dataBase.collection("users")

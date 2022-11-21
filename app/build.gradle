@@ -118,4 +118,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-firestore-ktx'
+
+    // Swipe to refresh
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 }
