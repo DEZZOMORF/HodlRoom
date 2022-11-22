@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dezzomorf.financulator.extensions.parallelMap
 import com.dezzomorf.financulator.model.ChangesByCoin
+import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.repository.CoinRepository
 import com.dezzomorf.financulator.util.FinanculatorMath.changesInDollars
@@ -22,56 +23,59 @@ class MainViewModel @Inject constructor(
     private val coinRepository: CoinRepository
 ) : DataBaseViewModel() {
 
-    var changesByCoinState: MutableLiveData<UiState<MutableList<ChangesByCoin>>> = MutableLiveData()
+    var changesByCoinState: MutableLiveData<UiState<List<ChangesByCoin>>> = MutableLiveData()
 
     fun summaryChangesByCoins(purchases: List<Purchase>) {
-        changesByCoinState.postValue(UiState.Loading)
-        viewModelScope.launch {
-            //TODO It's wrong logic. Need to get coin data from cache. (Coin data will be constantly updated by the service)
-            val coinIdList = purchases.map { it.coinId }.distinct()
-            val requestStateList = coinIdList.parallelMap { id -> coinRepository.getCoinById(id) }.toList()
-            var errorMessage: String? = null
-            requestStateList.forEach { requestState ->
-                when (requestState) {
-                    is RequestState.RequestError -> {
-                        errorMessage = requestState.requestErrorModel.message
-                        return@forEach
-                    }
-                    is RequestState.GeneralError -> {
-                        errorMessage = requestState.exception.message
-                        return@forEach
-                    }
-                    else -> {}
-                }
-            }
-            if (errorMessage != null) {
+        auth.currentUser?.let { user ->
+            changesByCoinState.postValue(UiState.Loading)
+            viewModelScope.launch {
+                val coinIdList = purchases.map { it.coinId }.distinct()
+                val coinsData = getCoinsData(coinIdList, user.uid)
+                val changesByCoin = formatDataToChangesByCoin(coinsData, purchases)
                 changesByCoinState.postValue(
-                    UiState.Error(
-                        Exception(errorMessage)
-                    )
-                )
-            } else {
-                val changeByCoinList: MutableList<ChangesByCoin> = mutableListOf()
-                requestStateList.map { requestState ->
-                    val coin = (requestState as RequestState.Success).data
-                    if (coin?.id != null) {
-                        val purchasesByCoin = purchases.filter { it.coinId == coin.id }
-                        changeByCoinList.add(
-                            ChangesByCoin(
-                                coin = coin,
-                                averagePrice = getAveragePrice(purchasesByCoin),
-                                quantity = coinQuantity(purchasesByCoin),
-                                sum = sum(purchasesByCoin, coin.currentPrice?.USD),
-                                changesInPercents = changesInPercents(purchasesByCoin, coin),
-                                changesInDollars = changesInDollars(purchasesByCoin, coin)
-                            )
-                        )
-                    }
-                }
-                changesByCoinState.postValue(
-                    UiState.Success(changeByCoinList)
+                    UiState.Success(changesByCoin)
                 )
             }
         }
+    }
+
+    // Get cached coin data or request new
+    private suspend fun getCoinsData(coinIdList: List<String>, userId: String): List<Coin?> {
+        return coinIdList.parallelMap { coinId ->
+            val cashedCoin = sharedPreferencesManager.getCoin(userId, coinId)
+            return@parallelMap if (cashedCoin != null) {
+                sharedPreferencesManager.getCoin(userId, coinId)
+            } else {
+                when (val coinRequestState = coinRepository.getCoinById(coinId)) {
+                    is RequestState.Success -> {
+                        coinRequestState.data?.let { coin ->
+                            sharedPreferencesManager.setCoin(userId, coin)
+                            coin
+                        }
+                    }
+                    else -> null
+                }
+            }
+        }.toList()
+    }
+
+    private fun formatDataToChangesByCoin(coinList: List<Coin?>, purchases: List<Purchase>): List<ChangesByCoin> {
+        val changesByCoinList: MutableList<ChangesByCoin> = mutableListOf()
+        coinList.forEach { cachedCoin ->
+            if (cachedCoin?.id != null) {
+                val purchasesByCoin = purchases.filter { it.coinId == cachedCoin.id }
+                changesByCoinList.add(
+                    ChangesByCoin(
+                        coin = cachedCoin,
+                        averagePrice = getAveragePrice(purchasesByCoin),
+                        quantity = coinQuantity(purchasesByCoin),
+                        sum = sum(purchasesByCoin, cachedCoin.currentPrice?.USD),
+                        changesInPercents = changesInPercents(purchasesByCoin, cachedCoin),
+                        changesInDollars = changesInDollars(purchasesByCoin, cachedCoin)
+                    )
+                )
+            }
+        }
+        return changesByCoinList
     }
 }

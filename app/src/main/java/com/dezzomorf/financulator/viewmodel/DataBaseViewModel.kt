@@ -20,6 +20,7 @@ open class DataBaseViewModel @Inject constructor(
 
     @Inject
     lateinit var purchaseMapper: PurchaseMapper
+
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
@@ -55,12 +56,6 @@ open class DataBaseViewModel @Inject constructor(
     fun getPurchases() {
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
-            val cachedPurchases = sharedPreferencesManager.getPurchases(user.uid)
-            if (cachedPurchases != null && cachedPurchases.isNotEmpty()) {
-                getPurchasesState.postValue(UiState.Success(cachedPurchases))
-                addPurchaseState.postValue(UiState.Loading)
-            }
-
             dataBase.collection("users")
                 .document(user.uid)
                 .collection("purchases")
@@ -76,6 +71,11 @@ open class DataBaseViewModel @Inject constructor(
                                 Exception(task.exception)
                             )
                         )
+                        // Post the cached data if the request is error
+                        val cachedPurchases = sharedPreferencesManager.getPurchases(user.uid)
+                        if (cachedPurchases != null && cachedPurchases.isNotEmpty()) {
+                            getPurchasesState.postValue(UiState.Success(cachedPurchases))
+                        }
                     }
                 }
         }
