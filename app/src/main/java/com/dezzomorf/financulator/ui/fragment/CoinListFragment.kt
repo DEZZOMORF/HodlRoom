@@ -26,6 +26,10 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
     lateinit var coinListAdapter: CoinListRecyclerViewAdapter
     private val viewModel: CoinListViewModel by viewModels()
 
+    override fun setUpUI() {
+        viewModel.getCoinList()
+    }
+
     override fun observeViewModel() {
         with(viewModel) {
             coinListLoadState.observe(viewLifecycleOwner) { state ->

@@ -22,11 +22,7 @@ class CoinListViewModel @Inject constructor(
 
     var filteredCoinList: MutableLiveData<List<Coin>> = MutableLiveData()
 
-    init {
-        getCoinList()
-    }
-
-    private fun getCoinList() {
+    fun getCoinList() {
         auth.currentUser?.let { user ->
             coinListLoadState.postValue(UiState.Loading)
             viewModelScope.launch {
