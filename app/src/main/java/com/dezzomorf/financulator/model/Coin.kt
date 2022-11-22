@@ -7,5 +7,5 @@ data class Coin(
     val symbol: String?,
     val name: String?,
     val logo: String?,
-    val currentPrice: CurrencyEntity?
+    val currentPrice: CurrencyEntity
 )

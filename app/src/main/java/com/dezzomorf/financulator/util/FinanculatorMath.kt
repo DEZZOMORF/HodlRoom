@@ -4,6 +4,8 @@ import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
 
 object FinanculatorMath {
+    //TODO №1 Find solution for price logic. User can buy coin for dollars/bitcoins/hryvnias ets.
+    //TODO №2 All that fucking logic doesn't work!!!!!!!!!!!! THINK!THINK!THINK!
     fun getAveragePrice(purchases: List<Purchase>): Double {
         return purchases.map { it.price }.average()
     }
@@ -12,15 +14,22 @@ object FinanculatorMath {
         return purchases.map { it.quantity }.sum().toDouble()
     }
 
-    fun sum(purchases: List<Purchase>, currentPrice: Float?): Double? {
-        return currentPrice?.let { coinQuantity(purchases).times(it) }
+    fun sum(purchases: List<Purchase>, currentPrice: Float): Double {
+        return coinQuantity(purchases).times(currentPrice)
     }
 
     fun changesInPercents(purchases: List<Purchase>, coin: Coin): Double {
-        return 0.5
+        val sum = sum(purchases, coin.currentPrice.USD)
+        return percentageDifference(sum, coin.currentPrice.USD) - 100
     }
 
     fun changesInDollars(purchases: List<Purchase>, coin: Coin): Double {
-        return 0.5
+        val changesInPercents = changesInPercents(purchases, coin)
+        val averagePrice = getAveragePrice(purchases)
+        return averagePrice / 100 * changesInPercents
+    }
+
+    fun percentageDifference(listPrice: Double, actualPrice: Float): Double {
+        return ((listPrice - actualPrice) / listPrice) * 100
     }
 }

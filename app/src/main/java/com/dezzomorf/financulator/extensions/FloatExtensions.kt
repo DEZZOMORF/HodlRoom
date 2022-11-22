@@ -1,11 +1,15 @@
 package com.dezzomorf.financulator.extensions
 
-fun Float?.formatPrice(): String {
+fun Float?.format(): String {
     return if (this != null && this != 0f) {
         if (this < 1) {
             String.format("%.12f", this).trimEnd('0').replace(",", ".")
         } else {
-            String.format("%.2f", this).replace(",", ".")
+            this.formatToTwoDigits()
         }
     } else ""
+}
+
+fun Float?.formatToTwoDigits(): String {
+    return String.format("%.2f", this).replace(",", ".")
 }

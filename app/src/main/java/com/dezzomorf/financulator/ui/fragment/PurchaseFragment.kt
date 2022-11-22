@@ -83,7 +83,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
 
         binding.spinnerUnitPurchase.setUpSpinner(CurrencyEntity::class.memberProperties.map { it.name }) { position ->
             binding.priceEditTextPurchase.setText(
-                coin.currentPrice?.getPriceByPosition(position).formatPrice()
+                coin.currentPrice.getPriceByPosition(position).format()
             )
             updateUI()
         }
@@ -92,8 +92,8 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         binding.currentPriceTextViewPurchase.text = getString(
             R.string.currentPrice,
             coin.symbol,
-            coin.currentPrice?.USD.formatPrice(),
-            coin.currentPrice?.BTC.formatPrice()
+            coin.currentPrice.USD.format(),
+            coin.currentPrice.BTC.format()
         )
 
         viewsVisibility(true)
@@ -126,7 +126,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         val price = binding.priceEditTextPurchase.text.stringToFloatOrZero()
         val unit = binding.spinnerUnitPurchase.selectedItem as String
         val sum = quantity * price
-        binding.sumTextViewPurchase.text = getString(R.string.total_cost, sum.formatPrice(), unit)
+        binding.sumTextViewPurchase.text = getString(R.string.total_cost, sum.format(), unit)
     }
 
     private fun updateButton() {

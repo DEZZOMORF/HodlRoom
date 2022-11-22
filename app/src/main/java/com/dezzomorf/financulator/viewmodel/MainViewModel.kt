@@ -2,6 +2,8 @@ package com.dezzomorf.financulator.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.dezzomorf.financulator.extensions.format
+import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.parallelMap
 import com.dezzomorf.financulator.model.ChangesByCoin
 import com.dezzomorf.financulator.model.Coin
@@ -67,11 +69,11 @@ class MainViewModel @Inject constructor(
                 changesByCoinList.add(
                     ChangesByCoin(
                         coin = cachedCoin,
-                        averagePrice = getAveragePrice(purchasesByCoin),
-                        quantity = coinQuantity(purchasesByCoin),
-                        sum = sum(purchasesByCoin, cachedCoin.currentPrice?.USD),
-                        changesInPercents = changesInPercents(purchasesByCoin, cachedCoin),
-                        changesInDollars = changesInDollars(purchasesByCoin, cachedCoin)
+                        averagePrice = getAveragePrice(purchasesByCoin).toFloat().format(),
+                        quantity = coinQuantity(purchasesByCoin).toFloat().format(),
+                        sum = sum(purchasesByCoin, cachedCoin.currentPrice.USD).toFloat().formatToTwoDigits(),
+                        changesInPercents = changesInPercents(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits(),
+                        changesInDollars = changesInDollars(purchasesByCoin, cachedCoin)?.toFloat().formatToTwoDigits()
                     )
                 )
             }

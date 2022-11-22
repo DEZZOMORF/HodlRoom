@@ -20,6 +20,7 @@
     <string name="network_error_429">Too many requests. Try again later</string>
     <string name="network_error_default">Something went wrong</string>
     <string name="network_error_no_internet_connection">No internet connection</string>
+
     <string name="delete">delete</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -47,4 +48,12 @@
     <string name="email_sent">Email sent</string>
     <string name="delete_account_title">Are you sure you want to delete your account?</string>
     <string name="delete_account_message">Your account will be permanently deleted. You can\'t undo this action.</string>
+    <string name="coin_logo" translatable="false">Coin logo</string>
+
+    <string name="current_price_with_value">Current price: %1$s</string>
+    <string name="average_price_with_value">Average price: %1$s</string>
+    <string name="quantity_with_value">Quantity: %1$s</string>
+    <string name="sum_with_value">Sum: %1$s</string>
+    <string name="changes_in_percents_with_value">Changes in percents: %1$s</string>
+    <string name="changes_in_dollars_with_value">Changes in dollars: %1$s</string>
 </resources>
