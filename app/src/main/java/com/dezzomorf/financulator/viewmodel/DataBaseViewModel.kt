@@ -3,6 +3,7 @@ package com.dezzomorf.financulator.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.api.mapper.PurchaseMapper
+import com.dezzomorf.financulator.manager.SharedPreferencesManager
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
@@ -12,12 +13,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-open class DataBaseViewModel @Inject constructor() : BaseViewModel() {
+open class DataBaseViewModel @Inject constructor(
+) : BaseViewModel() {
 
     private val dataBase = Firebase.firestore
 
     @Inject
     lateinit var purchaseMapper: PurchaseMapper
+    @Inject
+    lateinit var sharedPreferencesManager: SharedPreferencesManager
 
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
@@ -51,17 +55,21 @@ open class DataBaseViewModel @Inject constructor() : BaseViewModel() {
     fun getPurchases() {
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
+            val cachedPurchases = sharedPreferencesManager.getPurchases(user.uid)
+            if (cachedPurchases != null && cachedPurchases.isNotEmpty()) {
+                getPurchasesState.postValue(UiState.Success(cachedPurchases))
+                addPurchaseState.postValue(UiState.Loading)
+            }
+
             dataBase.collection("users")
                 .document(user.uid)
                 .collection("purchases")
                 .get()
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        getPurchasesState.postValue(
-                            UiState.Success(
-                                purchaseMapper.mapEntityToModel(task.result.documents)
-                            )
-                        )
+                        val purchaseList = purchaseMapper.mapEntityToModel(task.result.documents)
+                        sharedPreferencesManager.setPurchases(user.uid, purchaseList)
+                        getPurchasesState.postValue(UiState.Success(purchaseList))
                     } else {
                         getPurchasesState.postValue(
                             UiState.Error(
