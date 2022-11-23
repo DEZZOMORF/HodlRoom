@@ -22,5 +22,5 @@ data class CoinEntity(
 
     @SerializedName("market_data")
     @Expose
-    val marketData: CurrentPriceEntity,
+    val marketData: CurrentPriceEntity?,
 )

@@ -13,7 +13,7 @@ class CoinMapper @Inject constructor(): BaseMapper<CoinEntity, Coin>() {
             symbol = symbol?.uppercase(),
             name = name,
             logo = image?.large,
-            currentPrice = marketData.currentPrice
+            currentPrice = marketData?.currentPrice ?: emptyMap()
         )
     }
 }
