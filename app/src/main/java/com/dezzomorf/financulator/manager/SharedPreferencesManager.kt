@@ -23,38 +23,37 @@ class SharedPreferencesManager @Inject constructor(
         private const val PREFERENCES_FILE_NAME = "financulator.pref"
 
         private const val COIN_LIST_KEY = "coinListKey"
-        private const val COIN_LIST_TIMER = 24 * 60 * 60 * 1000 //24h
+        private const val COIN_LIST_TIMER = 3*24 * 60 * 60 * 1000 //3d
 
         private const val COIN_KEY = "coinKey"
+        private const val COIN_TIMER = 24 * 60 * 60 * 1000 //24h
 
         private const val PURCHASES_KEY = "purchasesKey"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
 
-    override fun setCoinList(userId: String, coinList: List<Coin>?) {
+    override fun setCoinList(coinList: List<Coin>?) {
         val coinListCache = CoinListCache(coinList, Date().time)
-        val dataCopy = HashMap(_coinList)
-        dataCopy[userId] = coinListCache
-        _coinList = dataCopy
+        _coinList = coinListCache
     }
 
-    override fun getCoinList(userId: String): List<Coin>? {
-        val coinListCache = _coinList[userId] ?: return null
+    override fun getCoinList(): List<Coin>? {
+        val coinListCache = _coinList ?: return null
         if (Date().time > coinListCache.lastUpdateDate + COIN_LIST_TIMER) return null //Timer
         return coinListCache.coinList
     }
 
-    override fun setCoin(userId: String, coin: Coin) {
+    override fun setCoin(coin: Coin) {
         val dataCopy = HashMap(_coin)
-        val coinsForUser = HashMap(dataCopy[userId] ?: emptyMap())
-        coinsForUser[coin.id] = coin
-        dataCopy[userId] = coinsForUser
+        dataCopy[coin.id] = Pair(Gson().toJson(coin), Date().time)
         _coin = dataCopy
     }
 
-    override fun getCoin(userId: String, coinId: String): Coin? {
-        return _coin[userId]?.get(coinId)
+    override fun getCoin(coinId: String): Coin? {
+        val coinCache = _coin[coinId] ?: return null
+        if (Date().time > coinCache.second + COIN_TIMER) return null //Timer
+        return Gson().fromJson(coinCache.first, Coin::class.java)
     }
 
     override fun setPurchases(userId: String, purchaseList: List<Purchase>) {
@@ -67,16 +66,16 @@ class SharedPreferencesManager @Inject constructor(
         return _purchases[userId]
     }
 
-    private var _coinList: Map<String, CoinListCache>
+    private var _coinList: CoinListCache?
         get() {
-            val type = object : TypeToken<Map<String, CoinListCache>>() {}.type
-            return getValue(type, COIN_LIST_KEY) ?: emptyMap()
+            val type = object : TypeToken<CoinListCache>() {}.type
+            return getValue(type, COIN_LIST_KEY)
         }
         set(value) = setValue(COIN_LIST_KEY, value)
 
-    private var _coin: Map<String, Map<String, Coin>>
+    private var _coin: Map<String, Pair<String, Long>>
         get() {
-            val type = object : TypeToken<Map<String, Map<String, Coin>>>() {}.type
+            val type = object : TypeToken<Map<String, Pair<String, Long>>>() {}.type
             return getValue(type, COIN_KEY) ?: emptyMap()
         }
         set(value) = setValue(COIN_KEY, value)

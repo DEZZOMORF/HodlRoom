@@ -18,20 +18,17 @@ class PurchaseViewModel @Inject constructor(
     var coinState: MutableLiveData<UiState<Coin>> = MutableLiveData()
 
     fun getCoinById(coinId: String) {
-        auth.currentUser?.let { user ->
-            coinState.postValue(UiState.Loading)
-            viewModelScope.launch {
-
-                val cachedCoin = coinRepository.getCachedCoin(user.uid, coinId)
-                if (cachedCoin != null) {
-                    coinState.postValue(UiState.Success(cachedCoin))
-                }
-
+        coinState.postValue(UiState.Loading)
+        viewModelScope.launch {
+            val cachedCoin = coinRepository.getCachedCoin(coinId)
+            if (cachedCoin != null) {
+                coinState.postValue(UiState.Success(cachedCoin))
+            } else {
                 when (val requestState = coinRepository.getCoinById(coinId)) {
                     is RequestState.Success -> {
-                        requestState.data?.let {
-                            coinRepository.setCoinToCache(user.uid, it)
-                            coinState.postValue(UiState.Success(it))
+                        requestState.data?.let { coin ->
+                            coinRepository.setCoinToCache(coin)
+                            coinState.postValue(UiState.Success(coin))
                         }
                     }
                     is RequestState.RequestError -> {

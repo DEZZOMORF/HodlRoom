@@ -28,30 +28,28 @@ class MainViewModel @Inject constructor(
     var changesByCoinState: MutableLiveData<UiState<List<ChangesByCoin>>> = MutableLiveData()
 
     fun summaryChangesByCoins(purchases: List<Purchase>) {
-        auth.currentUser?.let { user ->
-            changesByCoinState.postValue(UiState.Loading)
-            viewModelScope.launch {
-                val coinIdList = purchases.map { it.coinId }.distinct()
-                val coinsData = getCoinsData(coinIdList, user.uid)
-                val changesByCoin = formatDataToChangesByCoin(coinsData, purchases)
-                changesByCoinState.postValue(
-                    UiState.Success(changesByCoin)
-                )
-            }
+        changesByCoinState.postValue(UiState.Loading)
+        viewModelScope.launch {
+            val coinIdList = purchases.map { it.coinId }.distinct()
+            val coinsData = getCoinsData(coinIdList)
+            val changesByCoin = formatDataToChangesByCoin(coinsData, purchases)
+            changesByCoinState.postValue(
+                UiState.Success(changesByCoin)
+            )
         }
     }
 
     // Get cached coin data or request new
-    private suspend fun getCoinsData(coinIdList: List<String>, userId: String): List<Coin?> {
+    private suspend fun getCoinsData(coinIdList: List<String>): List<Coin?> {
         return coinIdList.parallelMap { coinId ->
-            val cashedCoin = sharedPreferencesManager.getCoin(userId, coinId)
+            val cashedCoin = sharedPreferencesManager.getCoin(coinId)
             return@parallelMap if (cashedCoin != null) {
-                sharedPreferencesManager.getCoin(userId, coinId)
+                sharedPreferencesManager.getCoin(coinId)
             } else {
                 when (val coinRequestState = coinRepository.getCoinById(coinId)) {
                     is RequestState.Success -> {
                         coinRequestState.data?.let { coin ->
-                            sharedPreferencesManager.setCoin(userId, coin)
+                            sharedPreferencesManager.setCoin(coin)
                             coin
                         }
                     }
@@ -73,7 +71,7 @@ class MainViewModel @Inject constructor(
                         quantity = coinQuantity(purchasesByCoin).toFloat().format(),
                         sum = sum(purchasesByCoin, cachedCoin.currentPrice.USD).toFloat().formatToTwoDigits(),
                         changesInPercents = changesInPercents(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits(),
-                        changesInDollars = changesInDollars(purchasesByCoin, cachedCoin)?.toFloat().formatToTwoDigits()
+                        changesInDollars = changesInDollars(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits()
                     )
                 )
             }
