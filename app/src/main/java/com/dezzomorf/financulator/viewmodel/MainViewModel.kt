@@ -69,7 +69,7 @@ class MainViewModel @Inject constructor(
                         coin = cachedCoin,
                         averagePrice = getAveragePrice(purchasesByCoin).toFloat().format(),
                         quantity = coinQuantity(purchasesByCoin).toFloat().format(),
-                        sum = sum(purchasesByCoin, cachedCoin.currentPrice.USD).toFloat().formatToTwoDigits(),
+                        sum = sum(purchasesByCoin, 0f).toFloat().formatToTwoDigits(),
                         changesInPercents = changesInPercents(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits(),
                         changesInDollars = changesInDollars(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits()
                     )

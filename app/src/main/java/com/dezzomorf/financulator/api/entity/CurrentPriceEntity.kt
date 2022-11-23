@@ -6,5 +6,5 @@ import com.google.gson.annotations.SerializedName
 data class CurrentPriceEntity(
     @SerializedName("current_price")
     @Expose
-    val currentPrice: CurrencyEntity?
+    val currentPrice: Map<String, Float>
 )

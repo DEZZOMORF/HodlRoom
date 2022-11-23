@@ -22,6 +22,11 @@ class CoinRepository @Inject constructor(
     private val requestErrorHandler: RequestErrorHandler,
     private val sharedPreferencesManager: SharedPreferencesManager
 ) {
+
+    companion object {
+        const val TETHER_ID = "tether"
+    }
+
     suspend fun getCoinList(): RequestState<List<Coin>?> {
         return try {
             when (networkConnectionManager.isConnected.value) {
@@ -67,6 +72,13 @@ class CoinRepository @Inject constructor(
                     coin.name?.startsWith(it) == true
                 }
             }
+    }
+
+    suspend fun getTether(): Coin? {
+        return getCachedCoin(TETHER_ID) ?: when (val requestState = getCoinById(TETHER_ID)) {
+            is RequestState.Success -> requestState.data
+            else -> null
+        }
     }
 
     // Cache methods

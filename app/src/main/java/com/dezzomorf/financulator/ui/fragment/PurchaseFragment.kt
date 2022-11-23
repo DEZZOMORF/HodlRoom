@@ -1,20 +1,24 @@
 package com.dezzomorf.financulator.ui.fragment
 
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
-import com.dezzomorf.financulator.api.entity.CurrencyEntity
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.databinding.FragmentPurchaseBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.Coin
+import com.dezzomorf.financulator.model.CurrencyName
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.PurchaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.reflect.full.memberProperties
+import java.util.*
+
 
 @AndroidEntryPoint
 class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseBinding::inflate) {
@@ -81,22 +85,40 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         binding.quantityEditTextPurchase.addTextChangedListener { updateUI() }
         binding.priceEditTextPurchase.addTextChangedListener { updateUI() }
 
-        binding.spinnerUnitPurchase.setUpSpinner(CurrencyEntity::class.memberProperties.map { it.name }) { position ->
-            binding.priceEditTextPurchase.setText(
-                coin.currentPrice.getPriceByPosition(position).format()
-            )
-            updateUI()
-        }
-        binding.spinnerUnitPurchase.selectSpinnerValue(ConstVal.defaultCurrency)
+        setUpSpinner(coin)
 
         binding.currentPriceTextViewPurchase.text = getString(
             R.string.currentPrice,
             coin.symbol,
-            coin.currentPrice.USD.format(),
-            coin.currentPrice.BTC.format()
+            coin.currentPrice[CurrencyName.USD.value].format(),
+            coin.currentPrice[CurrencyName.BTC.value].format()
         )
 
         viewsVisibility(true)
+    }
+
+    private fun setUpSpinner(coin: Coin) {
+        val currencyList: MutableList<String> = mutableListOf()
+        for (currency in coin.currentPrice.keys) {
+            currencyList.add(
+                currency.uppercase(Locale.getDefault())
+            )
+        }
+
+        val adapter = ArrayAdapter(requireContext(), R.layout.layout_spinner, R.id.spinner_text_view_spinner_item, currencyList)
+        adapter.setDropDownViewResource(R.layout.layout_spinner_item)
+        binding.spinnerUnitPurchase.adapter = adapter
+        binding.spinnerUnitPurchase.selectSpinnerValue(CurrencyName.USD.name)
+
+        binding.spinnerUnitPurchase.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val currentPriceByCurrency = coin.currentPrice[parent.getItemAtPosition(position).toString().lowercase(Locale.getDefault())]
+                binding.priceEditTextPurchase.setText(currentPriceByCurrency.format())
+                updateUI()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
     }
 
     private fun viewsVisibility(isVisible: Boolean) {

@@ -11,6 +11,7 @@ import com.dezzomorf.financulator.databinding.DefaultChangesByCoinItemBinding
 import com.dezzomorf.financulator.extensions.format
 import com.dezzomorf.financulator.extensions.loadAndSetImage
 import com.dezzomorf.financulator.model.ChangesByCoin
+import com.dezzomorf.financulator.model.CurrencyName
 import javax.inject.Inject
 
 class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<ChangesByCoin>() {
@@ -61,7 +62,7 @@ class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<Ch
             coinLogoImageView.loadAndSetImage(item.coin.logo)
             coinNameTextView.text = item.coin.name
             coinSymbolTextView.text = item.coin.symbol
-            currentPriceTextView.text = context.getString(R.string.current_price_with_value, item.coin.currentPrice.USD.format())
+            currentPriceTextView.text = context.getString(R.string.current_price_with_value, item.coin.currentPrice[CurrencyName.USD.value].format())
             averagePriceTextView.text = context.getString(R.string.average_price_with_value, item.averagePrice)
             quantityTextView.text = context.getString(R.string.quantity_with_value, item.quantity)
             sumTextView.text = context.getString(R.string.sum_with_value, item.sum)

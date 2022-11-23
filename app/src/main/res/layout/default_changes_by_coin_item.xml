@@ -52,11 +52,10 @@
         android:orientation="horizontal">
         <TextView
             android:id="@+id/coin_name_text_view_changes_by_coin_item"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:ellipsize="end"
-            android:maxLines="1"
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Bitcoin" />
