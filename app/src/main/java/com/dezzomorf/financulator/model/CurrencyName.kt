@@ -62,4 +62,8 @@ enum class CurrencyName(val value: String) {
     BITS("bits"),
     LINK("link"),
     SATS("sats");
+
+    companion object {
+        infix fun from(value: String): CurrencyName = values().first { it.value == value }
+    }
 }

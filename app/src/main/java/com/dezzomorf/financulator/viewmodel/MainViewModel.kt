@@ -2,19 +2,13 @@ package com.dezzomorf.financulator.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.dezzomorf.financulator.extensions.format
-import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.parallelMap
 import com.dezzomorf.financulator.model.ChangesByCoin
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.repository.CoinRepository
 import com.dezzomorf.financulator.util.ConstVal.TETHER
-import com.dezzomorf.financulator.util.FinanculatorMath.changesInDollars
-import com.dezzomorf.financulator.util.FinanculatorMath.changesInPercents
-import com.dezzomorf.financulator.util.FinanculatorMath.coinQuantity
-import com.dezzomorf.financulator.util.FinanculatorMath.getAveragePrice
-import com.dezzomorf.financulator.util.FinanculatorMath.sum
+import com.dezzomorf.financulator.util.FinanculatorMath
 import com.dezzomorf.financulator.util.RequestState
 import com.dezzomorf.financulator.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,7 +27,8 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val coinIdList = purchases.map { it.coinId }.distinct()
             val coinsData = getCoinsData(coinIdList)
-            val changesByCoin = formatDataToChangesByCoin(coinsData, purchases)
+            val tetherData = getTether()
+            val changesByCoin = formatDataToChangesByCoin(coinsData, purchases, tetherData)
             changesByCoinState.postValue(
                 UiState.Success(changesByCoin)
             )
@@ -42,40 +37,49 @@ class MainViewModel @Inject constructor(
 
     // Get cached coin data or request new
     private suspend fun getCoinsData(coinIdList: List<String>): List<Coin?> {
-        //Add tether to list. We need it for math
-        coinIdList.toMutableList().add(TETHER).also {
-            return coinIdList.parallelMap { coinId ->
-                val cashedCoin = sharedPreferencesManager.getCoin(coinId)
-                return@parallelMap if (cashedCoin != null) {
-                    sharedPreferencesManager.getCoin(coinId)
-                } else {
-                    when (val coinRequestState = coinRepository.getCoinById(coinId)) {
-                        is RequestState.Success -> {
-                            coinRequestState.data?.let { coin ->
-                                sharedPreferencesManager.setCoin(coin)
-                                coin
-                            }
+        return coinIdList.parallelMap { coinId ->
+            return@parallelMap sharedPreferencesManager.getCoin(coinId)
+                ?: when (val coinRequestState = coinRepository.getCoinById(coinId)) {
+                    is RequestState.Success -> {
+                        coinRequestState.data?.let { coin ->
+                            sharedPreferencesManager.setCoin(coin)
+                            coin
                         }
-                        else -> null
                     }
+                    else -> null
                 }
-            }.toList()
-        }
+        }.toList()
     }
 
-    private fun formatDataToChangesByCoin(coinList: List<Coin?>, purchases: List<Purchase>): List<ChangesByCoin> {
+    private suspend fun getTether(): Coin? {
+        return sharedPreferencesManager.getCoin(TETHER)
+            ?: when (val coinRequestState = coinRepository.getCoinById(TETHER)) {
+                is RequestState.Success -> {
+                    coinRequestState.data?.let { coin ->
+                        sharedPreferencesManager.setCoin(coin)
+                        coin
+                    }
+                }
+                else -> null
+            }
+    }
+
+    private fun formatDataToChangesByCoin(coinList: List<Coin?>, purchases: List<Purchase>, tetherData: Coin?): List<ChangesByCoin> {
         val changesByCoinList: MutableList<ChangesByCoin> = mutableListOf()
-        coinList.forEach { cachedCoin ->
-            if (cachedCoin?.id != null) {
-                val purchasesByCoin = purchases.filter { it.coinId == cachedCoin.id }
+        coinList.forEach { coin ->
+            if (coin != null && tetherData != null) {
+                val purchasesByCoin = purchases.filter { purchase ->
+                    purchase.coinId == coin.id
+                }
+                val financulatorMath = FinanculatorMath(coin, tetherData,purchasesByCoin)
                 changesByCoinList.add(
                     ChangesByCoin(
-                        coin = cachedCoin,
-                        averagePrice = getAveragePrice(purchasesByCoin).toFloat().format(),
-                        quantity = coinQuantity(purchasesByCoin).toFloat().format(),
-                        sum = sum(purchasesByCoin, 0f).toFloat().formatToTwoDigits(),
-                        changesInPercents = changesInPercents(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits(),
-                        changesInDollars = changesInDollars(purchasesByCoin, cachedCoin).toFloat().formatToTwoDigits()
+                        coin = coin,
+                        averagePrice = financulatorMath.getAveragePrice(),
+                        quantity = financulatorMath.coinQuantity(),
+                        sum = financulatorMath.sum(),
+                        changesInPercents = financulatorMath.changesInPercents(),
+                        changesInDollars = financulatorMath.changesInDollars()
                     )
                 )
             }

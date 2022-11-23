@@ -1,5 +1,6 @@
 package com.dezzomorf.financulator.api.mapper
 
+import com.dezzomorf.financulator.model.CurrencyName
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.util.BaseMapper
 import com.google.firebase.firestore.DocumentSnapshot
@@ -11,7 +12,7 @@ class PurchaseMapper @Inject constructor() : BaseMapper<DocumentSnapshot, Purcha
         Purchase(
             purchaseId = entity.id,
             coinId = entity.get("coinId").toString(),
-            currency = entity.get("currency").toString(),
+            currency = CurrencyName.from(entity.get("currency").toString().lowercase()),
             description = entity.get("description").toString(),
             price = entity.get("price").toString().toFloat(),
             quantity = entity.get("quantity").toString().toFloat(),
