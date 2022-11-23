@@ -9,6 +9,7 @@ import com.dezzomorf.financulator.model.ChangesByCoin
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.repository.CoinRepository
+import com.dezzomorf.financulator.util.ConstVal.TETHER
 import com.dezzomorf.financulator.util.FinanculatorMath.changesInDollars
 import com.dezzomorf.financulator.util.FinanculatorMath.changesInPercents
 import com.dezzomorf.financulator.util.FinanculatorMath.coinQuantity
@@ -41,22 +42,25 @@ class MainViewModel @Inject constructor(
 
     // Get cached coin data or request new
     private suspend fun getCoinsData(coinIdList: List<String>): List<Coin?> {
-        return coinIdList.parallelMap { coinId ->
-            val cashedCoin = sharedPreferencesManager.getCoin(coinId)
-            return@parallelMap if (cashedCoin != null) {
-                sharedPreferencesManager.getCoin(coinId)
-            } else {
-                when (val coinRequestState = coinRepository.getCoinById(coinId)) {
-                    is RequestState.Success -> {
-                        coinRequestState.data?.let { coin ->
-                            sharedPreferencesManager.setCoin(coin)
-                            coin
+        //Add tether to list. We need it for math
+        coinIdList.toMutableList().add(TETHER).also {
+            return coinIdList.parallelMap { coinId ->
+                val cashedCoin = sharedPreferencesManager.getCoin(coinId)
+                return@parallelMap if (cashedCoin != null) {
+                    sharedPreferencesManager.getCoin(coinId)
+                } else {
+                    when (val coinRequestState = coinRepository.getCoinById(coinId)) {
+                        is RequestState.Success -> {
+                            coinRequestState.data?.let { coin ->
+                                sharedPreferencesManager.setCoin(coin)
+                                coin
+                            }
                         }
+                        else -> null
                     }
-                    else -> null
                 }
-            }
-        }.toList()
+            }.toList()
+        }
     }
 
     private fun formatDataToChangesByCoin(coinList: List<Coin?>, purchases: List<Purchase>): List<ChangesByCoin> {
