@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.DefaultCoinItemBinding
 import com.dezzomorf.financulator.databinding.FirstCoinItemBinding
-import com.dezzomorf.financulator.databinding.LustCoinItemBinding
+import com.dezzomorf.financulator.databinding.LastCoinItemBinding
 import com.dezzomorf.financulator.databinding.SingleCoinItemBinding
 import com.dezzomorf.financulator.model.Coin
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class CoinListRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapte
                 ).root
             }
             LUST_ITEM_TYPE -> {
-                itemRootView = LustCoinItemBinding.inflate(
+                itemRootView = LastCoinItemBinding.inflate(
                     LayoutInflater.from(viewGroup.context), viewGroup, false
                 ).root
             }

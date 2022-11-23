@@ -8,6 +8,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.DefaultChangesByCoinItemBinding
+import com.dezzomorf.financulator.databinding.FirstChangesByCoinItemBinding
+import com.dezzomorf.financulator.databinding.LastChangesByCoinItemBinding
+import com.dezzomorf.financulator.databinding.SingleChangesByCoinItemBinding
 import com.dezzomorf.financulator.extensions.format
 import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.loadAndSetImage
@@ -18,30 +21,29 @@ import javax.inject.Inject
 class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<ChangesByCoin>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        //TODO Item types layouts
         val itemRootView: ConstraintLayout
-//        when (viewType) {
-//            FIRST_ITEM_TYPE -> {
-//                itemRootView = FirstCoinItemBinding.inflate(
-//                    LayoutInflater.from(viewGroup.context), viewGroup, false
-//                ).root
-//            }
-//            LUST_ITEM_TYPE -> {
-//                itemRootView = LustCoinItemBinding.inflate(
-//                    LayoutInflater.from(viewGroup.context), viewGroup, false
-//                ).root
-//            }
-//            SINGLE_ITEM_TYPE -> {
-//                itemRootView = SingleCoinItemBinding.inflate(
-//                    LayoutInflater.from(viewGroup.context), viewGroup, false
-//                ).root
-//            }
-//            else -> {
-        itemRootView = DefaultChangesByCoinItemBinding.inflate(
-            LayoutInflater.from(viewGroup.context), viewGroup, false
-        ).root
-//            }
-//        }
+        when (viewType) {
+            FIRST_ITEM_TYPE -> {
+                itemRootView = FirstChangesByCoinItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+            LUST_ITEM_TYPE -> {
+                itemRootView = LastChangesByCoinItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+            SINGLE_ITEM_TYPE -> {
+                itemRootView = SingleChangesByCoinItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+            else -> {
+                itemRootView = DefaultChangesByCoinItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+        }
         return ViewHolder(itemRootView)
     }
 

@@ -26,7 +26,7 @@ class SharedPreferencesManager @Inject constructor(
         private const val COIN_LIST_TIMER = 3*24 * 60 * 60 * 1000 //3d
 
         private const val COIN_KEY = "coinKey"
-        private const val COIN_TIMER = 24 * 60 * 60 * 1000 //24h
+        private const val COIN_TIMER = 1 * 60 * 60 * 1000 //1h
 
         private const val PURCHASES_KEY = "purchasesKey"
     }
