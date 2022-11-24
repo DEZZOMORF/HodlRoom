@@ -38,11 +38,11 @@ class MainViewModel @Inject constructor(
     // Get cached coin data or request new
     private suspend fun getCoinsData(coinIdList: List<String>): List<Coin?> {
         return coinIdList.parallelMap { coinId ->
-            return@parallelMap sharedPreferencesManager.getCoin(coinId)
+            return@parallelMap coinRepository.getCachedCoin(coinId)
                 ?: when (val coinRequestState = coinRepository.getCoinById(coinId)) {
                     is RequestState.Success -> {
                         coinRequestState.data?.let { coin ->
-                            sharedPreferencesManager.setCoin(coin)
+                            coinRepository.setCoinToCache(coin)
                             coin
                         }
                     }
@@ -52,11 +52,11 @@ class MainViewModel @Inject constructor(
     }
 
     private suspend fun getTether(): Coin? {
-        return sharedPreferencesManager.getCoin(TETHER)
+        return coinRepository.getCachedCoin(TETHER)
             ?: when (val coinRequestState = coinRepository.getCoinById(TETHER)) {
                 is RequestState.Success -> {
                     coinRequestState.data?.let { coin ->
-                        sharedPreferencesManager.setCoin(coin)
+                        coinRepository.setCoinToCache(coin)
                         coin
                     }
                 }

@@ -15,8 +15,7 @@ import javax.inject.Singleton
 @Singleton
 class NetworkConnectionManager @Inject constructor(@ApplicationContext context: Context) {
 
-    private val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager?
+    private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager?
 
     var isConnected = MutableLiveData(isAvailableConnection())
 

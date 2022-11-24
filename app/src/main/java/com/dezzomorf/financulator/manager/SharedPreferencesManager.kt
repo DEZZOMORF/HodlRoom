@@ -38,9 +38,9 @@ class SharedPreferencesManager @Inject constructor(
         _coinList = coinListCache
     }
 
-    override fun getCoinList(): List<Coin>? {
+    override fun getCoinList(isOnline: Boolean): List<Coin>? {
         val coinListCache = _coinList ?: return null
-        if (Date().time > coinListCache.lastUpdateDate + COIN_LIST_TIMER) return null //Timer
+        if (Date().time > coinListCache.lastUpdateDate + COIN_LIST_TIMER && isOnline) return null //Timer and internet check
         return coinListCache.coinList
     }
 
@@ -50,9 +50,9 @@ class SharedPreferencesManager @Inject constructor(
         _coin = dataCopy
     }
 
-    override fun getCoin(coinId: String): Coin? {
+    override fun getCoin(coinId: String, isOnline: Boolean): Coin? {
         val coinCache = _coin[coinId] ?: return null
-        if (Date().time > coinCache.second + COIN_TIMER) return null //Timer
+        if (Date().time > coinCache.second + COIN_TIMER && isOnline) return null //Timer and internet check
         return Gson().fromJson(coinCache.first, Coin::class.java)
     }
 
