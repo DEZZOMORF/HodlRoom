@@ -3,6 +3,7 @@ package com.dezzomorf.financulator.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.api.mapper.PurchaseMapper
+import com.dezzomorf.financulator.manager.NetworkConnectionManager
 import com.dezzomorf.financulator.manager.SharedPreferencesManager
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.util.UiState
@@ -24,6 +25,8 @@ open class DataBaseViewModel @Inject constructor(
     @Inject
     lateinit var sharedPreferencesManager: SharedPreferencesManager
 
+    @Inject
+    lateinit var networkConnectionManager: NetworkConnectionManager
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
 
@@ -34,22 +37,31 @@ open class DataBaseViewModel @Inject constructor(
     fun addPurchase(purchase: PurchaseEntity) {
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
-            dataBase.collection("users")
-                .document(user.uid)
-                .collection("purchases")
-                .document(generateId())
-                .set(purchase)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        addPurchaseState.postValue(UiState.Success(Unit))
-                    } else {
-                        addPurchaseState.postValue(
-                            UiState.Error(
-                                Exception(task.exception)
+            if (networkConnectionManager.isConnected.value == true) {
+                dataBase.collection("users")
+                    .document(user.uid)
+                    .collection("purchases")
+                    .document(generateId())
+                    .set(purchase)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            addPurchaseState.postValue(UiState.Success(Unit))
+                        } else {
+                            addPurchaseState.postValue(
+                                UiState.Error(
+                                    Exception(task.exception)
+                                )
                             )
-                        )
+                        }
                     }
-                }
+            } else {
+                //TODO Save to cache and send to DB when online
+                addPurchaseState.postValue(
+                    UiState.Error(
+                        Exception("TODO")
+                    )
+                )
+            }
         }
     }
 

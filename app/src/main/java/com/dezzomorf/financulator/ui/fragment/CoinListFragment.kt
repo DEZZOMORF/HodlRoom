@@ -59,7 +59,7 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
     override fun setUpAdapters() {
         coinListAdapter.onItemClick = {
             val bundle = Bundle()
-            bundle.putString(ConstVal.ID, it.id)
+            bundle.putSerializable(ConstVal.ID, it)
             findNavController().navigate(R.id.action_coinListFragment_to_purchaseFragment, bundle)
         }
 

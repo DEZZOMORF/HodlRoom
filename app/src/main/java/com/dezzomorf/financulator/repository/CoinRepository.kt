@@ -65,7 +65,7 @@ class CoinRepository @Inject constructor(
             .mapEntityToModel(body)
             .filter { coin ->
                 !filterStrings.any {
-                    coin.name?.startsWith(it) == true
+                    coin.name.startsWith(it)
                 }
             }
     }

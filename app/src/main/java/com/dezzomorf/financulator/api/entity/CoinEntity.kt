@@ -6,15 +6,15 @@ import com.google.gson.annotations.SerializedName
 data class CoinEntity(
     @SerializedName("id")
     @Expose
-    val id: String?,
+    val id: String,
 
     @SerializedName("symbol")
     @Expose
-    val symbol: String?,
+    val symbol: String,
 
     @SerializedName("name")
     @Expose
-    val name: String?,
+    val name: String,
 
     @SerializedName("image")
     @Expose

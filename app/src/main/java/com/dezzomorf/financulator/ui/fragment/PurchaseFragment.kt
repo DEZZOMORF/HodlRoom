@@ -24,9 +24,10 @@ import java.util.*
 class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseBinding::inflate) {
 
     private val viewModel: PurchaseViewModel by viewModels()
-    lateinit var coinId: String
+    lateinit var coin: Coin
 
-    override fun setUpUI() {
+    override fun onResume() {
+        super.onResume()
         loadCurrentCoinData()
     }
 
@@ -42,6 +43,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
+                    setDataToUi(coin)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -94,17 +96,13 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             coin.currentPrice[CurrencyName.BTC.value].format()
         )
 
-        viewsVisibility(true)
+        showViews()
     }
 
     private fun setUpSpinner(coin: Coin) {
-        val currencyList: MutableList<String> = mutableListOf()
-        for (currency in coin.currentPrice.keys) {
-            currencyList.add(
-                currency.uppercase(Locale.getDefault())
-            )
+        val currencyList: List<String> = coin.currentPrice.keys.toList().map { it.uppercase() }.ifEmpty {
+            CurrencyName.values().map { it.name.uppercase() }
         }
-
         val adapter = ArrayAdapter(requireContext(), R.layout.layout_spinner, R.id.spinner_text_view_spinner_item, currencyList)
         adapter.setDropDownViewResource(R.layout.layout_spinner_item)
         binding.spinnerUnitPurchase.adapter = adapter
@@ -121,23 +119,23 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         }
     }
 
-    private fun viewsVisibility(isVisible: Boolean) {
+    private fun showViews() {
         with(binding) {
-            descriptionEditTextPurchase.isVisible = isVisible
-            spinnerUnitPurchase.isVisible = isVisible
-            quantityEditTextPurchase.isVisible = isVisible
-            priceEditTextPurchase.isVisible = isVisible
-            sumTextViewPurchase.isVisible = isVisible
-            saveButtonPurchase.isVisible = isVisible
-            separateLineView.isVisible = isVisible
+            descriptionEditTextPurchase.isVisible = true
+            spinnerUnitPurchase.isVisible = true
+            quantityEditTextPurchase.isVisible = true
+            priceEditTextPurchase.isVisible = true
+            sumTextViewPurchase.isVisible = true
+            saveButtonPurchase.isVisible = true
+            separateLineView.isVisible = true
         }
     }
 
     private fun loadCurrentCoinData() {
-        val argument = requireArguments().getString(ConstVal.ID)
+        val argument = requireArguments().getSerializable(ConstVal.ID)
         if (argument != null) {
-            coinId = argument
-            viewModel.getCoinById(argument)
+            coin = argument as Coin
+            viewModel.getCoinById(coin.id)
         } else {
             requireActivity().onBackPressed()
         }
@@ -164,7 +162,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
 
     private fun getPurchaseData(): PurchaseEntity {
         return PurchaseEntity(
-            coinId = coinId,
+            coinId = coin.id,
             currency = binding.spinnerUnitPurchase.selectedItem as String,
             description = binding.descriptionEditTextPurchase.text.toString(),
             price = binding.priceEditTextPurchase.text.stringToFloatOrZero(),
