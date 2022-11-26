@@ -16,6 +16,7 @@ import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.PurchaseViewModel
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -73,10 +74,28 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         }
         binding.saveButtonPurchase.setOnClickListener {
             if (binding.saveButtonPurchase.isEnabled) {
+                requireContext().hideKeyboard(binding.root)
                 val purchase = getPurchaseData()
-                viewModel.addPurchase(purchase)
+                if (viewModel.networkConnectionManager.isConnected.value == true) {
+                    viewModel.addPurchase(purchase)
+                } else {
+                    itIsExperimentalFeatureDialog(purchase)
+                }
             }
         }
+    }
+
+    private fun itIsExperimentalFeatureDialog(purchase: PurchaseEntity) {
+        MaterialAlertDialogBuilder(requireContext())
+            .setIcon(R.drawable.ic_baseline_error_24)
+            .setTitle(android.R.string.dialog_alert_title)
+            .setMessage(getString(R.string.it_is_experimental_feature, getString(R.string.app_name)))
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                viewModel.addPurchase(purchase)
+            }
+            .setNegativeButton(android.R.string.cancel) {_, _ ->}
+            .create()
+            .show()
     }
 
     private fun setDataToUi(coin: Coin) {

@@ -27,6 +27,7 @@ open class DataBaseViewModel @Inject constructor(
 
     @Inject
     lateinit var networkConnectionManager: NetworkConnectionManager
+
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
 
@@ -38,29 +39,9 @@ open class DataBaseViewModel @Inject constructor(
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
             if (networkConnectionManager.isConnected.value == true) {
-                dataBase.collection("users")
-                    .document(user.uid)
-                    .collection("purchases")
-                    .document(generateId())
-                    .set(purchase)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            addPurchaseState.postValue(UiState.Success(Unit))
-                        } else {
-                            addPurchaseState.postValue(
-                                UiState.Error(
-                                    Exception(task.exception)
-                                )
-                            )
-                        }
-                    }
+                savePurchaseToDataBase(purchase, user.uid)
             } else {
-                //TODO Save to cache and send to DB when online
-                addPurchaseState.postValue(
-                    UiState.Error(
-                        Exception("TODO")
-                    )
-                )
+                savePurchaseLater(purchase, user.uid)
             }
         }
     }
@@ -91,5 +72,29 @@ open class DataBaseViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun savePurchaseToDataBase(purchase: PurchaseEntity, userId: String) {
+        dataBase.collection("users")
+            .document(userId)
+            .collection("purchases")
+            .document(generateId())
+            .set(purchase)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    addPurchaseState.postValue(UiState.Success(Unit))
+                } else {
+                    addPurchaseState.postValue(
+                        UiState.Error(
+                            Exception(task.exception)
+                        )
+                    )
+                }
+            }
+    }
+
+    // Save to shared preferences
+    private fun savePurchaseLater(purchase: PurchaseEntity, uid: String) {
+        //TODO
     }
 }

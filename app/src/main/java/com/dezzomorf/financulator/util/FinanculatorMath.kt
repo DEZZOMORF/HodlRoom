@@ -9,7 +9,6 @@ class FinanculatorMath(
     private val tetherData: Coin,
     private val purchases: List<Purchase>
 ) {
-    //TODO All that fucking logic doesn't work!!!!!!!!!!!! THINK!THINK!THINK!
     fun getAveragePrice(): Float {
         return purchases.map {
             // Get price in usd(tether)
