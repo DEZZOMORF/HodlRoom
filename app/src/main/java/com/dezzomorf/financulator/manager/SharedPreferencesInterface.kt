@@ -1,5 +1,6 @@
 package com.dezzomorf.financulator.manager
 
+import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
 
@@ -12,4 +13,8 @@ interface SharedPreferencesInterface {
 
     fun setPurchases(userId: String, purchaseList: List<Purchase>)
     fun getPurchases(userId: String): List<Purchase>?
+
+    fun addSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity)
+    fun getSaveLaterPurchases(userId: String): List<PurchaseEntity>?
+    fun removeSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity)
 }

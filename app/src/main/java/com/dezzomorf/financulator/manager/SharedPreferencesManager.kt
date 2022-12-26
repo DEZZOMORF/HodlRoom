@@ -3,6 +3,7 @@ package com.dezzomorf.financulator.manager
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.CoinListCache
 import com.dezzomorf.financulator.model.Purchase
@@ -23,12 +24,14 @@ class SharedPreferencesManager @Inject constructor(
         private const val PREFERENCES_FILE_NAME = "financulator.pref"
 
         private const val COIN_LIST_KEY = "coinListKey"
-        private const val COIN_LIST_TIMER = 3*24 * 60 * 60 * 1000 //3d
+        private const val COIN_LIST_TIMER = 3 * 24 * 60 * 60 * 1000 //3d
 
         private const val COIN_KEY = "coinKey"
         private const val COIN_TIMER = 1 * 60 * 60 * 1000 //1h
 
         private const val PURCHASES_KEY = "purchasesKey"
+
+        private const val SAVE_LATER_PURCHASES_KEY = "saveLaterPurchasesKey"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
@@ -66,6 +69,31 @@ class SharedPreferencesManager @Inject constructor(
         return _purchases[userId]
     }
 
+    override fun addSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity) {
+        val dataCopy = HashMap(_saveLaterPurchases)
+
+        val newList = mutableListOf<PurchaseEntity>().also { list ->
+            dataCopy[userId]?.let { list.addAll(it) }
+            list.add(purchaseEntity)
+        }
+        dataCopy[userId] = newList
+
+        _saveLaterPurchases = dataCopy
+    }
+
+    override fun getSaveLaterPurchases(userId: String): List<PurchaseEntity>? {
+        return _saveLaterPurchases[userId]
+    }
+
+    override fun removeSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity) {
+        val dataCopy = HashMap(_saveLaterPurchases)
+        val userSaveLaterPurchaseList = dataCopy[userId]?.toMutableList()
+        val savedPurchase = userSaveLaterPurchaseList?.find { it.date.seconds == purchaseEntity.date.seconds } ?: return
+        userSaveLaterPurchaseList.remove(savedPurchase)
+        dataCopy[userId] = userSaveLaterPurchaseList
+        _saveLaterPurchases = dataCopy
+    }
+
     private var _coinList: CoinListCache?
         get() {
             val type = object : TypeToken<CoinListCache>() {}.type
@@ -86,6 +114,13 @@ class SharedPreferencesManager @Inject constructor(
             return getValue(type, PURCHASES_KEY) ?: emptyMap()
         }
         set(value) = setValue(PURCHASES_KEY, value)
+
+    private var _saveLaterPurchases: Map<String, List<PurchaseEntity>>
+        get() {
+            val type = object : TypeToken<Map<String, List<PurchaseEntity>>>() {}.type
+            return getValue(type, SAVE_LATER_PURCHASES_KEY) ?: emptyMap()
+        }
+        set(value) = setValue(SAVE_LATER_PURCHASES_KEY, value)
 
     // convenience
     private fun <T> getValue(type: Type, key: String): T? {

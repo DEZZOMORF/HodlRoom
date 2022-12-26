@@ -17,6 +17,7 @@ import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.PurchaseViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.Timestamp
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 
@@ -76,7 +77,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             if (binding.saveButtonPurchase.isEnabled) {
                 requireContext().hideKeyboard(binding.root)
                 val purchase = getPurchaseData()
-                if (viewModel.networkConnectionManager.isConnected.value == true) {
+                if (viewModel.networkConnectionManager.isConnected.value) {
                     viewModel.addPurchase(purchase)
                 } else {
                     itIsExperimentalFeatureDialog(purchase)
@@ -93,7 +94,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             .setPositiveButton(android.R.string.ok) { _, _ ->
                 viewModel.addPurchase(purchase)
             }
-            .setNegativeButton(android.R.string.cancel) {_, _ ->}
+            .setNegativeButton(android.R.string.cancel) { _, _ -> }
             .create()
             .show()
     }
@@ -183,6 +184,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         return PurchaseEntity(
             coinId = coin.id,
             currency = binding.spinnerUnitPurchase.selectedItem as String,
+            date = Timestamp(Date()),
             description = binding.descriptionEditTextPurchase.text.toString(),
             price = binding.priceEditTextPurchase.text.stringToFloatOrZero(),
             quantity = binding.quantityEditTextPurchase.text.stringToFloatOrZero()

@@ -7,17 +7,20 @@ import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.lifecycle.MutableLiveData
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class NetworkConnectionManager @Inject constructor(@ApplicationContext context: Context) {
+class NetworkConnectionManager @Inject constructor(
+    @ApplicationContext private val context: Context
+    ) {
 
     private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager?
 
-    var isConnected = MutableLiveData(isAvailableConnection())
+    var isConnected = MutableStateFlow(isAvailableConnection())
 
     init {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -26,14 +29,17 @@ class NetworkConnectionManager @Inject constructor(@ApplicationContext context: 
 
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-                    isConnected.postValue(true)
+                    runBlocking {
+                        isConnected.emit(true)
+                    }
                 }
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
-                    isConnected.postValue(false)
+                    runBlocking {
+                        isConnected.emit(false)
+                    }
                 }
-
             })
         }
     }
@@ -44,7 +50,9 @@ class NetworkConnectionManager @Inject constructor(@ApplicationContext context: 
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N
                 && intent?.action == "android.net.conn.CONNECTIVITY_CHANGE"
             ) { // pre nougat versions only!
-                isConnected.postValue(isAvailableConnection())
+                runBlocking {
+                    isConnected.emit(isAvailableConnection())
+                }
             }
         }
     }

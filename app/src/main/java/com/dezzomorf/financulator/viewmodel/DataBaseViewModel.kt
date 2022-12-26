@@ -1,8 +1,11 @@
 package com.dezzomorf.financulator.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.api.mapper.PurchaseMapper
+import com.dezzomorf.financulator.extensions.parallelMap
 import com.dezzomorf.financulator.manager.NetworkConnectionManager
 import com.dezzomorf.financulator.manager.SharedPreferencesManager
 import com.dezzomorf.financulator.model.Purchase
@@ -11,6 +14,7 @@ import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,6 +35,10 @@ open class DataBaseViewModel @Inject constructor(
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
 
+    companion object {
+        private const val DATA_BASE_LOG_TAG = "DATA_BASE_LOG_TAG"
+    }
+
     private fun generateId(): String {
         return java.util.UUID.randomUUID().toString()
     }
@@ -38,7 +46,7 @@ open class DataBaseViewModel @Inject constructor(
     fun addPurchase(purchase: PurchaseEntity) {
         addPurchaseState.postValue(UiState.Loading)
         auth.currentUser?.let { user ->
-            if (networkConnectionManager.isConnected.value == true) {
+            if (networkConnectionManager.isConnected.value) {
                 savePurchaseToDataBase(purchase, user.uid)
             } else {
                 savePurchaseLater(purchase, user.uid)
@@ -75,6 +83,7 @@ open class DataBaseViewModel @Inject constructor(
     }
 
     private fun savePurchaseToDataBase(purchase: PurchaseEntity, userId: String) {
+        Log.e(DATA_BASE_LOG_TAG, "start savePurchaseToDataBase")
         dataBase.collection("users")
             .document(userId)
             .collection("purchases")
@@ -82,6 +91,8 @@ open class DataBaseViewModel @Inject constructor(
             .set(purchase)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    Log.e(DATA_BASE_LOG_TAG, "savePurchaseToDataBase: isSuccessful")
+                    sharedPreferencesManager.removeSaveLaterPurchase(userId, purchase)
                     addPurchaseState.postValue(UiState.Success(Unit))
                 } else {
                     addPurchaseState.postValue(
@@ -95,6 +106,27 @@ open class DataBaseViewModel @Inject constructor(
 
     // Save to shared preferences
     private fun savePurchaseLater(purchase: PurchaseEntity, uid: String) {
-        //TODO
+        Log.e(DATA_BASE_LOG_TAG, "savePurchaseLater")
+        sharedPreferencesManager.addSaveLaterPurchase(uid, purchase)
+        addPurchaseState.postValue(UiState.Success(Unit))
+    }
+
+    fun setUpIsConnectCollecting() {
+        viewModelScope.launch {
+            networkConnectionManager.isConnected.collect { isConnected ->
+                auth.currentUser?.let { user ->
+                    if (isConnected) {
+                        Log.e(DATA_BASE_LOG_TAG, "internet connected")
+                        val saveLaterPurchases = sharedPreferencesManager.getSaveLaterPurchases(user.uid)
+                        Log.e(DATA_BASE_LOG_TAG, "$saveLaterPurchases")
+                        if (!saveLaterPurchases.isNullOrEmpty()) {
+                            saveLaterPurchases.parallelMap {
+                                savePurchaseToDataBase(it, user.uid)
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
