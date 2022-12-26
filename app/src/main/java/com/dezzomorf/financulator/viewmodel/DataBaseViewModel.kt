@@ -1,6 +1,5 @@
 package com.dezzomorf.financulator.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
@@ -34,10 +33,6 @@ open class DataBaseViewModel @Inject constructor(
 
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
-
-    companion object {
-        private const val DATA_BASE_LOG_TAG = "DATA_BASE_LOG_TAG"
-    }
 
     private fun generateId(): String {
         return java.util.UUID.randomUUID().toString()
@@ -83,7 +78,6 @@ open class DataBaseViewModel @Inject constructor(
     }
 
     private fun savePurchaseToDataBase(purchase: PurchaseEntity, userId: String) {
-        Log.e(DATA_BASE_LOG_TAG, "start savePurchaseToDataBase")
         dataBase.collection("users")
             .document(userId)
             .collection("purchases")
@@ -91,7 +85,6 @@ open class DataBaseViewModel @Inject constructor(
             .set(purchase)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Log.e(DATA_BASE_LOG_TAG, "savePurchaseToDataBase: isSuccessful")
                     sharedPreferencesManager.removeSaveLaterPurchase(userId, purchase)
                     addPurchaseState.postValue(UiState.Success(Unit))
                 } else {
@@ -106,7 +99,6 @@ open class DataBaseViewModel @Inject constructor(
 
     // Save to shared preferences
     private fun savePurchaseLater(purchase: PurchaseEntity, uid: String) {
-        Log.e(DATA_BASE_LOG_TAG, "savePurchaseLater")
         sharedPreferencesManager.addSaveLaterPurchase(uid, purchase)
         addPurchaseState.postValue(UiState.Success(Unit))
     }
@@ -116,9 +108,7 @@ open class DataBaseViewModel @Inject constructor(
             networkConnectionManager.isConnected.collect { isConnected ->
                 auth.currentUser?.let { user ->
                     if (isConnected) {
-                        Log.e(DATA_BASE_LOG_TAG, "internet connected")
                         val saveLaterPurchases = sharedPreferencesManager.getSaveLaterPurchases(user.uid)
-                        Log.e(DATA_BASE_LOG_TAG, "$saveLaterPurchases")
                         if (!saveLaterPurchases.isNullOrEmpty()) {
                             saveLaterPurchases.parallelMap {
                                 savePurchaseToDataBase(it, user.uid)

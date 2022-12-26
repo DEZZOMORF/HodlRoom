@@ -24,7 +24,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
     override fun setUpUI() {
-            viewModel.getPurchases()
+        viewModel.getPurchases()
     }
 
     override fun setUpSwipeToRefresh() {
@@ -80,8 +80,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     override fun setUpAdapters() {
         mainRecyclerViewAdapter.onItemClick = {
             val bundle = Bundle()
-            bundle.putString(ConstVal.ID, it.coin.id)
-            //findNavController().navigate(R.id., bundle)
+            bundle.putSerializable(ConstVal.ID, it.coin)
+            findNavController().navigate(R.id.purchasesByCoinFragment, bundle)
         }
 
         with(binding.purchaseListRecyclerViewMain) {
