@@ -74,6 +74,10 @@ class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<Ch
             itemView.setOnClickListener {
                 onItemClick(item)
             }
+            itemView.setOnLongClickListener {
+                onItemLongClick(item)
+                true
+            }
         }
     }
 }

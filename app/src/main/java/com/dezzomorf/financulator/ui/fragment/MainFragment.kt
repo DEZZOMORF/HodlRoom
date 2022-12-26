@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.adapter.MainRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentMainBinding
+import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
+import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.MainViewModel
@@ -75,6 +77,23 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 }
             }
         }
+
+        viewModel.deletePurchasesState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(getString(R.string.success))
+                    viewModel.getPurchases()
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
     }
 
     override fun setUpAdapters() {
@@ -82,6 +101,26 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             val bundle = Bundle()
             bundle.putSerializable(ConstVal.ID, it.coin)
             findNavController().navigate(R.id.purchasesByCoinFragment, bundle)
+        }
+
+        mainRecyclerViewAdapter.onItemLongClick = {
+            FinanculatorDialog(
+                context = requireContext(),
+                content = listOf(
+                    FinanculatorDialog.FinanculatorDialogItem(
+                        title = requireContext().resourcesCompat.getString(R.string.delete),
+                        action = {
+                            viewModel.auth.currentUser?.let { user ->
+                                viewModel.deletePurchasesByCoin(it.coin, user.uid)
+                            }
+                        }
+                    ),
+                    FinanculatorDialog.FinanculatorDialogItem(
+                        title = requireContext().resourcesCompat.getString(android.R.string.cancel),
+                        action = {}
+                    )
+                )
+            ).createAndShow()
         }
 
         with(binding.purchaseListRecyclerViewMain) {

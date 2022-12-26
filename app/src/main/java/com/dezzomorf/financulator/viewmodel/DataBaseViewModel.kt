@@ -7,6 +7,7 @@ import com.dezzomorf.financulator.api.mapper.PurchaseMapper
 import com.dezzomorf.financulator.extensions.parallelMap
 import com.dezzomorf.financulator.manager.NetworkConnectionManager
 import com.dezzomorf.financulator.manager.SharedPreferencesManager
+import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.base.BaseViewModel
@@ -33,6 +34,7 @@ open class DataBaseViewModel @Inject constructor(
 
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
+    var deletePurchasesState: MutableLiveData<UiState<Unit>> = MutableLiveData()
 
     private fun generateId(): String {
         return java.util.UUID.randomUUID().toString()
@@ -118,5 +120,38 @@ open class DataBaseViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun deletePurchasesByCoin(coin: Coin, userId: String) {
+        deletePurchasesState.postValue(UiState.Loading)
+        dataBase.collection("users")
+            .document(userId)
+            .collection("purchases")
+            .whereEqualTo("coinId", coin.id)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        document.reference.delete()
+                            .addOnSuccessListener {
+                                sharedPreferencesManager.setPurchases(userId, emptyList())
+                                deletePurchasesState.postValue(UiState.Success(Unit))
+                            }
+                            .addOnFailureListener {
+                                deletePurchasesState.postValue(
+                                    UiState.Error(
+                                        Exception(task.exception)
+                                    )
+                                )
+                            }
+                    }
+                } else {
+                    deletePurchasesState.postValue(
+                        UiState.Error(
+                            Exception(task.exception)
+                        )
+                    )
+                }
+            }
     }
 }

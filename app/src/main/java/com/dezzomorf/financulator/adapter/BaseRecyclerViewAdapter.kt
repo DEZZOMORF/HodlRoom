@@ -16,6 +16,7 @@ abstract class BaseRecyclerViewAdapter<E> : RecyclerView.Adapter<BaseRecyclerVie
 
     private var list: List<E> = listOf()
     lateinit var onItemClick: (E) -> Unit
+    lateinit var onItemLongClick: (E) -> Unit
 
     fun getList(): List<E> = list
 
