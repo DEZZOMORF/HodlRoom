@@ -25,13 +25,13 @@ class FinanculatorMath(
         return coin.currentPrice[CurrencyName.USD.value]?.times(coinQuantity()) ?: 0f
     }
 
-    fun changesInPercents(): Float {
+    fun profitInPercents(): Float {
         val averagePrice = getAveragePrice()
         return percentageDifference(averagePrice, coin.currentPrice[CurrencyName.USD.value] ?: 0f)
     }
 
-    fun changesInDollars(): Float {
-        return getAveragePrice() * coinQuantity() / 100 * changesInPercents()
+    fun profitInDollars(): Float {
+        return getAveragePrice() * coinQuantity() / 100 * profitInPercents()
     }
 
     private fun percentageDifference(listPrice: Float, actualPrice: Float): Float {

@@ -78,8 +78,8 @@ class MainViewModel @Inject constructor(
                         averagePrice = financulatorMath.getAveragePrice(),
                         quantity = financulatorMath.coinQuantity(),
                         sum = financulatorMath.sum(),
-                        changesInPercents = financulatorMath.changesInPercents(),
-                        changesInDollars = financulatorMath.changesInDollars()
+                        profitInPercents = financulatorMath.profitInPercents(),
+                        profitInDollars = financulatorMath.profitInDollars()
                     )
                 )
             }

@@ -57,8 +57,8 @@ class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<Ch
         private val averagePriceTextView: TextView = itemView.findViewById(R.id.average_price_text_view_changes_by_coin_item)
         private val quantityTextView: TextView = itemView.findViewById(R.id.quantity_text_view_changes_by_coin_item)
         private val sumTextView: TextView = itemView.findViewById(R.id.sum_text_view_changes_by_coin_item)
-        private val changesInPercentsTextView: TextView = itemView.findViewById(R.id.changes_in_percents_text_view_changes_by_coin_item)
-        private val changesInDollarsTextView: TextView = itemView.findViewById(R.id.changes_in_dollars_in_percents_text_view_changes_by_coin_item)
+        private val profitInPercentsTextView: TextView = itemView.findViewById(R.id.profit_in_percents_text_view_changes_by_coin_item)
+        private val profitInDollarsTextView: TextView = itemView.findViewById(R.id.profit_in_dollars_in_percents_text_view_changes_by_coin_item)
 
         override fun bindView() {
             val item = getList()[adapterPosition]
@@ -69,8 +69,8 @@ class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<Ch
             averagePriceTextView.text = context.getString(R.string.average_price_with_value, item.averagePrice.format())
             quantityTextView.text = context.getString(R.string.quantity_with_value, item.quantity.format())
             sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits())
-            changesInPercentsTextView.text = context.getString(R.string.changes_in_percents_with_value, item.changesInPercents.formatToTwoDigits())
-            changesInDollarsTextView.text = context.getString(R.string.changes_in_dollars_with_value, item.changesInDollars.formatToTwoDigits())
+            profitInPercentsTextView.text = context.getString(R.string.changes_in_percents_with_value, item.profitInPercents.formatToTwoDigits())
+            profitInDollarsTextView.text = context.getString(R.string.changes_in_dollars_with_value, item.profitInDollars.formatToTwoDigits())
             itemView.setOnClickListener {
                 onItemClick(item)
             }

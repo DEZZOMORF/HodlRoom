@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_horizontal_coin_list"
+    android:background="@color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="@drawable/ripple_default">
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/coin_info_flow_purchase_item"
+        style="@style/Financulator.CoinListItemInfoVerticalFlow"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="purchase_count_text_view_purchase_item,description_text_view_purchase_item,quantity_text_view_purchase_item,price_text_view_purchase_item,sum_text_view_purchase_item,profit_text_view_purchase_item"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/purchase_count_text_view_purchase_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="1"/>
+
+    <TextView
+        android:id="@+id/description_text_view_purchase_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="Description: ###"/>
+
+    <TextView
+        android:id="@+id/quantity_text_view_purchase_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="Quantity: ###"/>
+
+    <TextView
+        android:id="@+id/price_text_view_purchase_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="Price: ###"/>
+
+    <TextView
+        android:id="@+id/sum_text_view_purchase_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="Sum: ###"/>
+
+    <TextView
+        android:id="@+id/profit_text_view_purchase_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        tools:text="Changes: ###"/>
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/gradient_center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="-12dp"
-        app:constraint_referenced_ids="coin_name_linear_layout_changes_by_coin_item,current_price_text_view_changes_by_coin_item,average_price_text_view_changes_by_coin_item,quantity_text_view_changes_by_coin_item,sum_text_view_changes_by_coin_item,changes_in_percents_text_view_changes_by_coin_item,changes_in_dollars_in_percents_text_view_changes_by_coin_item"
+        app:constraint_referenced_ids="coin_name_linear_layout_changes_by_coin_item,current_price_text_view_changes_by_coin_item,average_price_text_view_changes_by_coin_item,quantity_text_view_changes_by_coin_item,sum_text_view_changes_by_coin_item,profit_in_percents_text_view_changes_by_coin_item,profit_in_dollars_in_percents_text_view_changes_by_coin_item"
         app:layout_constraintBottom_toBottomOf="@+id/coin_logo_image_view_changes_by_coin_item"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/coin_logo_image_view_changes_by_coin_item"
@@ -105,7 +105,7 @@
         tools:text="Sum: ###"/>
 
     <TextView
-        android:id="@+id/changes_in_percents_text_view_changes_by_coin_item"
+        android:id="@+id/profit_in_percents_text_view_changes_by_coin_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
@@ -113,7 +113,7 @@
 
 
     <TextView
-        android:id="@+id/changes_in_dollars_in_percents_text_view_changes_by_coin_item"
+        android:id="@+id/profit_in_dollars_in_percents_text_view_changes_by_coin_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black"

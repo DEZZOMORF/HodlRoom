@@ -154,4 +154,8 @@ open class DataBaseViewModel @Inject constructor(
                 }
             }
     }
+
+    fun deletePurchase(purchaseId: String, uid: String) {
+        //TODO
+    }
 }

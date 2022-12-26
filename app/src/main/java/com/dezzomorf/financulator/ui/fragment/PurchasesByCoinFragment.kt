@@ -2,18 +2,28 @@ package com.dezzomorf.financulator.ui.fragment
 
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezzomorf.financulator.R
+import com.dezzomorf.financulator.adapter.PurchasesRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentPurchasesByCoinBinding
+import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
+import com.dezzomorf.financulator.model.ChangesByPurchase
 import com.dezzomorf.financulator.model.Coin
+import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
+import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.PurchaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(FragmentPurchasesByCoinBinding::inflate) {
+
+    @Inject
+    lateinit var purchasesRecyclerViewAdapter: PurchasesRecyclerViewAdapter
 
     private val viewModel: PurchaseViewModel by viewModels()
     lateinit var coin: Coin
@@ -21,6 +31,10 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     override fun onResume() {
         super.onResume()
         loadCurrentCoinData()
+    }
+
+    override fun setUpUI() {
+        viewModel.getPurchases()
     }
 
     override fun observeViewModel() {
@@ -38,6 +52,38 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
+        }
+
+        viewModel.getPurchasesState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                    val purchaseOfCurrentCoin = state.data.filter { it.coinId == coin.id }
+                    purchasesRecyclerViewAdapter.setListWithAnimation(formatDataToChangesByPurchase(purchaseOfCurrentCoin))
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
+    }
+
+    private fun formatDataToChangesByPurchase(purchases: List<Purchase>): List<ChangesByPurchase> {
+        return purchases.map {
+            ChangesByPurchase(
+                purchaseId = it.purchaseId,
+                description = it.description,
+                currency = it.currency.name,
+                price = it.price,
+                quantity = it.quantity,
+                sum = it.sum(),
+                profitInPercents = it.profitInPercents(coin),
+                profitInDollars = it.profitInDollars(coin),
+            )
         }
     }
 
@@ -57,8 +103,35 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         }
     }
 
+
+    override fun setUpAdapters() {
+        purchasesRecyclerViewAdapter.onItemLongClick = {
+            FinanculatorDialog(
+                context = requireContext(),
+                content = listOf(
+                    FinanculatorDialog.FinanculatorDialogItem(
+                        title = requireContext().resourcesCompat.getString(R.string.delete),
+                        action = {
+                            viewModel.auth.currentUser?.let { user ->
+                                viewModel.deletePurchase(it.purchaseId, user.uid)
+                            }
+                        }
+                    ),
+                    FinanculatorDialog.FinanculatorDialogItem(
+                        title = requireContext().resourcesCompat.getString(android.R.string.cancel),
+                        action = {}
+                    )
+                )
+            ).createAndShow()
+        }
+
+        with(binding.purchaseListRecyclerViewPurchases) {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = purchasesRecyclerViewAdapter
+        }
+    }
+
     private fun setDataToUi(coin: Coin) {
         binding.toolbarPurchasesByCoin.titleTextViewToolbar.text = getString(R.string.coin_info, coin.name, coin.symbol)
-        //TODO
     }
 }

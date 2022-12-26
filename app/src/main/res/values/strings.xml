@@ -54,8 +54,8 @@
     <string name="average_price_with_value">Average price: %1$s</string>
     <string name="quantity_with_value">Quantity: %1$s</string>
     <string name="sum_with_value">Sum: %1$s</string>
-    <string name="changes_in_percents_with_value">Changes in percents: %1$s %%</string>
-    <string name="changes_in_dollars_with_value">Changes in dollars: %1$s $</string>
+    <string name="changes_in_percents_with_value">Profit in percents: %1$s %%</string>
+    <string name="changes_in_dollars_with_value">Profit in dollars: %1$s $</string>
     <string name="it_is_experimental_feature">You are trying to save a purchase without an internet connection. We do not recommend doing this. This is an experimental feature. We want to improve your experience with %1$s and make it possible to work offline. If you find any errors, please contact us.</string>
     <string name="options">Options</string>
 </resources>

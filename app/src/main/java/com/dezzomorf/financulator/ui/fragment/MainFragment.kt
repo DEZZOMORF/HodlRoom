@@ -85,7 +85,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 }
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
-                    requireContext().showToast(getString(R.string.success))
                     viewModel.getPurchases()
                 }
                 is UiState.Error -> {

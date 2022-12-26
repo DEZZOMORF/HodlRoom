@@ -1,5 +1,6 @@
 package com.dezzomorf.financulator.adapter
 
+import android.annotation.SuppressLint
 import android.view.View
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,11 +16,12 @@ abstract class BaseRecyclerViewAdapter<E> : RecyclerView.Adapter<BaseRecyclerVie
     }
 
     private var list: List<E> = listOf()
-    lateinit var onItemClick: (E) -> Unit
-    lateinit var onItemLongClick: (E) -> Unit
+    var onItemClick: (E) -> Unit = {}
+    var onItemLongClick: (E) -> Unit = {}
 
     fun getList(): List<E> = list
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setList(newList: List<E>) {
         list = newList
         notifyDataSetChanged()
