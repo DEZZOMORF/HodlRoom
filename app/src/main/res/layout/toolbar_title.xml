@@ -18,12 +18,13 @@
 
     <TextView
         android:id="@+id/title_text_view_toolbar"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
         android:layout_toEndOf="@+id/button_back_image_view_toolbar"
+        android:layout_alignParentEnd="true"
         android:textSize="20sp"
         android:textStyle="bold"
         tools:text="Title" />

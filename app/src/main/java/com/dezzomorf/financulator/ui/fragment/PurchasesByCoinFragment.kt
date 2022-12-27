@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.adapter.PurchasesRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentPurchasesByCoinBinding
+import com.dezzomorf.financulator.extensions.format
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.model.ChangesByPurchase
 import com.dezzomorf.financulator.model.Coin
+import com.dezzomorf.financulator.model.CurrencyName
 import com.dezzomorf.financulator.model.Purchase
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
@@ -76,7 +78,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         return purchases.map {
             ChangesByPurchase(
                 purchaseId = it.purchaseId,
-                description = it.description,
+                description = it.description ?: "",
                 currency = it.currency.name,
                 price = it.price,
                 quantity = it.quantity,
@@ -132,6 +134,6 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     }
 
     private fun setDataToUi(coin: Coin) {
-        binding.toolbarPurchasesByCoin.titleTextViewToolbar.text = getString(R.string.coin_info, coin.name, coin.symbol)
+        binding.toolbarPurchasesByCoin.titleTextViewToolbar.text = getString(R.string.coin_info_with_price, coin.name, coin.symbol, coin.currentPrice[CurrencyName.USD.value].format())
     }
 }

@@ -11,7 +11,7 @@ data class Purchase(
     val price: Float,
     val quantity: Float
 ) {
-    fun profitInDollars(coin: Coin) = ((coin.currentPrice[this.currency.value]?.minus(this.price))?.div(this.price))?.times(100) ?: 0f
-    fun profitInPercents(coin: Coin) = this.price * this.quantity / 100 * profitInDollars(coin)
+    fun profitInPercents(coin: Coin) = ((coin.currentPrice[this.currency.value]?.minus(this.price))?.div(this.price))?.times(100) ?: 0f
+    fun profitInDollars(coin: Coin) = this.price * this.quantity / 100 * profitInPercents(coin)
     fun sum() = this.price * this.quantity
 }

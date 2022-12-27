@@ -5,9 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isGone
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.DefaultPurchaseItemBinding
+import com.dezzomorf.financulator.extensions.format
+import com.dezzomorf.financulator.extensions.formatToTwoDigits
+import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.model.ChangesByPurchase
 import javax.inject.Inject
 
@@ -51,16 +53,11 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
 
         override fun bindView() {
             val item = getList()[adapterPosition]
-
-            if (item.description.isNullOrEmpty()) {
-                descriptionTextView.isGone = true
-            } else {
-                descriptionTextView.text = item.description
-            }
-            quantityTextView.text = item.quantity.toString()
-            priceTextView.text = item.price.toString()
-            sumTextView.text = item.sum.toString()
-            profitTextView.text = item.profitInDollars.toString() + " | " + item.profitInPercents.toString()
+            descriptionTextView.text = context.resourcesCompat.getString(R.string.counter_and_description, adapterPosition + 1, item.description)
+            quantityTextView.text = context.getString(R.string.quantity_with_value, item.quantity.format())
+            priceTextView.text = context.resourcesCompat.getString(R.string.purchase_price_with_value, item.price.format(), item.currency)
+            sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits(), item.currency)
+            profitTextView.text = context.getString(R.string.profit_with_value, item.profitInPercents.formatToTwoDigits(), item.profitInDollars.formatToTwoDigits(), item.currency)
 
             itemView.setOnClickListener {
                 onItemClick(item)

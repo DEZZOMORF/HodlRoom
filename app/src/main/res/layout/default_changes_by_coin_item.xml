@@ -77,35 +77,35 @@
 
     <TextView
         android:id="@+id/current_price_text_view_changes_by_coin_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         tools:text="Current price: ###"/>
 
     <TextView
         android:id="@+id/average_price_text_view_changes_by_coin_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         tools:text="Average price: ###"/>
 
     <TextView
         android:id="@+id/quantity_text_view_changes_by_coin_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         tools:text="Quantity: ###"/>
 
     <TextView
         android:id="@+id/sum_text_view_changes_by_coin_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         tools:text="Sum: ###"/>
 
     <TextView
         android:id="@+id/profit_in_percents_text_view_changes_by_coin_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         tools:text="Changes in percents: ###"/>
@@ -113,7 +113,7 @@
 
     <TextView
         android:id="@+id/profit_in_dollars_in_percents_text_view_changes_by_coin_item"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
         tools:text="Changes in dollars: ###"/>

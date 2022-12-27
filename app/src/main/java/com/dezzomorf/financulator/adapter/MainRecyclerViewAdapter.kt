@@ -65,12 +65,12 @@ class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<Ch
             coinLogoImageView.loadAndSetImage(item.coin.logo)
             coinNameTextView.text = item.coin.name
             coinSymbolTextView.text = item.coin.symbol
-            currentPriceTextView.text = context.getString(R.string.current_price_with_value, item.coin.currentPrice[CurrencyName.USD.value].format())
-            averagePriceTextView.text = context.getString(R.string.average_price_with_value, item.averagePrice.format())
+            currentPriceTextView.text = context.getString(R.string.current_price_with_value, item.coin.currentPrice[CurrencyName.USD.value].format(), CurrencyName.USD)
+            averagePriceTextView.text = context.getString(R.string.average_price_with_value, item.averagePrice.format(), CurrencyName.USD)
             quantityTextView.text = context.getString(R.string.quantity_with_value, item.quantity.format())
-            sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits())
-            profitInPercentsTextView.text = context.getString(R.string.changes_in_percents_with_value, item.profitInPercents.formatToTwoDigits())
-            profitInDollarsTextView.text = context.getString(R.string.changes_in_dollars_with_value, item.profitInDollars.formatToTwoDigits())
+            sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits(), CurrencyName.USD)
+            profitInPercentsTextView.text = context.getString(R.string.profit_in_percents_with_value, item.profitInPercents.formatToTwoDigits())
+            profitInDollarsTextView.text = context.getString(R.string.profit_in_currency_with_value, item.profitInDollars.formatToTwoDigits(), CurrencyName.USD)
             itemView.setOnClickListener {
                 onItemClick(item)
             }
