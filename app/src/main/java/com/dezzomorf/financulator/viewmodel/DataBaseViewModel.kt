@@ -124,43 +124,45 @@ open class DataBaseViewModel @Inject constructor(
 
     fun deletePurchasesByCoin(coin: Coin, userId: String) {
         deletePurchasesState.postValue(UiState.Loading)
-        if (networkConnectionManager.isConnected.value) {
-            dataBase.collection("users")
-                .document(userId)
-                .collection("purchases")
-                .whereEqualTo("coinId", coin.id)
-                .get()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        for (document in task.result) {
-                            document.reference.delete()
-                                .addOnSuccessListener {
-                                    sharedPreferencesManager.setPurchases(userId, emptyList())
-                                    deletePurchasesState.postValue(UiState.Success(Unit))
-                                }
-                                .addOnFailureListener {
-                                    deletePurchasesState.postValue(
-                                        UiState.Error(
-                                            Exception(task.exception)
-                                        )
-                                    )
-                                }
-                        }
-                    } else {
-                        deletePurchasesState.postValue(
-                            UiState.Error(
-                                Exception(task.exception)
-                            )
-                        )
-                    }
-                }
-        } else {
+
+        if (!networkConnectionManager.isConnected.value) {
             deletePurchasesState.postValue(
                 UiState.Error(
                     Exception()
                 )
             )
+            return
         }
+
+        dataBase.collection("users")
+            .document(userId)
+            .collection("purchases")
+            .whereEqualTo("coinId", coin.id)
+            .get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result) {
+                        document.reference.delete()
+                            .addOnSuccessListener {
+                                sharedPreferencesManager.setPurchases(userId, emptyList())
+                                deletePurchasesState.postValue(UiState.Success(Unit))
+                            }
+                            .addOnFailureListener {
+                                deletePurchasesState.postValue(
+                                    UiState.Error(
+                                        Exception(task.exception)
+                                    )
+                                )
+                            }
+                    }
+                } else {
+                    deletePurchasesState.postValue(
+                        UiState.Error(
+                            Exception(task.exception)
+                        )
+                    )
+                }
+            }
     }
 
     fun deletePurchase(purchaseId: String, uid: String) {
