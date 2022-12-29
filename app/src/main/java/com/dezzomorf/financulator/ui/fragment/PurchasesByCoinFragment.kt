@@ -75,7 +75,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     }
 
     private fun formatDataToChangesByPurchase(purchases: List<Purchase>): List<ChangesByPurchase> {
-        return purchases.map {
+        return purchases.sortedBy { it.date }.map {
             ChangesByPurchase(
                 purchaseId = it.purchaseId,
                 description = it.description ?: "",

@@ -7,6 +7,9 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.DefaultPurchaseItemBinding
+import com.dezzomorf.financulator.databinding.FirstPurchaseItemBinding
+import com.dezzomorf.financulator.databinding.LastPurchaseItemBinding
+import com.dezzomorf.financulator.databinding.SinglePurchaseItemBinding
 import com.dezzomorf.financulator.extensions.format
 import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.resourcesCompat
@@ -17,28 +20,28 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         val itemRootView: ConstraintLayout
-//        when (viewType) {
-//            FIRST_ITEM_TYPE -> {
-//                itemRootView = FirstChangesByCoinItemBinding.inflate(
-//                    LayoutInflater.from(viewGroup.context), viewGroup, false
-//                ).root
-//            }
-//            LUST_ITEM_TYPE -> {
-//                itemRootView = LastChangesByCoinItemBinding.inflate(
-//                    LayoutInflater.from(viewGroup.context), viewGroup, false
-//                ).root
-//            }
-//            SINGLE_ITEM_TYPE -> {
-//                itemRootView = SingleChangesByCoinItemBinding.inflate(
-//                    LayoutInflater.from(viewGroup.context), viewGroup, false
-//                ).root
-//            }
-//            else -> {
+        when (viewType) {
+            FIRST_ITEM_TYPE -> {
+                itemRootView = FirstPurchaseItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+            LUST_ITEM_TYPE -> {
+                itemRootView = LastPurchaseItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+            SINGLE_ITEM_TYPE -> {
+                itemRootView = SinglePurchaseItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
+            }
+            else -> {
         itemRootView = DefaultPurchaseItemBinding.inflate(
             LayoutInflater.from(viewGroup.context), viewGroup, false
         ).root
-//            }
-//        }
+            }
+        }
         return ViewHolder(itemRootView)
     }
 
@@ -58,6 +61,12 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
             priceTextView.text = context.resourcesCompat.getString(R.string.purchase_price_with_value, item.price.format(), item.currency)
             sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits(), item.currency)
             profitTextView.text = context.getString(R.string.profit_with_value, item.profitInPercents.formatToTwoDigits(), item.profitInDollars.formatToTwoDigits(), item.currency)
+
+            profitTextView.setCompoundDrawablesWithIntrinsicBounds( null, null,  when {
+                item.profitInPercents > 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24)
+                item.profitInPercents < 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24)
+                else -> return
+            }, null)
 
             itemView.setOnClickListener {
                 onItemClick(item)

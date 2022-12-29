@@ -14,6 +14,7 @@ import com.dezzomorf.financulator.databinding.SingleChangesByCoinItemBinding
 import com.dezzomorf.financulator.extensions.format
 import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.loadAndSetImage
+import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.model.ChangesByCoin
 import com.dezzomorf.financulator.model.CurrencyName
 import javax.inject.Inject
@@ -71,6 +72,19 @@ class MainRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapter<Ch
             sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits(), CurrencyName.USD)
             profitInPercentsTextView.text = context.getString(R.string.profit_in_percents_with_value, item.profitInPercents.formatToTwoDigits())
             profitInDollarsTextView.text = context.getString(R.string.profit_in_currency_with_value, item.profitInDollars.formatToTwoDigits(), CurrencyName.USD)
+
+            profitInPercentsTextView.setCompoundDrawablesWithIntrinsicBounds( null, null,  when {
+                item.profitInPercents > 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24)
+                item.profitInPercents < 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24)
+                else -> return
+            }, null)
+
+            profitInDollarsTextView.setCompoundDrawablesWithIntrinsicBounds( null, null,  when {
+                item.profitInPercents > 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24)
+                item.profitInPercents < 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24)
+                else -> return
+            }, null)
+
             itemView.setOnClickListener {
                 onItemClick(item)
             }

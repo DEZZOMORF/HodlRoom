@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/margin_horizontal_coin_list"
-    android:background="@color/white"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/bg_top_round_border"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="@drawable/ripple_default">
+    android:foreground="@drawable/ripple_top_round_border">
 
     <androidx.constraintlayout.helper.widget.Flow
         android:id="@+id/coin_info_flow_purchase_item"
@@ -66,5 +67,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
