@@ -11,7 +11,12 @@ import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
-class FinanculatorDialog(private val context: Context, private val content: List<FinanculatorDialogItem>) {
+class FinanculatorDialog(
+    private val context: Context,
+    private val title: String? = null,
+    private val message: String? = null,
+    private val icon: Int? = null,
+    private val content: List<FinanculatorDialogItem>) {
 
     data class FinanculatorDialogItem(
         val title: String,
@@ -19,17 +24,21 @@ class FinanculatorDialog(private val context: Context, private val content: List
     )
 
     fun createAndShow() {
-        MaterialAlertDialogBuilder(context)
+        MaterialAlertDialogBuilder(context, R.style.Financulator_AlertDialogStyle)
             .setCustomTitle(TextView(context).apply {
-                setText(R.string.options)
+                text = title ?: context.resourcesCompat.getString(R.string.options)
                 gravity = Gravity.CENTER
                 textSize = 20f
                 setTextColor(context.resourcesCompat.getColor(R.color.black))
                 val margins = context.resourcesCompat.pixelsFromDimension(R.dimen.dialog_title_content_margin)
                 setPadding(margins, margins, margins, margins)
+                icon?.let {
+                    setCompoundDrawablesWithIntrinsicBounds(context.resourcesCompat.getDrawable(it),null, context.resourcesCompat.getDrawable(it),null)
+                }
             })
             .create()
             .apply {
+                if (message != null) setMessage(message)
                 setView(getDialogLayout(this))
                 window?.setBackgroundDrawableResource(R.drawable.bg_round_border)
             }

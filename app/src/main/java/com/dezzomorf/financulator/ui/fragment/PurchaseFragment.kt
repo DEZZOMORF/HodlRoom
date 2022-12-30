@@ -13,10 +13,10 @@ import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.CurrencyName
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
+import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.PurchaseViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.Timestamp
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -87,16 +87,24 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     }
 
     private fun itIsExperimentalFeatureDialog(purchase: PurchaseEntity) {
-        MaterialAlertDialogBuilder(requireContext())
-            .setIcon(R.drawable.ic_baseline_error_24)
-            .setTitle(android.R.string.dialog_alert_title)
-            .setMessage(getString(R.string.it_is_experimental_feature, getString(R.string.app_name)))
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                viewModel.addPurchase(purchase)
-            }
-            .setNegativeButton(android.R.string.cancel) { _, _ -> }
-            .create()
-            .show()
+        FinanculatorDialog(
+            context = requireContext(),
+            title = getString(android.R.string.dialog_alert_title),
+            message = getString(R.string.it_is_experimental_feature, getString(R.string.app_name)),
+            icon = R.drawable.ic_baseline_error_24,
+            content = listOf(
+                FinanculatorDialog.FinanculatorDialogItem(
+                    title = requireContext().resourcesCompat.getString(android.R.string.ok),
+                    action = {
+                        viewModel.addPurchase(purchase)
+                    }
+                ),
+                FinanculatorDialog.FinanculatorDialogItem(
+                    title = requireContext().resourcesCompat.getString(android.R.string.cancel),
+                    action = {}
+                )
+            )
+        ).createAndShow()
     }
 
     private fun setDataToUi(coin: Coin) {

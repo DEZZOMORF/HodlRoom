@@ -1,15 +1,15 @@
 package com.dezzomorf.financulator.ui.fragment
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSettingsBinding
+import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
+import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,18 +42,24 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     private fun deleteDialog() {
-        AlertDialog.Builder(requireContext())
-            .setIcon(R.drawable.ic_baseline_warning_24)
-            .setTitle(getString(R.string.delete_account_title))
-            .setMessage(getString(R.string.delete_account_message))
-            .setNegativeButton(android.R.string.cancel) { dialog, _ ->
-                dialog.cancel()
-            }
-            .setPositiveButton(android.R.string.ok) { dialog, _ ->
-                deleteAccount()
-                dialog.cancel()
-            }
-            .show()
+        FinanculatorDialog(
+            context = requireContext(),
+            title = getString(R.string.delete_account_title),
+            message = getString(R.string.delete_account_message),
+            icon = R.drawable.ic_baseline_error_24,
+            content = listOf(
+                FinanculatorDialog.FinanculatorDialogItem(
+                    title = requireContext().resourcesCompat.getString(R.string.delete),
+                    action = {
+                        deleteAccount()
+                    }
+                ),
+                FinanculatorDialog.FinanculatorDialogItem(
+                    title = requireContext().resourcesCompat.getString(android.R.string.cancel),
+                    action = {}
+                )
+            )
+        ).createAndShow()
     }
 
     private fun deleteAccount() {
