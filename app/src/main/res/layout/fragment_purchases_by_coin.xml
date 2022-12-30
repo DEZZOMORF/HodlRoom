@@ -9,18 +9,10 @@
         android:id="@+id/toolbar_purchases_by_coin"
         layout="@layout/toolbar_title" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe_purchases"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/purchase_list_recycler_view_purchases"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_purchases_by_coin">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/purchase_list_recycler_view_purchases"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_main" />
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_purchases_by_coin" />
 </androidx.constraintlayout.widget.ConstraintLayout>

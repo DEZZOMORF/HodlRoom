@@ -62,15 +62,12 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
             sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits(), item.currency)
             profitTextView.text = context.getString(R.string.profit_with_value, item.profitInPercents.formatToTwoDigits(), item.profitInDollars.formatToTwoDigits(), item.currency)
 
-            profitTextView.setCompoundDrawablesWithIntrinsicBounds( null, null,  when {
-                item.profitInPercents > 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24)
-                item.profitInPercents < 0f -> context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24)
-                else -> return
-            }, null)
-
-            itemView.setOnClickListener {
-                onItemClick(item)
+            when {
+                item.profitInPercents > 0f -> profitTextView.setCompoundDrawablesWithIntrinsicBounds( null, null, context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24), null)
+                item.profitInPercents < 0f -> profitTextView.setCompoundDrawablesWithIntrinsicBounds( null, null, context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24), null)
+                else -> {}
             }
+
             itemView.setOnLongClickListener {
                 onItemLongClick(item)
                 true

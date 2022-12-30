@@ -84,6 +84,6 @@ class MainViewModel @Inject constructor(
                 )
             }
         }
-        return changesByCoinList
+        return changesByCoinList.sortedBy { it.coin.name }
     }
 }
