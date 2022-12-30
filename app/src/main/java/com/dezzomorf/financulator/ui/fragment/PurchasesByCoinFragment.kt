@@ -64,7 +64,27 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
                     val purchaseOfCurrentCoin = state.data.filter { it.coinId == coin.id }
+                    if (purchaseOfCurrentCoin.isEmpty()) {
+                        requireActivity().onBackPressed()
+                        return@observe
+                    }
                     purchasesRecyclerViewAdapter.setListWithAnimation(formatDataToChangesByPurchase(purchaseOfCurrentCoin))
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
+
+        viewModel.deletePurchasesState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                    viewModel.getPurchases()
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
@@ -114,9 +134,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                     FinanculatorDialog.FinanculatorDialogItem(
                         title = requireContext().resourcesCompat.getString(R.string.delete),
                         action = {
-                            viewModel.auth.currentUser?.let { user ->
-                                viewModel.deletePurchase(it.purchaseId, user.uid)
-                            }
+                            viewModel.deletePurchase(it.purchaseId)
                         }
                     ),
                     FinanculatorDialog.FinanculatorDialogItem(
@@ -134,6 +152,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     }
 
     private fun setDataToUi(coin: Coin) {
-        binding.toolbarPurchasesByCoin.titleTextViewToolbar.text = getString(R.string.coin_info_with_price, coin.name, coin.symbol, coin.currentPrice[CurrencyName.USD.value].format())
+        binding.toolbarPurchasesByCoin.titleTextViewToolbar.text =
+            getString(R.string.coin_info_with_price, coin.name, coin.symbol, coin.currentPrice[CurrencyName.USD.value].format())
     }
 }

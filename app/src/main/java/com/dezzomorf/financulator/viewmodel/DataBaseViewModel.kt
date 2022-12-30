@@ -125,15 +125,6 @@ open class DataBaseViewModel @Inject constructor(
     fun deletePurchasesByCoin(coin: Coin, userId: String) {
         deletePurchasesState.postValue(UiState.Loading)
 
-        if (!networkConnectionManager.isConnected.value) {
-            deletePurchasesState.postValue(
-                UiState.Error(
-                    Exception()
-                )
-            )
-            return
-        }
-
         dataBase.collection("users")
             .document(userId)
             .collection("purchases")
@@ -165,7 +156,36 @@ open class DataBaseViewModel @Inject constructor(
             }
     }
 
-    fun deletePurchase(purchaseId: String, uid: String) {
-        //TODO
+    fun deletePurchase(purchaseId: String) {
+        deletePurchasesState.postValue(UiState.Loading)
+
+        if (!networkConnectionManager.isConnected.value) {
+            deletePurchasesState.postValue(
+                UiState.Error(
+                    Exception()
+                )
+            )
+            return
+        }
+
+        auth.currentUser?.let { user ->
+            dataBase.collection("users")
+                .document(user.uid)
+                .collection("purchases")
+                .document(purchaseId)
+                .delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        sharedPreferencesManager.setPurchases(user.uid, emptyList())
+                        deletePurchasesState.postValue(UiState.Success(Unit))
+                    } else {
+                        deletePurchasesState.postValue(
+                            UiState.Error(
+                                Exception(task.exception)
+                            )
+                        )
+                    }
+                }
+        }
     }
 }
