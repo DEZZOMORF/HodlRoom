@@ -6,6 +6,7 @@ import com.dezzomorf.financulator.extensions.parallelMap
 import com.dezzomorf.financulator.model.ChangesByCoin
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
+import com.dezzomorf.financulator.model.TotalProfit
 import com.dezzomorf.financulator.repository.CoinRepository
 import com.dezzomorf.financulator.util.ConstVal.TETHER
 import com.dezzomorf.financulator.util.FinanculatorMath
@@ -85,5 +86,14 @@ class MainViewModel @Inject constructor(
             }
         }
         return changesByCoinList.sortedBy { it.coin.name }
+    }
+
+    fun profitSummary(changesByCoinList: List<ChangesByCoin>): TotalProfit {
+        val paid = changesByCoinList.map { it.averagePrice * it.quantity }.sum()
+        val sum = changesByCoinList.map { it.sum }.sum()
+        val profitInPercents = ((sum - paid) / paid) * 100
+        val profitInDollars = paid / 100 * profitInPercents
+
+        return TotalProfit(sum, profitInPercents, profitInDollars)
     }
 }

@@ -1,14 +1,17 @@
 package com.dezzomorf.financulator.ui.fragment
 
 import android.os.Bundle
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.adapter.MainRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentMainBinding
+import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
+import com.dezzomorf.financulator.model.TotalProfit
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
@@ -70,6 +73,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
                     mainRecyclerViewAdapter.setListWithAnimation(state.data)
+                    setUpTotalProfit(viewModel.profitSummary(state.data))
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
@@ -126,5 +130,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             layoutManager = LinearLayoutManager(requireContext())
             adapter = mainRecyclerViewAdapter
         }
+    }
+
+    private fun setUpTotalProfit(totalProfit: TotalProfit) {
+        binding.totalProfitMain.isVisible = true
+        binding.totalProfitSumMain.text = totalProfit.sum.formatToTwoDigits() + "$"
+        binding.totalProfitPercentMain.text = totalProfit.profitInPercents.formatToTwoDigits() + "%"
+        binding.totalProfitDollarMain.text = totalProfit.profitInDollars.formatToTwoDigits() + "$"
     }
 }
