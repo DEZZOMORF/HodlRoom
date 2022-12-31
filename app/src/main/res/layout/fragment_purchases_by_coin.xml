@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true">
@@ -9,10 +10,62 @@
         android:id="@+id/toolbar_purchases_by_coin"
         layout="@layout/toolbar_title" />
 
+    <LinearLayout
+        android:id="@+id/total_profit_purchases_by_coin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/bg_round_border"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_purchases_by_coin"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/total_profit_sum_purchases_by_coin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:textColor="@color/black"
+            android:textSize="36sp"
+            tools:text="10000$" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/total_profit_percent_purchases_by_coin"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                tools:text="12%" />
+
+            <TextView
+                android:id="@+id/total_profit_dollar_purchases_by_coin"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                tools:text="120$" />
+        </LinearLayout>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/purchase_list_recycler_view_purchases"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_purchases_by_coin" />
+        app:layout_constraintTop_toBottomOf="@+id/total_profit_purchases_by_coin" />
 </androidx.constraintlayout.widget.ConstraintLayout>

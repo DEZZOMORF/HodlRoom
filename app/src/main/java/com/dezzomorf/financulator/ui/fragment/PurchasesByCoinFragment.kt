@@ -1,5 +1,7 @@
 package com.dezzomorf.financulator.ui.fragment
 
+import android.graphics.Color
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -7,16 +9,15 @@ import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.adapter.PurchasesRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentPurchasesByCoinBinding
 import com.dezzomorf.financulator.extensions.format
+import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
-import com.dezzomorf.financulator.model.ChangesByPurchase
-import com.dezzomorf.financulator.model.Coin
-import com.dezzomorf.financulator.model.CurrencyName
-import com.dezzomorf.financulator.model.Purchase
+import com.dezzomorf.financulator.model.*
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
+import com.dezzomorf.financulator.viewmodel.MainViewModel
 import com.dezzomorf.financulator.viewmodel.PurchaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -27,7 +28,8 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     @Inject
     lateinit var purchasesRecyclerViewAdapter: PurchasesRecyclerViewAdapter
 
-    private val viewModel: PurchaseViewModel by viewModels()
+    private val purchaseViewModel: PurchaseViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels()
     lateinit var coin: Coin
 
     override fun onResume() {
@@ -36,11 +38,11 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     }
 
     override fun setUpUI() {
-        viewModel.tryToGetPurchasesFromCache()
+        purchaseViewModel.tryToGetPurchasesFromCache()
     }
 
     override fun observeViewModel() {
-        viewModel.coinState.observe(viewLifecycleOwner) { state ->
+        purchaseViewModel.coinState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     displayMainActivityProgressBar(true)
@@ -56,7 +58,23 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
             }
         }
 
-        viewModel.getPurchasesState.observe(viewLifecycleOwner) { state ->
+        mainViewModel.changesByCoinState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                    setUpTotalProfit(mainViewModel.profitSummary(state.data))
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
+
+        purchaseViewModel.getPurchasesState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     displayMainActivityProgressBar(true)
@@ -69,6 +87,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                         return@observe
                     }
                     purchasesRecyclerViewAdapter.setListWithAnimation(formatDataToChangesByPurchase(purchaseOfCurrentCoin))
+                    mainViewModel.summaryChangesByCoins(purchaseOfCurrentCoin)
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
@@ -77,14 +96,14 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
             }
         }
 
-        viewModel.deletePurchasesState.observe(viewLifecycleOwner) { state ->
+        purchaseViewModel.deletePurchasesState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
                     displayMainActivityProgressBar(true)
                 }
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
-                    viewModel.tryToGetPurchasesFromDataBase()
+                    purchaseViewModel.tryToGetPurchasesFromDataBase()
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
@@ -119,7 +138,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         val argument = requireArguments().getSerializable(ConstVal.ID)
         if (argument != null) {
             coin = argument as Coin
-            viewModel.getCoinById(coin.id)
+            purchaseViewModel.getCoinById(coin.id)
         } else {
             requireActivity().onBackPressed()
         }
@@ -134,7 +153,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                     FinanculatorDialog.FinanculatorDialogItem(
                         title = requireContext().resourcesCompat.getString(R.string.delete),
                         action = {
-                            viewModel.deletePurchase(it.purchaseId)
+                            purchaseViewModel.deletePurchase(it.purchaseId)
                         }
                     ),
                     FinanculatorDialog.FinanculatorDialogItem(
@@ -154,5 +173,19 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     private fun setDataToUi(coin: Coin) {
         binding.toolbarPurchasesByCoin.titleTextViewToolbar.text =
             getString(R.string.coin_info_with_price, coin.name, coin.symbol, coin.currentPrice[CurrencyName.USD.value].format())
+    }
+
+    private fun setUpTotalProfit(totalProfit: TotalProfit) {
+        binding.totalProfitSumPurchasesByCoin.setTextColor(
+            when {
+                totalProfit.profitInPercents < 0f -> Color.RED
+                else -> Color.GREEN
+            }
+        )
+
+        binding.totalProfitPurchasesByCoin.isVisible = true
+        binding.totalProfitSumPurchasesByCoin.text = totalProfit.sum.formatToTwoDigits() + "$"
+        binding.totalProfitPercentPurchasesByCoin.text = totalProfit.profitInPercents.formatToTwoDigits() + "%"
+        binding.totalProfitDollarPurchasesByCoin.text = totalProfit.profitInDollars.formatToTwoDigits() + "$"
     }
 }

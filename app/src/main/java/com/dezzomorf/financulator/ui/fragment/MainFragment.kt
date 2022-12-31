@@ -1,5 +1,6 @@
 package com.dezzomorf.financulator.ui.fragment
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -133,6 +134,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     }
 
     private fun setUpTotalProfit(totalProfit: TotalProfit) {
+        binding.totalProfitSumMain.setTextColor(
+            when {
+                totalProfit.profitInPercents < 0f -> Color.RED
+                else -> Color.GREEN
+            }
+        )
+
         binding.totalProfitMain.isVisible = true
         binding.totalProfitSumMain.text = totalProfit.sum.formatToTwoDigits() + "$"
         binding.totalProfitPercentMain.text = totalProfit.profitInPercents.formatToTwoDigits() + "%"
