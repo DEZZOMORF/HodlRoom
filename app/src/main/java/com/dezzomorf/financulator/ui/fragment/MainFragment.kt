@@ -26,12 +26,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     lateinit var mainRecyclerViewAdapter: MainRecyclerViewAdapter
 
     override fun setUpUI() {
-        viewModel.getPurchases()
+        viewModel.tryToGetPurchasesFromDataBase()
     }
 
     override fun setUpSwipeToRefresh() {
         binding.swipeMain.setOnRefreshListener {
-            viewModel.getPurchases()
+            viewModel.tryToGetPurchasesFromDataBase()
         }
     }
 
@@ -85,7 +85,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 }
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
-                    viewModel.getPurchases()
+                    viewModel.tryToGetPurchasesFromDataBase()
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)

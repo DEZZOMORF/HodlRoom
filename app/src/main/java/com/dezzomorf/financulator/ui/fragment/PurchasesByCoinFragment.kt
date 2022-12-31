@@ -36,7 +36,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     }
 
     override fun setUpUI() {
-        viewModel.getPurchases()
+        viewModel.tryToGetPurchasesFromCache()
     }
 
     override fun observeViewModel() {
@@ -84,7 +84,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                 }
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
-                    viewModel.getPurchases()
+                    viewModel.tryToGetPurchasesFromDataBase()
                 }
                 is UiState.Error -> {
                     displayMainActivityProgressBar(false)
