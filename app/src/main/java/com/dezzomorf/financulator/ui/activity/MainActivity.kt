@@ -22,7 +22,7 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.statusBarColor = resourcesCompat.getColor(R.color.purple_700)
+        window.statusBarColor = resourcesCompat.getColor(R.color.background_color)
         viewModel.setUpIsConnectCollecting()
         setUpNavController()
     }

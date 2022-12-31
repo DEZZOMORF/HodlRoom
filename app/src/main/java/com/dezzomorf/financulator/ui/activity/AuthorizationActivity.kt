@@ -6,11 +6,9 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.ActivityAuthorizationBinding
-import com.dezzomorf.financulator.databinding.ActivityMainBinding
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.ui.activity.base.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class AuthorizationActivity : BaseActivity() {
@@ -21,7 +19,7 @@ class AuthorizationActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.statusBarColor = resourcesCompat.getColor(R.color.black)
+        window.statusBarColor = resourcesCompat.getColor(R.color.background_color)
         setUpNavController()
     }
 

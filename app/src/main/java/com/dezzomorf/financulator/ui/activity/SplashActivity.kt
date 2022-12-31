@@ -2,9 +2,7 @@ package com.dezzomorf.financulator.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
-import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.ActivitySplashBinding
-import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.manager.NetworkConnectionManager
 import com.dezzomorf.financulator.ui.activity.base.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +22,6 @@ class SplashActivity: BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.statusBarColor = resourcesCompat.getColor(R.color.purple_700)
         auth = Firebase.auth
 
         checkIsUserAuthorized()
