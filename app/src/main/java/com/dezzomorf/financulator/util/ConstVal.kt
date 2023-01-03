@@ -5,4 +5,8 @@ object ConstVal {
     const val TETHER: String = "tether"
 
     val filterStrings: List<String> = listOf("0.5X", "0x", "RealT", "1X Short", "3X Long", "3X Short", "Aave")
+
+    const val MARKET_LINK: String = "https://play.google.com/store/apps/details?id="
+    const val PRIVACY_POLICY_LINK: String = "https://TODO"
+
 }

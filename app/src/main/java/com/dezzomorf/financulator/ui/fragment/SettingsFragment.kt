@@ -7,16 +7,21 @@ import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSettingsBinding
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
+import com.dezzomorf.financulator.manager.SettingsManager
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsBinding::inflate) {
 
     private val viewModel: SettingsViewModel by viewModels()
+
+    @Inject
+    lateinit var settingsManager: SettingsManager
 
     override fun setUpUI() {
         binding.toolbarSettings.titleTextViewToolbar.text = getString(R.string.settings)
@@ -25,6 +30,18 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     override fun observeClicks() {
         binding.toolbarSettings.buttonBackImageViewToolbar.setOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.shareAppTextViewButtonSettings.setOnClickListener {
+            settingsManager.shareApp()
+        }
+        binding.rateAppTextViewButtonSettings.setOnClickListener {
+            settingsManager.openAppInMarket()
+        }
+        binding.feedbackTextViewButtonSettings.setOnClickListener {
+            settingsManager.sandFeedback()
+        }
+        binding.privacyPolicyTextViewButtonSettings.setOnClickListener {
+            settingsManager.openPrivacyPolicy()
         }
         binding.signOutButtonSettings.setOnClickListener {
             signOut()
