@@ -37,5 +37,9 @@
     <fragment
         android:id="@+id/purchasesByCoinFragment"
         android:name="com.dezzomorf.financulator.ui.fragment.PurchasesByCoinFragment"
-        android:label="PurchasesByCoinFragment" />
+        android:label="PurchasesByCoinFragment" >
+        <action
+            android:id="@+id/action_purchasesByCoinFragment_to_purchaseFragment"
+            app:destination="@id/purchaseFragment" />
+    </fragment>
 </navigation>

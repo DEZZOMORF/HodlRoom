@@ -1,6 +1,7 @@
 package com.dezzomorf.financulator.ui.fragment
 
 import android.graphics.Color
+import android.os.Bundle
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -35,9 +36,6 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     override fun onResume() {
         super.onResume()
         loadCurrentCoinData()
-    }
-
-    override fun setUpUI() {
         purchaseViewModel.tryToGetPurchasesFromCache()
     }
 
@@ -131,6 +129,13 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     override fun observeClicks() {
         binding.toolbarPurchasesByCoin.buttonBackImageViewToolbar.setOnClickListener {
             findNavController().popBackStack()
+        }
+        binding.toolbarPurchasesByCoin.addNewImageViewToolbar.setOnClickListener {
+            if (this::coin.isInitialized) {
+                val bundle = Bundle()
+                bundle.putSerializable(ConstVal.ID, coin)
+                findNavController().navigate(R.id.action_purchasesByCoinFragment_to_purchaseFragment, bundle)
+            }
         }
     }
 

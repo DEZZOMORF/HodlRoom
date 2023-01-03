@@ -8,7 +8,7 @@
 
     <include
         android:id="@+id/toolbar_purchases_by_coin"
-        layout="@layout/toolbar_title" />
+        layout="@layout/toolbar_purchases_by_coin" />
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/total_profit_card_view_purchases_by_coin"
