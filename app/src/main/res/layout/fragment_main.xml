@@ -34,7 +34,7 @@
                 <LinearLayout
                     android:id="@+id/total_profit_main"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:orientation="horizontal"
                     android:padding="12dp"
                     android:visibility="gone"
@@ -44,8 +44,9 @@
                     <TextView
                         android:id="@+id/total_profit_sum_main"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_weight="3"
+                        android:gravity="center_vertical"
                         android:textColor="@color/black"
                         android:textSize="36sp"
                         tools:text="10000$" />
@@ -61,7 +62,7 @@
                         <TextView
                             android:id="@+id/total_profit_percent_main"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:textColor="@color/black"
@@ -70,7 +71,7 @@
                         <TextView
                             android:id="@+id/total_profit_dollar_main"
                             android:layout_width="match_parent"
-                            android:layout_height="0dp"
+                            android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:textColor="@color/black"
