@@ -39,6 +39,12 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         purchaseViewModel.tryToGetPurchasesFromCache()
     }
 
+    override fun setUpSwipeToRefresh() {
+        binding.swipeMainPurchasesByCoin.setOnRefreshListener {
+            purchaseViewModel.tryToGetPurchasesFromDataBase()
+        }
+    }
+
     override fun observeViewModel() {
         purchaseViewModel.coinState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -79,6 +85,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                 }
                 is UiState.Success -> {
                     displayMainActivityProgressBar(false)
+                    binding.swipeMainPurchasesByCoin.isRefreshing = false
                     val purchaseOfCurrentCoin = state.data.filter { it.coinId == coin.id }
                     if (purchaseOfCurrentCoin.isEmpty()) {
                         requireActivity().onBackPressed()
