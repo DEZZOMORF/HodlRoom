@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "900160118634",
-    "project_id": "financulator-11f7d",
-    "storage_bucket": "financulator-11f7d.appspot.com"
+    "project_number": "873130151451",
+    "project_id": "financulator-ac004",
+    "storage_bucket": "financulator-ac004.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:900160118634:android:05155cffa2c8173c068f13",
+        "mobilesdk_app_id": "1:873130151451:android:cddfb039cd13ed3dd4b2be",
         "android_client_info": {
           "package_name": "com.dezzomorf.financulator"
         }
       },
       "oauth_client": [
         {
-          "client_id": "900160118634-cpa7qgvkqldgvanm88q40rk4r9259bmb.apps.googleusercontent.com",
+          "client_id": "873130151451-3rs85n85shqdi41oj9550j02vr9no0pn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCuGUI-7YKPgZaiH-jL8ucNsFM0W1pir8U"
+          "current_key": "AIzaSyAXN30HAgPOVxo2fcw5TtjiUGsL_aQtHbw"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "900160118634-cpa7qgvkqldgvanm88q40rk4r9259bmb.apps.googleusercontent.com",
+              "client_id": "873130151451-3rs85n85shqdi41oj9550j02vr9no0pn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -2,11 +2,13 @@ package com.dezzomorf.financulator.ui.activity
 
 import android.content.Intent
 import android.os.Bundle
+import com.dezzomorf.financulator.BuildConfig
 import com.dezzomorf.financulator.databinding.ActivitySplashBinding
 import com.dezzomorf.financulator.manager.NetworkConnectionManager
 import com.dezzomorf.financulator.ui.activity.base.BaseActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -24,6 +26,7 @@ class SplashActivity: BaseActivity() {
         setContentView(binding.root)
         auth = Firebase.auth
 
+        setUpCrashlytics()
         checkIsUserAuthorized()
     }
 
@@ -37,5 +40,9 @@ class SplashActivity: BaseActivity() {
             }
         )
         finish()
+    }
+
+    private fun setUpCrashlytics() {
+        FirebaseCrashlytics.getInstance().setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 }

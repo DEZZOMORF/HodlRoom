@@ -71,9 +71,9 @@ class CoinRepository @Inject constructor(
     }
 
     // Cache methods
-    fun getCachedCoinList(): List<Coin>? = sharedPreferencesManager.getCoinList(networkConnectionManager.isConnected.value ?: false)
+    fun getCachedCoinList(): List<Coin>? = sharedPreferencesManager.getCoinList(networkConnectionManager.isConnected.value)
     fun setCoinListToCache(coinList: List<Coin>?) = sharedPreferencesManager.setCoinList(coinList)
 
-    fun getCachedCoin(coinId: String): Coin? = sharedPreferencesManager.getCoin(coinId, networkConnectionManager.isConnected.value ?: false)
+    fun getCachedCoin(coinId: String): Coin? = sharedPreferencesManager.getCoin(coinId, networkConnectionManager.isConnected.value)
     fun setCoinToCache(coin: Coin) = sharedPreferencesManager.setCoin(coin)
 }
