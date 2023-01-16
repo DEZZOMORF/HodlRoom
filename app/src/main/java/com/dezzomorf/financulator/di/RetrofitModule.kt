@@ -1,6 +1,7 @@
 package com.dezzomorf.financulator.di
 
 import android.content.Context
+import com.dezzomorf.financulator.BuildConfig
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.dezzomorf.financulator.api.ApiService
@@ -31,9 +32,9 @@ object RetrofitModule {
     @Singleton
     @Provides
     fun provideClient(@ApplicationContext context: Context): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(ChuckInterceptor(context))
-            .build()
+        val clientBuilder = OkHttpClient.Builder()
+        if (BuildConfig.DEBUG) clientBuilder.addInterceptor(ChuckInterceptor(context))
+        return clientBuilder.build()
     }
 
     @Singleton
