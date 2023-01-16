@@ -8,6 +8,7 @@ import androidx.navigation.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.ActivityMainBinding
 import com.dezzomorf.financulator.extensions.resourcesCompat
+import com.dezzomorf.financulator.manager.InAppUpdateManager
 import com.dezzomorf.financulator.ui.activity.base.BaseActivity
 import com.dezzomorf.financulator.viewmodel.DataBaseViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,8 +17,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
-    private lateinit var navController: NavController
     private val viewModel: DataBaseViewModel by viewModels()
+    private lateinit var navController: NavController
+    private lateinit var updateManager: InAppUpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,21 @@ class MainActivity : BaseActivity() {
         window.statusBarColor = resourcesCompat.getColor(R.color.background_color)
         viewModel.setUpIsConnectCollecting()
         setUpNavController()
+        setUpUpdateManager()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateManager.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        updateManager.onDestroy()
+    }
+
+    private fun setUpUpdateManager() {
+        updateManager = InAppUpdateManager(this)
     }
 
     fun displayProgressBar(isDisplayed: Boolean) {

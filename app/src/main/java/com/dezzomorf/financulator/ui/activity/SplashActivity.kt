@@ -16,9 +16,10 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class SplashActivity: BaseActivity() {
 
+    private val binding by lazy { ActivitySplashBinding.inflate(layoutInflater) }
+
     @Inject
     lateinit var networkConnectionManager: NetworkConnectionManager
-    private val binding by lazy { ActivitySplashBinding.inflate(layoutInflater) }
     lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
