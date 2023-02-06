@@ -1,12 +1,17 @@
 package com.dezzomorf.financulator.ui.fragment
 
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
+import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSignUpBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
+import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.SignUpViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -16,6 +21,11 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
 
     private val viewModel: SignUpViewModel by viewModels()
     private var isPasswordShow = false
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        createClickableAgreementString()
+    }
 
     override fun observeClicks() {
         binding.signInTextViewSignUp.setOnClickListener {
@@ -101,6 +111,24 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(FragmentSignUpBinding
                     binding.showPasswordImageButtonSignUp.setImageResource(R.drawable.ic_baseline_visibility_24)
                 }
             }
+        }
+    }
+
+    private fun createClickableAgreementString() {
+        binding.signUpAgreementTextViewSignUp.makeLinks(
+            Pair(getString(R.string.privacy_policy), View.OnClickListener {
+                openBrowser(ConstVal.PRIVACY_POLICY_LINK)
+            }),
+            Pair(getString(R.string.terms_and_conditions), View.OnClickListener {
+                openBrowser(ConstVal.TERMS_OF_USE_LINK)
+            }))
+    }
+
+    private fun openBrowser(link: String) {
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(link)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            requireContext().startActivity(this)
         }
     }
 }

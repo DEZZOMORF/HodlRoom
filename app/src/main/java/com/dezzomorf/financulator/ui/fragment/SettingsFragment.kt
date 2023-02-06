@@ -43,6 +43,9 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         binding.privacyPolicyTextViewButtonSettings.setOnClickListener {
             settingsManager.openPrivacyPolicy()
         }
+        binding.termsAndConditionsTextViewButtonSettings.setOnClickListener {
+            settingsManager.openTermsAndConditions()
+        }
         binding.signOutButtonSettings.setOnClickListener {
             signOut()
         }

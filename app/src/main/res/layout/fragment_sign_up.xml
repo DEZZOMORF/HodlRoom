@@ -80,20 +80,20 @@
                 <FrameLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="4dp"
                     android:layout_marginEnd="16dp"
-                    android:layout_weight="0.2"
-                    android:layout_marginStart="4dp">
+                    android:layout_weight="0.2">
 
                     <ImageView
                         android:id="@+id/show_password_image_button_sign_up"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:padding="16dp"
                         android:layout_gravity="center"
                         android:clickable="false"
                         android:contentDescription="@string/show_password"
                         android:elevation="100dp"
                         android:focusable="false"
+                        android:padding="16dp"
                         android:src="@drawable/ic_baseline_visibility_24" />
 
                     <com.google.android.material.button.MaterialButton
@@ -104,6 +104,16 @@
                         app:iconGravity="textStart" />
                 </FrameLayout>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/sign_up_agreement_text_view_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"
+                android:gravity="center"
+                android:text="@string/sign_up_agreement"
+                android:textColorLink="#0f0" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

@@ -7,6 +7,7 @@ import android.net.Uri
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.util.ConstVal.MARKET_LINK
 import com.dezzomorf.financulator.util.ConstVal.PRIVACY_POLICY_LINK
+import com.dezzomorf.financulator.util.ConstVal.TERMS_OF_USE_LINK
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,6 +55,15 @@ class SettingsManager @Inject constructor(
     fun openPrivacyPolicy(): Boolean {
         Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse(PRIVACY_POLICY_LINK)
+            flags = FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(this)
+        }
+        return false
+    }
+
+    fun openTermsAndConditions(): Boolean {
+        Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(TERMS_OF_USE_LINK)
             flags = FLAG_ACTIVITY_NEW_TASK
             context.startActivity(this)
         }
