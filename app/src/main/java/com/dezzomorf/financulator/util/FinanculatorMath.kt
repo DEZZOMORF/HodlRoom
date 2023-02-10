@@ -13,7 +13,7 @@ class FinanculatorMath(
         return purchases.map {
             // Get price in usd(tether)
             val currencyPrice = tetherData.currentPrice[it.currency.value] ?: 0f
-            it.price * currencyPrice
+            it.price / currencyPrice
         }.average().toFloat()
     }
 

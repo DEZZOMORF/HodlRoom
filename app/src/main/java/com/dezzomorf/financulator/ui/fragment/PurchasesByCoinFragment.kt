@@ -153,7 +153,6 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         }
     }
 
-
     override fun setUpAdapters() {
         purchasesRecyclerViewAdapter.onItemClick = {
             FinanculatorDialog(
