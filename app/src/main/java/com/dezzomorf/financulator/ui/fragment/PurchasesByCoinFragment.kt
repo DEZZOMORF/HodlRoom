@@ -9,10 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.adapter.PurchasesRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentPurchasesByCoinBinding
-import com.dezzomorf.financulator.extensions.format
-import com.dezzomorf.financulator.extensions.formatToTwoDigits
-import com.dezzomorf.financulator.extensions.resourcesCompat
-import com.dezzomorf.financulator.extensions.showToast
+import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.*
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
@@ -88,7 +85,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                     binding.swipeMainPurchasesByCoin.isRefreshing = false
                     val purchaseOfCurrentCoin = state.data.filter { it.coinId == coin.id }
                     if (purchaseOfCurrentCoin.isEmpty()) {
-                        requireActivity().onBackPressed()
+                        requireActivity().onBackPressedDispatcher.onBackPressed()
                         return@observe
                     }
                     purchasesRecyclerViewAdapter.setListWithAnimation(formatDataToChangesByPurchase(purchaseOfCurrentCoin))
@@ -147,18 +144,18 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
     }
 
     private fun loadCurrentCoinData() {
-        val argument = requireArguments().getSerializable(ConstVal.ID)
+        val argument = requireArguments().serializable<Coin>(ConstVal.ID)
         if (argument != null) {
-            coin = argument as Coin
+            coin = argument
             purchaseViewModel.getCoinById(coin.id)
         } else {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
 
     override fun setUpAdapters() {
-        purchasesRecyclerViewAdapter.onItemLongClick = {
+        purchasesRecyclerViewAdapter.onItemClick = {
             FinanculatorDialog(
                 context = requireContext(),
                 content = listOf(

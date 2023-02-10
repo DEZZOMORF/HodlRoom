@@ -79,7 +79,6 @@ open class DataBaseViewModel @Inject constructor(
                                 Exception(task.exception)
                             )
                         )
-
                         // Post the cached data if the request is error
                         val cachedPurchases = sharedPreferencesManager.getPurchases(user.uid)
                         if (cachedPurchases != null && cachedPurchases.isNotEmpty()) {

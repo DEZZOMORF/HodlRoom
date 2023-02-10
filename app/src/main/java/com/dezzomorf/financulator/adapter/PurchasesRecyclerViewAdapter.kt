@@ -68,6 +68,10 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
                 else -> {}
             }
 
+            itemView.setOnClickListener {
+                onItemClick(item)
+            }
+
             itemView.setOnLongClickListener {
                 onItemLongClick(item)
                 true

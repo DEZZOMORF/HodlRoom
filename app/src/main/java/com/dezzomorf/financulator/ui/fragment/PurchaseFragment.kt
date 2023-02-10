@@ -160,12 +160,12 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
     }
 
     private fun loadCurrentCoinData() {
-        val argument = requireArguments().getSerializable(ConstVal.ID)
+        val argument = requireArguments().serializable<Coin>(ConstVal.ID)
         if (argument != null) {
-            coin = argument as Coin
+            coin = argument
             viewModel.getCoinById(coin.id)
         } else {
-            requireActivity().onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 
