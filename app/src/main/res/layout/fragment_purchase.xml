@@ -49,7 +49,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/gradient_center"
-        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/info_linear_layout_purchase"
         tools:visibility="visible" />
 

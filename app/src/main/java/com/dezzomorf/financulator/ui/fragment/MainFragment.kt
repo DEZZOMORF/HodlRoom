@@ -143,7 +143,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
         binding.totalProfitMain.isVisible = true
         binding.totalProfitSumMain.text = totalProfit.sum.formatToTwoDigits() + "$"
-        binding.totalProfitPercentMain.text = totalProfit.profitInPercents.formatToTwoDigits() + "%"
-        binding.totalProfitDollarMain.text = totalProfit.profitInDollars.formatToTwoDigits() + "$"
+        val plus = if (totalProfit.profitInPercents > 0) "+" else ""
+        binding.totalProfitPercentMain.text = plus + totalProfit.profitInPercents.formatToTwoDigits() + "%"
+        binding.totalProfitDollarMain.text = plus + totalProfit.profitInDollars.formatToTwoDigits() + "$"
+
+        when {
+            totalProfit.profitInDollars < 0f -> {
+                binding.totalProfitPercentMain.setTextColor(Color.RED)
+                binding.totalProfitDollarMain.setTextColor(Color.RED)
+            }
+            totalProfit.profitInDollars > 0f -> {
+                binding.totalProfitPercentMain.setTextColor(Color.GREEN)
+                binding.totalProfitDollarMain.setTextColor(Color.GREEN)
+            }
+        }
     }
 }

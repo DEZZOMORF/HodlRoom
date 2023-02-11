@@ -193,7 +193,19 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
 
         binding.totalProfitPurchasesByCoin.isVisible = true
         binding.totalProfitSumPurchasesByCoin.text = totalProfit.sum.formatToTwoDigits() + "$"
-        binding.totalProfitPercentPurchasesByCoin.text = totalProfit.profitInPercents.formatToTwoDigits() + "%"
-        binding.totalProfitDollarPurchasesByCoin.text = totalProfit.profitInDollars.formatToTwoDigits() + "$"
+        val plus = if (totalProfit.profitInPercents > 0) "+" else ""
+        binding.totalProfitPercentPurchasesByCoin.text = plus + totalProfit.profitInPercents.formatToTwoDigits() + "%"
+        binding.totalProfitDollarPurchasesByCoin.text = plus + totalProfit.profitInDollars.formatToTwoDigits() + "$"
+
+        when {
+            totalProfit.profitInDollars < 0f -> {
+                binding.totalProfitPercentPurchasesByCoin.setTextColor(Color.RED)
+                binding.totalProfitDollarPurchasesByCoin.setTextColor(Color.RED)
+            }
+            totalProfit.profitInDollars > 0f -> {
+                binding.totalProfitPercentPurchasesByCoin.setTextColor(Color.GREEN)
+                binding.totalProfitDollarPurchasesByCoin.setTextColor(Color.GREEN)
+            }
+        }
     }
 }

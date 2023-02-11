@@ -11,5 +11,9 @@ fun Float?.format(): String {
 }
 
 fun Float?.formatToTwoDigits(): String {
-    return String.format("%.2f", this).replace(",", ".")
+    return if (this?.isNaN() == true) {
+        "0"
+    } else {
+        String.format("%.2f", this).replace(",", ".")
+    }
 }

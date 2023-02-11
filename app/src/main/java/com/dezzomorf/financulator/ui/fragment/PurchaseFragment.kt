@@ -124,7 +124,7 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
             coin.currentPrice[CurrencyName.BTC.value].format()
         )
 
-        showViews()
+        showViews(coin)
     }
 
     private fun setUpSpinner(coin: Coin) {
@@ -147,15 +147,22 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         }
     }
 
-    private fun showViews() {
+    private fun showViews(coin: Coin) {
         with(binding) {
+            if (coin.currentPrice[CurrencyName.USD.value] == null && coin.currentPrice[CurrencyName.BTC.value] == null) {
+                binding.currentPriceTextViewPurchase.visibility = View.GONE
+            }
+            if (coin.logo == null) {
+                coinLogoLeftImageViewPurchase.visibility = View.GONE
+                coinLogoRightImageViewPurchase.visibility = View.GONE
+                separateLineView.visibility = View.GONE
+            }
             descriptionEditTextPurchase.isVisible = true
             spinnerUnitPurchase.isVisible = true
             quantityEditTextPurchase.isVisible = true
             priceEditTextPurchase.isVisible = true
             sumTextViewPurchase.isVisible = true
             saveButtonPurchase.isVisible = true
-            separateLineView.isVisible = true
         }
     }
 
