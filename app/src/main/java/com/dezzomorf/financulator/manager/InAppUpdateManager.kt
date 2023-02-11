@@ -23,6 +23,7 @@ class InAppUpdateManager(private val activity: Activity) : InstallStateUpdatedLi
     private var appUpdateManager: AppUpdateManager = AppUpdateManagerFactory.create(parentActivity)
     private val appUpdateInfoTask = appUpdateManager.appUpdateInfo
     private var currentType = AppUpdateType.FLEXIBLE
+    private var isDownloadingMessageShowed = false
 
     init {
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
@@ -38,7 +39,12 @@ class InAppUpdateManager(private val activity: Activity) : InstallStateUpdatedLi
 
     override fun onStateUpdate(state: InstallState) {
         when (state.installStatus()) {
-            InstallStatus.DOWNLOADING -> showDownloadingUpdateToast()
+            InstallStatus.DOWNLOADING -> {
+                if (!isDownloadingMessageShowed) {
+                    showDownloadingUpdateToast()
+                    isDownloadingMessageShowed = true
+                }
+            }
             InstallStatus.DOWNLOADED -> appUpdateManager.completeUpdate()
             else -> {}
         }
