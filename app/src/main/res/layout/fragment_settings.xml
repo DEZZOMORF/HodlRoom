@@ -3,97 +3,121 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:animateLayoutChanges="true">
+    android:animateLayoutChanges="true"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar_settings"
         layout="@layout/toolbar_title" />
 
-    <TextView
-        android:id="@+id/help_us_text_view_button_settings"
-        style="@style/Financulator.SettingsTextView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/support_us" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gradient_center"/>
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/rate_app_text_view_button_settings"
-        style="@style/Financulator.SettingsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/rate_app" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gradient_center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
-    <TextView
-        style="@style/Financulator.SettingsTextView"
-        android:id="@+id/feedback_text_view_button_settings"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/feedback" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gradient_center"/>
+            <TextView
+                android:id="@+id/help_us_text_view_button_settings"
+                style="@style/Financulator.SettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/support_us" />
 
-    <TextView
-        android:id="@+id/share_app_text_view_button_settings"
-        style="@style/Financulator.SettingsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/share_app" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gradient_center"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient_center" />
 
-    <TextView
-        android:id="@+id/privacy_policy_text_view_button_settings"
-        style="@style/Financulator.SettingsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/privacy_policy" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gradient_center"/>
+            <TextView
+                android:id="@+id/rate_app_text_view_button_settings"
+                style="@style/Financulator.SettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/rate_app" />
 
-    <TextView
-        android:id="@+id/terms_and_conditions_text_view_button_settings"
-        style="@style/Financulator.SettingsTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/terms_and_conditions" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/gradient_center"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient_center" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/sign_out_button_settings"
-        style="@style/Financulator.MaterialButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="12dp"
-        android:text="@string/sign_out"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
+            <TextView
+                android:id="@+id/feedback_text_view_button_settings"
+                style="@style/Financulator.SettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/feedback" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/delete_button_settings"
-        style="@style/Financulator.MaterialButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:backgroundTint="@android:color/holo_red_light"
-        android:text="@string/delete"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient_center" />
 
+            <TextView
+                android:id="@+id/share_app_text_view_button_settings"
+                style="@style/Financulator.SettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/share_app" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient_center" />
+
+            <TextView
+                android:id="@+id/privacy_policy_text_view_button_settings"
+                style="@style/Financulator.SettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/privacy_policy" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient_center" />
+
+            <TextView
+                android:id="@+id/terms_and_conditions_text_view_button_settings"
+                style="@style/Financulator.SettingsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                android:text="@string/terms_and_conditions" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/gradient_center" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sign_out_button_settings"
+                style="@style/Financulator.MaterialButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="12dp"
+                android:text="@string/sign_out"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_button_settings"
+                style="@style/Financulator.MaterialButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:backgroundTint="@android:color/holo_red_light"
+                android:text="@string/delete"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_settings" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>
