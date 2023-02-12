@@ -37,9 +37,9 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
                 ).root
             }
             else -> {
-        itemRootView = DefaultPurchaseItemBinding.inflate(
-            LayoutInflater.from(viewGroup.context), viewGroup, false
-        ).root
+                itemRootView = DefaultPurchaseItemBinding.inflate(
+                    LayoutInflater.from(viewGroup.context), viewGroup, false
+                ).root
             }
         }
         return ViewHolder(itemRootView)
@@ -48,6 +48,7 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
     inner class ViewHolder(itemView: View) : BaseRecyclerViewAdapter.ViewHolder(itemView) {
         private val context = itemView.context
 
+        private val counterTextView: TextView = itemView.findViewById(R.id.counter_text_view_purchase_item)
         private val descriptionTextView: TextView = itemView.findViewById(R.id.description_text_view_purchase_item)
         private val quantityTextView: TextView = itemView.findViewById(R.id.quantity_text_view_purchase_item)
         private val priceTextView: TextView = itemView.findViewById(R.id.price_text_view_purchase_item)
@@ -56,15 +57,34 @@ class PurchasesRecyclerViewAdapter @Inject constructor() : BaseRecyclerViewAdapt
 
         override fun bindView() {
             val item = getList()[adapterPosition]
-            descriptionTextView.text = context.resourcesCompat.getString(R.string.counter_and_description, adapterPosition + 1, item.description)
+            val itemPosition = adapterPosition + 1
+
+            if (item.description.isEmpty()) descriptionTextView.visibility = View.GONE
+            descriptionTextView.text = item.description
+            counterTextView.text = itemPosition.toString()
             quantityTextView.text = context.getString(R.string.quantity_with_value, item.quantity.format())
             priceTextView.text = context.resourcesCompat.getString(R.string.purchase_price_with_value, item.price.format(), item.currency)
             sumTextView.text = context.getString(R.string.sum_with_value, item.sum.formatToTwoDigits(), item.currency)
-            profitTextView.text = context.getString(R.string.profit_with_value, item.profitInPercents.formatToTwoDigits(), item.profitInDollars.formatToTwoDigits(), item.currency)
+            profitTextView.text = context.getString(
+                R.string.profit_with_value,
+                item.profitInPercents.formatToTwoDigits(),
+                item.profitInDollars.formatToTwoDigits(),
+                item.currency
+            )
 
             when {
-                item.profitInPercents > 0f -> profitTextView.setCompoundDrawablesWithIntrinsicBounds( null, null, context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24), null)
-                item.profitInPercents < 0f -> profitTextView.setCompoundDrawablesWithIntrinsicBounds( null, null, context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24), null)
+                item.profitInPercents > 0f -> profitTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_up_24),
+                    null
+                )
+                item.profitInPercents < 0f -> profitTextView.setCompoundDrawablesWithIntrinsicBounds(
+                    null,
+                    null,
+                    context.resourcesCompat.getDrawable(R.drawable.ic_baseline_arrow_drop_down_24),
+                    null
+                )
                 else -> {}
             }
 

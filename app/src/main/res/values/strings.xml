@@ -61,7 +61,6 @@
     <string name="profit_with_value">Profit: %1$s %% |  %2$s %3$s</string>
     <string name="it_is_experimental_feature">You are trying to save a purchase without an internet connection. We do not recommend doing this. This is an experimental feature. We want to improve your experience with %1$s and make it possible to work offline. If you find any errors, please contact us.</string>
     <string name="options">Options</string>
-    <string name="counter_and_description">%1$d. %2$s</string>
     <string name="feedback">Feedback</string>
     <string name="support_email" translatable="false">ihav.kozak.za.dunai@gmail.com</string>
     <string name="rate_app">Rate app</string>

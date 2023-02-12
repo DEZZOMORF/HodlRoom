@@ -89,6 +89,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                         return@observe
                     }
                     purchasesRecyclerViewAdapter.setListWithAnimation(formatDataToChangesByPurchase(purchaseOfCurrentCoin))
+                    purchasesRecyclerViewAdapter.notifyItemRangeChanged(0, purchaseOfCurrentCoin.size)
                     mainViewModel.summaryChangesByCoins(purchaseOfCurrentCoin)
                 }
                 is UiState.Error -> {

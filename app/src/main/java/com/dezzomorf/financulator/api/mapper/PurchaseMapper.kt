@@ -16,7 +16,7 @@ class PurchaseMapper @Inject constructor() : BaseMapper<DocumentSnapshot, Purcha
             coinId = entity.get("coinId").toString(),
             currency = CurrencyName.from(entity.get("currency").toString().lowercase()),
             description = entity.get("description").toString(),
-            date = entity.getTimestamp(entity.get("date").toString()) ?: Timestamp(Date()),
+            date = entity.getTimestamp("date") ?: Timestamp(Date()),
             price = entity.get("price").toString().toFloat(),
             quantity = entity.get("quantity").toString().toFloat(),
         )
