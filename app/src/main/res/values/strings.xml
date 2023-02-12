@@ -19,7 +19,7 @@
     <string name="nothing_found">Nothing found</string>
 
     <string name="network_error_429">Too many requests. Try again later</string>
-    <string name="network_error_default">Something went wrong</string>
+    <string name="network_error_default">Something went wrong. Try again later</string>
     <string name="network_error_no_internet_connection">No internet connection</string>
 
     <string name="delete">Delete</string>
@@ -72,5 +72,8 @@
     <string name="downloading_update">Downloading update</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="sign_up_agreement">By clicking \'SIGN UP\' you agree to the Privacy Policy and Terms and Conditions.</string>
+    <string name="walled_copied">Walled copied</string>
+    <string name="support_us">Support us</string>
+    <string name="we_need_your_help">We need your help to continue improving the project. Select the coin you want to donate in.</string>
 
 </resources>

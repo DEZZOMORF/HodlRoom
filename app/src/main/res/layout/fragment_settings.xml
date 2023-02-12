@@ -11,6 +11,17 @@
         layout="@layout/toolbar_title" />
 
     <TextView
+        android:id="@+id/help_us_text_view_button_settings"
+        style="@style/Financulator.SettingsTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/support_us" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/gradient_center"/>
+
+    <TextView
         android:id="@+id/rate_app_text_view_button_settings"
         style="@style/Financulator.SettingsTextView"
         android:layout_width="match_parent"

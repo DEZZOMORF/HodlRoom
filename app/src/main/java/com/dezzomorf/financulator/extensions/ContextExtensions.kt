@@ -1,6 +1,7 @@
 package com.dezzomorf.financulator.extensions
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -168,4 +169,10 @@ fun Context.isActivityValid(): Boolean {
         return false
     }
     return true
+}
+
+fun Context.setClipboard(text: String) {
+    val clipboard = this.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+    val clip = ClipData.newPlainText(getString(R.string.app_name), text)
+    clipboard.setPrimaryClip(clip)
 }
