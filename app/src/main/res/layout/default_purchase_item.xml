@@ -14,7 +14,7 @@
         android:id="@+id/counter_text_view_purchase_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:alpha="0.2"
+        android:alpha="0.1"
         android:paddingHorizontal="8dp"
         android:textColor="@color/black"
         android:textSize="60sp"
