@@ -24,7 +24,7 @@ import javax.inject.Inject
 class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsBinding::inflate) {
 
     companion object {
-        const val TAG = "SettingsFragment"
+        private val TAG = this::class.java.simpleName
     }
 
     private val viewModel: SettingsViewModel by viewModels()

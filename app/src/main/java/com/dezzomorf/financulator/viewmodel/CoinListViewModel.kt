@@ -65,7 +65,7 @@ class CoinListViewModel @Inject constructor(
                 } else {
                     val trimmedString = charSearch.trim()
                     coinList.filter { coin ->
-                        coin.name?.isContained(trimmedString) == true || coin.symbol?.isContained(trimmedString) == true
+                        coin.name.isContained(trimmedString) || coin.symbol.isContained(trimmedString)
                     }
                 }
             )

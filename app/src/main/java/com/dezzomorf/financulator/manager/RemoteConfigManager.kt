@@ -14,7 +14,7 @@ import javax.inject.Singleton
 class RemoteConfigManager @Inject constructor() {
 
     companion object {
-        const val TAG = "RemoteConfigManager"
+        private val TAG = this::class.java.simpleName
     }
 
     private val remoteConfig: FirebaseRemoteConfig = FirebaseRemoteConfig.getInstance().apply {
