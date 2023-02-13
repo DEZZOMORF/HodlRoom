@@ -17,4 +17,8 @@ interface SharedPreferencesInterface {
     fun addSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity)
     fun getSaveLaterPurchases(userId: String): List<PurchaseEntity>?
     fun removeSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity)
+
+    fun getRatingFlowData(): RatingManager.RatingFlowData
+    fun appRated()
+    fun resetLastRatingRequest()
 }

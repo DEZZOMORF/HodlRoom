@@ -75,5 +75,9 @@
     <string name="walled_copied">Walled copied</string>
     <string name="support_us">Support us</string>
     <string name="we_need_your_help">We need your help to continue improving the project. Select the coin you want to donate in.</string>
+    <string name="yes">Yes</string>
+    <string name="later">Later</string>
+    <string name="never">Never</string>
+    <string name="do_you_like_the_app">Do you like the app?</string>
 
 </resources>

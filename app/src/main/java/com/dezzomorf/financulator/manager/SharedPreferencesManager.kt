@@ -32,6 +32,8 @@ class SharedPreferencesManager @Inject constructor(
         private const val PURCHASES_KEY = "purchasesKey"
 
         private const val SAVE_LATER_PURCHASES_KEY = "saveLaterPurchasesKey"
+
+        private const val APP_RATE = "ratingFlowData"
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
@@ -94,6 +96,20 @@ class SharedPreferencesManager @Inject constructor(
         _saveLaterPurchases = dataCopy
     }
 
+    override fun getRatingFlowData(): RatingManager.RatingFlowData = _ratingFlowData
+
+    override fun appRated() {
+        val dataCopy = _ratingFlowData.copy()
+        dataCopy.isRatingFlowFinished = true
+        _ratingFlowData = dataCopy
+    }
+
+    override fun resetLastRatingRequest() {
+        val dataCopy = _ratingFlowData.copy()
+        dataCopy.lastRatingRequest = Date().time
+        _ratingFlowData = dataCopy
+    }
+
     private var _coinList: CoinListCache?
         get() {
             val type = object : TypeToken<CoinListCache>() {}.type
@@ -121,6 +137,15 @@ class SharedPreferencesManager @Inject constructor(
             return getValue(type, SAVE_LATER_PURCHASES_KEY) ?: emptyMap()
         }
         set(value) = setValue(SAVE_LATER_PURCHASES_KEY, value)
+
+    private var _ratingFlowData: RatingManager.RatingFlowData
+        get() {
+            val timer = Date().time + 1000*60*60*24*5 //Let the user use the app 5 days, to get a good feel of it.
+            val defaultRatingFlowData = RatingManager.RatingFlowData(false, timer)
+            val type = object : TypeToken<RatingManager.RatingFlowData>() {}.type
+            return getValue(type, APP_RATE) ?: defaultRatingFlowData
+        }
+        set(value) = setValue(APP_RATE, value)
 
     // convenience
     private fun <T> getValue(type: Type, key: String): T? {
