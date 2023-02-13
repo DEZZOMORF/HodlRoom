@@ -22,3 +22,4 @@
 
 -keep class com.dezzomorf.financulator.model.ErrorCode { *; }
 -keep class com.dezzomorf.financulator.model.CurrencyName { *; }
+-keep class com.dezzomorf.financulator.manager.SharedPreferencesManager { *; }

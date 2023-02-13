@@ -23,11 +23,6 @@ class RatingManager @Inject constructor(
         const val RATING_DIALOG_TIMER = 1000*60*60*24*2 //2 days
     }
 
-    data class RatingFlowData(
-        var isRatingFlowFinished: Boolean,
-        var lastRatingRequest: Long
-    )
-
     fun setupRatingFlags(activity: Activity) {
         val ratingFlowData = sharedPreferencesManager.getRatingFlowData()
         val timerState = ratingFlowData.lastRatingRequest + RATING_DIALOG_TIMER < Date().time

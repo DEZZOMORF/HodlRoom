@@ -3,6 +3,7 @@ package com.dezzomorf.financulator.manager
 import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.Purchase
+import com.dezzomorf.financulator.model.RatingFlowData
 
 interface SharedPreferencesInterface {
     fun setCoinList(coinList: List<Coin>?)
@@ -18,7 +19,7 @@ interface SharedPreferencesInterface {
     fun getSaveLaterPurchases(userId: String): List<PurchaseEntity>?
     fun removeSaveLaterPurchase(userId: String, purchaseEntity: PurchaseEntity)
 
-    fun getRatingFlowData(): RatingManager.RatingFlowData
+    fun getRatingFlowData(): RatingFlowData
     fun appRated()
     fun resetLastRatingRequest()
 }

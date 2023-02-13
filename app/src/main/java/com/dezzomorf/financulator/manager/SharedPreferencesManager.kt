@@ -7,6 +7,7 @@ import com.dezzomorf.financulator.api.entity.PurchaseEntity
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.CoinListCache
 import com.dezzomorf.financulator.model.Purchase
+import com.dezzomorf.financulator.model.RatingFlowData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -37,6 +38,9 @@ class SharedPreferencesManager @Inject constructor(
     }
 
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFERENCES_FILE_NAME, Context.MODE_PRIVATE)
+
+    //Let the user use the app 5 days, to get a good feel of it.
+    private val defaultRatingFlowData = RatingFlowData(false, Date().time + 1000 * 60 * 60 * 24 * 5)
 
     override fun setCoinList(coinList: List<Coin>?) {
         val coinListCache = CoinListCache(coinList, Date().time)
@@ -96,16 +100,24 @@ class SharedPreferencesManager @Inject constructor(
         _saveLaterPurchases = dataCopy
     }
 
-    override fun getRatingFlowData(): RatingManager.RatingFlowData = _ratingFlowData
+    override fun getRatingFlowData(): RatingFlowData {
+        val dataCopy = _ratingFlowData
+        return if (dataCopy != null) {
+            dataCopy
+        } else {
+            _ratingFlowData = defaultRatingFlowData
+            defaultRatingFlowData
+        }
+    }
 
     override fun appRated() {
-        val dataCopy = _ratingFlowData.copy()
+        val dataCopy = getRatingFlowData()
         dataCopy.isRatingFlowFinished = true
         _ratingFlowData = dataCopy
     }
 
     override fun resetLastRatingRequest() {
-        val dataCopy = _ratingFlowData.copy()
+        val dataCopy = getRatingFlowData()
         dataCopy.lastRatingRequest = Date().time
         _ratingFlowData = dataCopy
     }
@@ -138,12 +150,10 @@ class SharedPreferencesManager @Inject constructor(
         }
         set(value) = setValue(SAVE_LATER_PURCHASES_KEY, value)
 
-    private var _ratingFlowData: RatingManager.RatingFlowData
+    private var _ratingFlowData: RatingFlowData?
         get() {
-            val timer = Date().time + 1000*60*60*24*5 //Let the user use the app 5 days, to get a good feel of it.
-            val defaultRatingFlowData = RatingManager.RatingFlowData(false, timer)
-            val type = object : TypeToken<RatingManager.RatingFlowData>() {}.type
-            return getValue(type, APP_RATE) ?: defaultRatingFlowData
+            val type = object : TypeToken<RatingFlowData>() {}.type
+            return getValue(type, APP_RATE)
         }
         set(value) = setValue(APP_RATE, value)
 
