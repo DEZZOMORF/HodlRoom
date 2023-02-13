@@ -35,6 +35,7 @@ open class DataBaseViewModel @Inject constructor(
     var addPurchaseState: MutableLiveData<UiState<Unit>> = MutableLiveData()
     var getPurchasesState: MutableLiveData<UiState<List<Purchase>>> = MutableLiveData()
     var deletePurchasesState: MutableLiveData<UiState<Unit>> = MutableLiveData()
+    var deleteAllPurchasesAndUserAccountState: MutableLiveData<UiState<Unit>> = MutableLiveData()
 
     private fun generateId(): String {
         return java.util.UUID.randomUUID().toString()
@@ -69,21 +70,20 @@ open class DataBaseViewModel @Inject constructor(
                 .collection("purchases")
                 .get()
                 .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val purchaseList = purchaseMapper.mapEntityToModel(task.result.documents)
-                        sharedPreferencesManager.setPurchases(user.uid, purchaseList)
-                        getPurchasesState.postValue(UiState.Success(purchaseList))
-                    } else {
-                        getPurchasesState.postValue(
-                            UiState.Error(
-                                Exception(task.exception)
-                            )
+                    val purchaseList = purchaseMapper.mapEntityToModel(task.result.documents)
+                    sharedPreferencesManager.setPurchases(user.uid, purchaseList)
+                    getPurchasesState.postValue(UiState.Success(purchaseList))
+                }
+                .addOnFailureListener { tryToGetPurchasesException ->
+                    getPurchasesState.postValue(
+                        UiState.Error(
+                            Exception(tryToGetPurchasesException)
                         )
-                        // Post the cached data if the request is error
-                        val cachedPurchases = sharedPreferencesManager.getPurchases(user.uid)
-                        if (cachedPurchases != null && cachedPurchases.isNotEmpty()) {
-                            getPurchasesState.postValue(UiState.Success(cachedPurchases))
-                        }
+                    )
+                    // Post the cached data if the request is error
+                    val cachedPurchases = sharedPreferencesManager.getPurchases(user.uid)
+                    if (cachedPurchases != null && cachedPurchases.isNotEmpty()) {
+                        getPurchasesState.postValue(UiState.Success(cachedPurchases))
                     }
                 }
         }
@@ -107,16 +107,15 @@ open class DataBaseViewModel @Inject constructor(
             .document(generateId())
             .set(purchase)
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    sharedPreferencesManager.removeSaveLaterPurchase(userId, purchase)
-                    addPurchaseState.postValue(UiState.Success(Unit))
-                } else {
-                    addPurchaseState.postValue(
-                        UiState.Error(
-                            Exception(task.exception)
-                        )
+                sharedPreferencesManager.removeSaveLaterPurchase(userId, purchase)
+                addPurchaseState.postValue(UiState.Success(Unit))
+            }
+            .addOnFailureListener { savePurchaseException ->
+                addPurchaseState.postValue(
+                    UiState.Error(
+                        Exception(savePurchaseException)
                     )
-                }
+                )
             }
     }
 
@@ -152,28 +151,27 @@ open class DataBaseViewModel @Inject constructor(
             .whereEqualTo("coinId", coin.id)
             .get()
             .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    for (document in task.result) {
-                        document.reference.delete()
-                            .addOnSuccessListener {
-                                sharedPreferencesManager.setPurchases(userId, emptyList())
-                                deletePurchasesState.postValue(UiState.Success(Unit))
-                            }
-                            .addOnFailureListener {
-                                deletePurchasesState.postValue(
-                                    UiState.Error(
-                                        Exception(task.exception)
-                                    )
+                for (document in task.result) {
+                    document.reference.delete()
+                        .addOnSuccessListener {
+                            sharedPreferencesManager.setPurchases(userId, emptyList())
+                            deletePurchasesState.postValue(UiState.Success(Unit))
+                        }
+                        .addOnFailureListener { deletePurchasesException ->
+                            deletePurchasesState.postValue(
+                                UiState.Error(
+                                    Exception(deletePurchasesException)
                                 )
-                            }
-                    }
-                } else {
-                    deletePurchasesState.postValue(
-                        UiState.Error(
-                            Exception(task.exception)
-                        )
-                    )
+                            )
+                        }
                 }
+            }
+            .addOnFailureListener { deletePurchasesByCoinException ->
+                deletePurchasesState.postValue(
+                    UiState.Error(
+                        Exception(deletePurchasesByCoinException)
+                    )
+                )
             }
     }
 
@@ -195,17 +193,63 @@ open class DataBaseViewModel @Inject constructor(
                 .collection("purchases")
                 .document(purchaseId)
                 .delete()
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        sharedPreferencesManager.setPurchases(user.uid, emptyList())
-                        deletePurchasesState.postValue(UiState.Success(Unit))
-                    } else {
-                        deletePurchasesState.postValue(
-                            UiState.Error(
-                                Exception(task.exception)
-                            )
+                .addOnCompleteListener {
+                    sharedPreferencesManager.setPurchases(user.uid, emptyList())
+                    deletePurchasesState.postValue(UiState.Success(Unit))
+                }
+                .addOnFailureListener { deletePurchaseException ->
+                    deletePurchasesState.postValue(
+                        UiState.Error(
+                            Exception(deletePurchaseException)
                         )
+                    )
+                }
+        }
+    }
+
+    fun deleteAllPurchasesAndUserAccount() {
+        deleteAllPurchasesAndUserAccountState.postValue(UiState.Loading)
+
+        auth.currentUser?.let { user ->
+            // Delete all user purchases
+            dataBase.collection("users")
+                .document(user.uid)
+                .collection("purchases")
+                .get()
+                .addOnCompleteListener { task ->
+                    for (document in task.result) {
+                        document.reference.delete()
+                            .addOnSuccessListener {
+                                sharedPreferencesManager.setPurchases(user.uid, emptyList())
+                            }
+                            .addOnFailureListener { deletePurchasesException ->
+                                deletePurchasesState.postValue(
+                                    UiState.Error(
+                                        Exception(deletePurchasesException)
+                                    )
+                                )
+                            }
                     }
+
+                    //Delete user account
+                    user.delete()
+                        .addOnCompleteListener {
+                            deleteAllPurchasesAndUserAccountState.postValue(UiState.Success(Unit))
+                        }
+                        .addOnFailureListener { deleteAccountException ->
+                            deleteAllPurchasesAndUserAccountState.postValue(
+                                UiState.Error(
+                                    Exception(deleteAccountException)
+                                )
+                            )
+                        }
+                }
+                .addOnFailureListener { deletePurchasesException ->
+                    deletePurchasesState.postValue(
+                        UiState.Error(
+                            Exception(deletePurchasesException)
+                        )
+                    )
                 }
         }
     }

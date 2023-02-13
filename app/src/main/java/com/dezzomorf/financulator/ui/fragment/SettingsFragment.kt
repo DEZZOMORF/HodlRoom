@@ -16,6 +16,7 @@ import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.RequestState
+import com.dezzomorf.financulator.util.UiState
 import com.dezzomorf.financulator.viewmodel.SettingsViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -37,6 +38,40 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     override fun setUpUI() {
         binding.toolbarSettings.titleTextViewToolbar.text = getString(R.string.settings)
+    }
+
+    override fun observeViewModel() {
+        viewModel.deletePurchasesState.observe(this) { state ->
+            when(state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
+        viewModel.deleteAllPurchasesAndUserAccountState.observe(this) { state ->
+            when(state) {
+                is UiState.Loading -> {
+                    displayMainActivityProgressBar(true)
+                }
+                is UiState.Success -> {
+                    displayMainActivityProgressBar(false)
+                    val intent = Intent(requireContext(), SplashActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                is UiState.Error -> {
+                    displayMainActivityProgressBar(false)
+                    requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
+                }
+            }
+        }
     }
 
     override fun observeClicks() {
@@ -99,16 +134,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
 
     private fun deleteAccount() {
         displayMainActivityProgressBar(true)
-        viewModel.auth.currentUser?.delete()?.addOnCompleteListener(requireActivity()) { task ->
-            if (task.isSuccessful) {
-                val intent = Intent(requireContext(), SplashActivity::class.java)
-                startActivity(intent)
-                requireActivity().finish()
-            } else {
-                requireContext().showToast(R.string.network_error_default)
-            }
-            displayMainActivityProgressBar(false)
-        }
+        viewModel.deleteAllPurchasesAndUserAccount()
     }
 
     private fun helpUsDialog() {
