@@ -16,8 +16,8 @@ android {
         applicationId "com.dezzomorf.financulator"
         minSdk 23
         targetSdk 33
-        versionCode 5
-        versionName "1.0-beta5"
+        versionCode 6
+        versionName "1.0-beta6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
