@@ -3,6 +3,7 @@ package com.dezzomorf.financulator.extensions
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 

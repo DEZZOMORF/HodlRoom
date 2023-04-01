@@ -58,7 +58,7 @@
     <string name="btn_add_new_purchase">Додати нову покупку</string>
     <string name="downloading_update">Завантаження оновлення</string>
     <string name="terms_and_conditions">Правила та умови</string>
-    <string name="sign_up_agreement">Натискаючи «ЗАРЕЄСТРУВАТИСЯ», ви погоджуєтеся з Політикою конфіденційності та Умовами.</string>
+    <string name="sign_up_agreement">Натискаючи "ЗАРЕЄСТРУВАТИСЯ", ви погоджуєтеся з Політика конфіденційності та Правила та умови.</string>
     <string name="walled_copied">Гаманець скопійовано</string>
     <string name="support_us">Підтримайте нас</string>
     <string name="we_need_your_help">Нам потрібна ваша допомога, щоб продовжувати вдосконалювати проект. Виберіть монету, яку хочете пожертвувати.</string>
