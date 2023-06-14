@@ -11,6 +11,7 @@ import com.dezzomorf.financulator.adapter.PurchasesRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentPurchasesByCoinBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.*
+import com.dezzomorf.financulator.ui.activity.MainActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
@@ -42,18 +43,22 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         }
     }
 
+    override fun displayProgressBar(isDisplayed: Boolean) {
+        (requireActivity() as MainActivity).displayProgressBar(isDisplayed)
+    }
+
     override fun observeViewModel() {
         purchaseViewModel.coinState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     setDataToUi(state.data)
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -62,14 +67,14 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         mainViewModel.changesByCoinState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     setUpTotalProfit(mainViewModel.profitSummary(state.data))
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -78,10 +83,10 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         purchaseViewModel.getPurchasesState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     binding.swipeMainPurchasesByCoin.isRefreshing = false
                     val purchaseOfCurrentCoin = state.data.filter { it.coinId == coin.id }
                     if (purchaseOfCurrentCoin.isEmpty()) {
@@ -93,7 +98,7 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
                     mainViewModel.summaryChangesByCoins(purchaseOfCurrentCoin)
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -102,14 +107,14 @@ class PurchasesByCoinFragment : BaseFragment<FragmentPurchasesByCoinBinding>(Fra
         purchaseViewModel.deletePurchasesState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     purchaseViewModel.tryToGetPurchasesFromDataBase()
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }

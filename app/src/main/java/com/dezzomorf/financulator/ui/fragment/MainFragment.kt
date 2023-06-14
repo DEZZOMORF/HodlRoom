@@ -13,6 +13,7 @@ import com.dezzomorf.financulator.extensions.formatToTwoDigits
 import com.dezzomorf.financulator.extensions.resourcesCompat
 import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.model.TotalProfit
+import com.dezzomorf.financulator.ui.activity.MainActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
@@ -52,15 +53,15 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         viewModel.getPurchasesState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     binding.swipeMain.isRefreshing = false
                     viewModel.summaryChangesByCoins(state.data)
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -69,15 +70,15 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         viewModel.changesByCoinState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     mainRecyclerViewAdapter.setListWithAnimation(state.data)
                     setUpTotalProfit(viewModel.profitSummary(state.data))
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -86,14 +87,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         viewModel.deletePurchasesState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     viewModel.tryToGetPurchasesFromDataBase()
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -131,6 +132,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             layoutManager = LinearLayoutManager(requireContext())
             adapter = mainRecyclerViewAdapter
         }
+    }
+
+    override fun displayProgressBar(isDisplayed: Boolean) {
+        (requireActivity() as MainActivity).displayProgressBar(isDisplayed)
     }
 
     private fun setUpTotalProfit(totalProfit: TotalProfit) {

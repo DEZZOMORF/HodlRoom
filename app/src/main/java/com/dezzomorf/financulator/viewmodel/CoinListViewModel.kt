@@ -26,7 +26,7 @@ class CoinListViewModel @Inject constructor(
         coinListLoadState.postValue(UiState.Loading)
         viewModelScope.launch {
             val cachedCoinList = coinRepository.getCachedCoinList()
-            if (cachedCoinList != null && cachedCoinList.isNotEmpty()) {
+            if (!cachedCoinList.isNullOrEmpty()) {
                 coinListLoadState.postValue(UiState.Success(cachedCoinList))
                 coinList = cachedCoinList
             } else {

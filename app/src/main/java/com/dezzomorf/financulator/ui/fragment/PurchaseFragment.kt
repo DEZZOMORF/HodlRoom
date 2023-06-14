@@ -12,6 +12,7 @@ import com.dezzomorf.financulator.databinding.FragmentPurchaseBinding
 import com.dezzomorf.financulator.extensions.*
 import com.dezzomorf.financulator.model.Coin
 import com.dezzomorf.financulator.model.CurrencyName
+import com.dezzomorf.financulator.ui.activity.MainActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
 import com.dezzomorf.financulator.util.ConstVal
@@ -37,14 +38,14 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         viewModel.coinState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     setDataToUi(state.data)
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     setDataToUi(coin)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
@@ -54,15 +55,15 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
         viewModel.addPurchaseState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(getString(R.string.success))
                     findNavController().popBackStack()
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -84,6 +85,10 @@ class PurchaseFragment : BaseFragment<FragmentPurchaseBinding>(FragmentPurchaseB
                 }
             }
         }
+    }
+
+    override fun displayProgressBar(isDisplayed: Boolean) {
+        (requireActivity() as MainActivity).displayProgressBar(isDisplayed)
     }
 
     private fun itIsExperimentalFeatureDialog(purchase: PurchaseEntity) {

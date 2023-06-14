@@ -12,6 +12,7 @@ import com.dezzomorf.financulator.extensions.setClipboard
 import com.dezzomorf.financulator.extensions.showToast
 import com.dezzomorf.financulator.manager.RemoteConfigManager
 import com.dezzomorf.financulator.manager.SettingsManager
+import com.dezzomorf.financulator.ui.activity.MainActivity
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.ui.view.FinanculatorDialog
@@ -40,17 +41,21 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         binding.toolbarSettings.titleTextViewToolbar.text = getString(R.string.settings)
     }
 
+    override fun displayProgressBar(isDisplayed: Boolean) {
+        (requireActivity() as MainActivity).displayProgressBar(isDisplayed)
+    }
+
     override fun observeViewModel() {
         viewModel.deletePurchasesState.observe(this) { state ->
             when(state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -58,16 +63,16 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
         viewModel.deleteAllPurchasesAndUserAccountState.observe(this) { state ->
             when(state) {
                 is UiState.Loading -> {
-                    displayMainActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     val intent = Intent(requireContext(), SplashActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 }
                 is UiState.Error -> {
-                    displayMainActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
@@ -133,7 +138,7 @@ class SettingsFragment : BaseFragment<FragmentSettingsBinding>(FragmentSettingsB
     }
 
     private fun deleteAccount() {
-        displayMainActivityProgressBar(true)
+        displayProgressBar(true)
         viewModel.deleteAllPurchasesAndUserAccount()
     }
 

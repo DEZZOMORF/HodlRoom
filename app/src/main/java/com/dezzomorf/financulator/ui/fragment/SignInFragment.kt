@@ -7,6 +7,7 @@ import androidx.navigation.fragment.findNavController
 import com.dezzomorf.financulator.R
 import com.dezzomorf.financulator.databinding.FragmentSignInBinding
 import com.dezzomorf.financulator.extensions.*
+import com.dezzomorf.financulator.ui.activity.AuthorizationActivity
 import com.dezzomorf.financulator.ui.activity.SplashActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.UiState
@@ -42,18 +43,22 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(FragmentSignInBinding
         viewModel.signInState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is UiState.Loading -> {
-                    displayAuthorizationActivityProgressBar(true)
+                    displayProgressBar(true)
                 }
                 is UiState.Success -> {
-                    displayAuthorizationActivityProgressBar(false)
+                    displayProgressBar(false)
                     successSignIn()
                 }
                 is UiState.Error -> {
-                    displayAuthorizationActivityProgressBar(false)
+                    displayProgressBar(false)
                     requireContext().showToast(state.error.message ?: getString(R.string.network_error_default))
                 }
             }
         }
+    }
+
+    override fun displayProgressBar(isDisplayed: Boolean) {
+        (requireActivity() as AuthorizationActivity).displayProgressBar(isDisplayed)
     }
 
     private fun successSignIn() {

@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import com.dezzomorf.financulator.ui.activity.AuthorizationActivity
-import com.dezzomorf.financulator.ui.activity.MainActivity
+import com.dezzomorf.financulator.ui.DisplayProgressBar
 
 typealias Inflate<T> = (LayoutInflater, ViewGroup?, Boolean) -> T
 
 abstract class BaseFragment<VB : ViewBinding>(
     private val inflate: Inflate<VB>
-) : Fragment() {
+) : Fragment(), DisplayProgressBar {
 
     private var _binding: VB? = null
     val binding get() = _binding!!
@@ -46,12 +45,4 @@ abstract class BaseFragment<VB : ViewBinding>(
     protected open fun observeAdapters() {}
     protected open fun observeViewModel() {}
     protected open fun observeClicks() {}
-
-    fun displayMainActivityProgressBar(isDisplayed: Boolean) {
-        (activity as MainActivity).displayProgressBar(isDisplayed)
-    }
-
-    fun displayAuthorizationActivityProgressBar(isDisplayed: Boolean) {
-        (activity as AuthorizationActivity).displayProgressBar(isDisplayed)
-    }
 }

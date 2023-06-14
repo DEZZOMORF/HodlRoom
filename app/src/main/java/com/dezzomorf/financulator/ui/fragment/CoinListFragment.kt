@@ -12,6 +12,7 @@ import com.dezzomorf.financulator.adapter.CoinListRecyclerViewAdapter
 import com.dezzomorf.financulator.databinding.FragmentCoinListBinding
 import com.dezzomorf.financulator.extensions.scaleInAnimation
 import com.dezzomorf.financulator.extensions.showToast
+import com.dezzomorf.financulator.ui.activity.MainActivity
 import com.dezzomorf.financulator.ui.fragment.base.BaseFragment
 import com.dezzomorf.financulator.util.ConstVal
 import com.dezzomorf.financulator.util.UiState
@@ -35,15 +36,16 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
             coinListLoadState.observe(viewLifecycleOwner) { state ->
                 when (state) {
                     is UiState.Loading -> {
-                        displayMainActivityProgressBar(true)
+                        requireActivity()
+                        displayProgressBar(true)
                     }
                     is UiState.Success -> {
-                        displayMainActivityProgressBar(false)
+                        displayProgressBar(false)
                         binding.toolbarCoinList.buttonSearchImageViewToolbarCoinList.scaleInAnimation()
                         coinListAdapter.setList(state.data)
                     }
                     is UiState.Error -> {
-                        displayMainActivityProgressBar(false)
+                        displayProgressBar(false)
                         requireContext().showToast(state.error.message.toString())
                     }
                 }
@@ -87,5 +89,10 @@ class CoinListFragment : BaseFragment<FragmentCoinListBinding>(FragmentCoinListB
                 }
             })
         }
+    }
+
+
+    override fun displayProgressBar(isDisplayed: Boolean) {
+        (requireActivity() as MainActivity).displayProgressBar(isDisplayed)
     }
 }
